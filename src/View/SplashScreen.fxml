@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXSpinner?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<StackPane fx:id="stackpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="467.0" prefWidth="712.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.SplashScreenController">
+   <children>
+      <AnchorPane prefHeight="472.0" prefWidth="713.0">
+         <children>
+            <ImageView fitHeight="486.0" fitWidth="713.0" layoutX="-1.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Images/E-case%20system.png" />
+               </image>
+            </ImageView>
+         </children></AnchorPane>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0">
+         <children>
+            <Text fill="WHITE" layoutX="40.0" layoutY="223.0" strokeType="OUTSIDE" strokeWidth="0.0" text="E - Case">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="61.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="43.0" layoutY="265.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Registry System">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="32.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="43.0" layoutY="319.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Smart management of storing, sharing consumer">
+               <font>
+                  <Font name="Arial" size="12.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="43.0" layoutY="340.0" strokeType="OUTSIDE" strokeWidth="0.0" text="and competition cases">
+               <font>
+                  <Font name="Arial" size="12.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="89.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="C    O    M    P    E    T    I    T    I    O    N      C    O    M    M    I    S    S    I    O    N ">
+               <font>
+                  <Font name="Arial Bold" size="14.0" />
+               </font>
+            </Text>
+            <JFXSpinner layoutX="338.0" layoutY="210.0" />
+         </children>
+      </AnchorPane>
+   </children>
+</StackPane>

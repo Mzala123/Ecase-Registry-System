@@ -1,0 +1,163 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Dec 27, 2020, 5:25:41 PM
+    Author     : bounce
+*/
+
+.vboxBGColor{
+  -fx-background-color: white;  
+  -fx-border-radius: 6.0px;
+  -fx-background-radius: 6.0px;
+  -fx-effect: dropshadow(gaussian,rgba(0.0, 0.0, 0.0, 0.15), 6.0, 0.7, 0.0,1.5) 
+}
+
+
+.middlestackpane{  
+  -fx-border-radius: 6.0px;
+  -fx-background-radius: 6.0px;
+  -fx-effect: dropshadow(gaussian,rgba(0.0, 0.0, 0.0, 0.15), 6.0, 0.7, 0.0,1.5) 
+}
+
+
+.topBanner{
+    -fx-background-color: #088584; 
+    -fx-effect: dropshadow(gaussian,rgba(0.0, 0.0, 0.0, 0.15), 6.0, 0.7, 0.0,1.5)
+}
+.btnMenus{
+     -fx-alignment: CENTER_LEFT;
+}
+.btnMenus:hover{
+     -fx-background-color: #088584;
+     -fx-cursor: hand;
+     -fx-text-fill: white;  
+}
+
+.miniHbox{
+    -fx-background-color: white;
+    -fx-font-family:Arial;
+    -fx-text-fill:Black;
+    -fx-cursor: hand;
+    -fx-vgap: 10px;
+}
+.miniHbox:hover{
+    -fx-text-fill:Black;
+     fx-background-color: #dce7e7;
+}
+.mainHbox{
+        -fx-background-color: white;
+        
+}
+.mainHbox:hover{
+    -fx-cursor: hand;
+   /* -fx-background-color: #dce7e7;*/
+}
+
+.btnLogOut{
+   
+}
+.btnLogOut:hover{
+    -fx-cursor: hand;
+    -fx-background-color: #067876;
+/*    -fx-text-decoration:underline;
+    -fx-text-fill: white;    */
+}
+.btnSubmit{
+    -fx-background-color: linear-gradient(to top right,#088584,#daa520);
+    
+}
+
+.btnSubmit :hover{
+     -fx-background-color: #daa520;
+     -fx-border-radius: 1px;
+     -fx-border-color: white;
+     -fx-cursor: hand;
+}
+
+.btnCancel{
+    -fx-background-color: linear-gradient(to top right, #ee3737, #088584);
+   
+}
+.btnCancel:hover{
+    -fx-background-color: #ee3737;
+     -fx-border-radius: 1px;
+    -fx-border-color: white;
+    -fx-cursor: hand;
+}
+.textfieldColor{
+    -fx-background-color: #c7e0e0;
+    -fx-text-fill:black;
+}
+
+.paneMenu{
+    -fx-background-color:#c7e0e0;
+}
+.btnTable{
+    
+}
+.btnTable:hover{
+    -fx-background-color: #dce7e7;
+    -fx-text-fill:black;
+    -fx-cursor:hand;
+}
+
+.vboxLeftSide{
+    -fx-background-color: #dce7e7;
+    -fx-effect: dropshadow(gaussian,rgb(0.0,0.0,0.0,0.15),6.0,0.7,0.0,1.5);
+}
+
+.searchBar{
+    -fx-background-color: #FFF;
+    -fx-background-radius: 100px;
+}
+
+
+.paneAllUsers{
+    -fx-background-color: white; 
+    -fx-background-radius: 5px;
+    -fx-effect: dropshadow(gaussian,rgba(0.0, 0.0, 0.0, 0.15), 6.0, 0.7, 0.0,1.5)
+}
+
+.paneSmall{
+   
+    -fx-background-radius: 5px;
+    -fx-effect: dropshadow(gaussian,rgba(0.0, 0.0, 0.0, 0.15), 6.0, 0.7, 0.0,1.5)
+}
+
+/* End Dashboard */
+
+.jfx-tab-pane .headers-region {
+    -fx-background-color: #088584;
+}
+.jfx-tab-pane .tab-header-background {
+    -fx-background-color:#088584;
+}
+.jfx-tab-pane .tab-selected-line {
+    -fx-stroke: white;
+    -fx-stroke-width: 2pt;
+}
+
+
+.btnOnTables{
+    -fx-background-radius: 40px ;
+    -fx-border-radius: 40px;
+}
+
+.btnOnTables:hover{
+    -fx-background-color: #c7e0e0;
+    -fx-cursor: hand;
+  
+}
+
+.circleButton{
+    -fx-background-radius: 150;
+    -fx-border-radius: 150;
+}
+
+.circleButton:hover{
+    -fx-background-color: #e8c05c;
+    -fx-cursor: hand;
+}

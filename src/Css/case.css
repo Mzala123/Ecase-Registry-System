@@ -1,0 +1,60 @@
+.TopHbox{
+    -fx-background-color: white;
+    
+    
+}
+.vboxCaseDetail{
+    -fx-font-size: 12px;
+    -fx-font-family: Arial;
+}
+.TopicBar{
+    -fx-background-color: #dce7e7;
+    -fx-font-size: 14px;
+    -fx-font-weight: Bold;
+    -fx-font-family: Ubuntu;
+    -fx-effect: dropshadow(gaussian,rgb(0.0,0.0,0.0,0.15),6.0,0.7,0.0,1.5);
+}
+
+.labelBold{
+    -fx-font-weight:bold;
+    -fx-padding: 0 0 4 0;
+}
+.subTitleBar{
+    -fx-background-color: f6f9fa;
+    -fx-font-size: 14px;
+    -fx-font-weight: Bold;
+    -fx-font-family: Ubuntu;
+    
+}
+/*.caseArea{
+    -fx-background-color: white; 
+    -fx-background-radius: 4px;
+    -fx-border-color:whitesmoke;
+   -fx-effect: innershadow( gaussian , rgba(0,0,0,0.7) , 5,0,0,0 );
+}*/
+
+.scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar:horizontal, .scroll-bar:vertical{
+    -fx-background-color:transparent;
+}
+
+.increment-button, .decrement-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.scroll-bar:horizontal .track,
+.scroll-bar:vertical .track{
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-radius: 0em;
+}
+
+.scroll-bar:horizontal .thumb,
+.scroll-bar:vertical .thumb {
+    -fx-background-color:  #dce7e7;
+    -fx-background-radius: 5em;
+}

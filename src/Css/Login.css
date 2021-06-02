@@ -1,0 +1,81 @@
+
+.btnLogin{
+     /* -fx-background-color: linear-gradient(to top right, #daa520, #088584);*/
+     -fx-background-color: #daa520;
+     -fx-effect: dropshadow(gaussian, rgba(0.0, 0.0, 0.0, 0.15), 6.0, 0.7, 0.0,1.5);
+}
+.btnLogin:hover{
+    -fx-cursor: hand;
+    -fx-background-color: linear-gradient(to top right, #daa520, #088584);
+    -fx-border-radius: 1px;
+    -fx-border-color: white;
+    
+   
+}
+
+.btnSignUp{
+    -fx-border-radius: 0.5px;
+    -fx-border-color: #daa520;
+}
+.btnSignUp:hover{
+    -fx-background-color:#daa520 ;
+    -fx-border-radius: 1px;
+    -fx-border-color: white;
+    -fx-cursor: hand;
+}
+
+.smallAccountPane{
+     -fx-background-color: linear-gradient(to top right, #daa520, #088584);
+    
+}
+
+.btnSubmit{
+    -fx-background-color: linear-gradient(to top right, #daa520, #088584);
+    
+}
+
+.btnSubmit :hover{
+     -fx-background-color: #daa520;
+     -fx-border-radius: 1px;
+     -fx-border-color: white;
+     -fx-cursor: hand;
+}
+
+.btnCancel{
+    -fx-background-color: linear-gradient(to top right, #ee3737, #088584);
+   
+}
+.btnCancel:hover{
+    -fx-background-color: #ee3737;
+     -fx-border-radius: 1px;
+    -fx-border-color: white;
+}
+.btnPrevious{
+     
+}
+.btnPrevious:hover{
+    -fx-border-radius: 1px;
+    -fx-border-color: white;
+    -fx-background-color: #daa520;
+    -fx-cursor: hand;
+}
+
+.Pane{
+    -fx-border-radius: 1px;
+    -fx-border-style: dashed;
+    -fx-border-color: white;
+}
+
+.textField{
+    -fx-text-fill: white;
+    -fx-font: 12px;
+    -fx-cursor: hand;
+}
+.adminPane{
+    -fx-size:14px;
+    -fx-font-family:Arial;
+}
+
+.vboxes{
+     -fx-effect: dropshadow(gaussian,rgba(0.0, 0.0, 0.0, 0.15), 6.0, 0.7, 0.0,1.5)
+}

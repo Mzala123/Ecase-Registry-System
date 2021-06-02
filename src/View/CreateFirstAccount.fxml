@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<StackPane fx:id="stackpane" prefHeight="462.0" prefWidth="706.0" stylesheets="@../Css/Login.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.CreateFirstAccountController">
+   <children>
+      <ImageView fitHeight="465.0" fitWidth="709.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Images/admin.png" />
+         </image>
+      </ImageView>
+      <VBox prefHeight="200.0" prefWidth="100.0">
+         <children>
+            <HBox alignment="CENTER_LEFT" prefHeight="78.0" prefWidth="706.0">
+               <children>
+                  <JFXButton contentDisplay="GRAPHIC_ONLY" onAction="#returnToSignUp" prefHeight="36.0" prefWidth="40.0" styleClass="btnPrevious" text="Submit" textFill="WHITE">
+                     <graphic>
+                        <FontAwesomeIconView fill="WHITE" glyphName="ARROW_CIRCLE_LEFT" size="25" />
+                     </graphic>
+                     <HBox.margin>
+                        <Insets left="30.0" />
+                     </HBox.margin>
+                  </JFXButton>
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="C   R   E   A   T   E       A   D   M   I   N       U   S   E   R       A   C   C   O   U   N   T ">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="40.0" />
+                     </HBox.margin>
+                  </Text>
+               </children>
+            </HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <VBox prefHeight="465.0" prefWidth="357.0">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                     <children>
+                        <JFXTextField fx:id="empUserId" focusColor="WHITE" labelFloat="true" prefHeight="35.0" promptText="Input UserId" styleClass="textField" unFocusColor="WHITE">
+                           <VBox.margin>
+                              <Insets left="20.0" right="20.0" top="40.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font name="Arial Bold" size="12.0" />
+                           </font>
+                        </JFXTextField>
+                        <JFXTextField fx:id="empUsername" focusColor="WHITE" labelFloat="true" layoutX="30.0" layoutY="50.0" prefHeight="35.0" promptText="Input Username" styleClass="textField" unFocusColor="WHITE">
+                           <VBox.margin>
+                              <Insets left="20.0" right="20.0" top="60.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font name="Arial Bold" size="12.0" />
+                           </font>
+                        </JFXTextField>
+                        <JFXTextField fx:id="empFname" focusColor="WHITE" labelFloat="true" layoutX="10.0" layoutY="85.0" prefHeight="35.0" promptText="Input Firstname" styleClass="textField" unFocusColor="WHITE">
+                           <VBox.margin>
+                              <Insets left="20.0" right="20.0" top="60.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font name="Arial Bold" size="12.0" />
+                           </font>
+                        </JFXTextField>
+                        <JFXTextField fx:id="empLname" focusColor="WHITE" labelFloat="true" layoutX="10.0" layoutY="120.0" prefHeight="35.0" promptText="Input Lastname" styleClass="textField" unFocusColor="WHITE">
+                           <VBox.margin>
+                              <Insets left="20.0" right="20.0" top="60.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font name="Arial Bold" size="12.0" />
+                           </font>
+                        </JFXTextField>
+                     </children>
+                  </VBox>
+                  <Separator orientation="VERTICAL" prefHeight="200.0" scaleX="0.3">
+                     <HBox.margin>
+                        <Insets top="50.0" />
+                     </HBox.margin>
+                  </Separator>
+                  <VBox layoutX="10.0" layoutY="70.0" prefHeight="465.0" prefWidth="357.0">
+                     <children>
+                        <JFXTextField fx:id="empEmail" focusColor="WHITE" labelFloat="true" prefHeight="35.0" promptText="Input User Email" styleClass="textField" unFocusColor="WHITE">
+                           <VBox.margin>
+                              <Insets left="20.0" right="20.0" top="40.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font name="Arial Bold" size="12.0" />
+                           </font>
+                        </JFXTextField>
+                        <JFXPasswordField fx:id="empPassword" focusColor="WHITE" labelFloat="true" promptText="Input User Password" styleClass="textField" unFocusColor="WHITE">
+                           <VBox.margin>
+                              <Insets left="20.0" right="20.0" top="60.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font name="Arial Bold" size="12.0" />
+                           </font>
+                        </JFXPasswordField>
+                        <HBox alignment="BOTTOM_CENTER" prefHeight="50.0" prefWidth="200.0">
+                           <children>
+                              <JFXComboBox fx:id="empUserType" prefHeight="35.0" prefWidth="305.0" promptText="Select User Type" style="-fx-cursor: hand;" styleClass="textField" />
+                           </children>
+                           <VBox.margin>
+                              <Insets left="20.0" right="20.0" top="40.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox alignment="BOTTOM_CENTER" layoutX="30.0" layoutY="220.0" prefHeight="50.0" prefWidth="200.0">
+                           <VBox.margin>
+                              <Insets left="20.0" right="20.0" top="45.0" />
+                           </VBox.margin>
+                           <children>
+                              <JFXButton graphicTextGap="8.0" onAction="#createAdminUSer" prefHeight="35.0" prefWidth="120.0" styleClass="btnSubmit" text="Submit" textFill="WHITE">
+                                 <HBox.margin>
+                                    <Insets right="10.0" />
+                                 </HBox.margin>
+                                 <font>
+                                    <Font name="Arial Rounded MT Bold" size="12.0" />
+                                 </font>
+                                 <graphic>
+                                    <FontAwesomeIconView fill="WHITE" glyphName="SAVE" size="20" />
+                                 </graphic>
+                              </JFXButton>
+                              <JFXButton layoutX="105.0" layoutY="25.0" onAction="#cancelAdmin" prefHeight="35.0" prefWidth="120.0" styleClass="btnCancel" text="Cancel" textFill="WHITE">
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                                 <font>
+                                    <Font name="Arial Rounded MT Bold" size="12.0" />
+                                 </font>
+                                 <graphic>
+                                    <FontAwesomeIconView fill="WHITE" glyphName="TIMES_CIRCLE_ALT" size="20" />
+                                 </graphic>
+                              </JFXButton>
+                           </children>
+                        </HBox>
+                     </children>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</StackPane>

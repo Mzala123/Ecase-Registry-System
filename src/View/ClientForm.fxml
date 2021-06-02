@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import com.jfoenix.controls.JFXTabPane?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<StackPane fx:id="stackpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="1100.0" stylesheets="@../Css/Admin.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ClientFormController">
+   <children>
+      <JFXTabPane fx:id="jfxTabPane" styleClass="jfxTabPane">
+         <tabs>
+            <Tab onSelectionChanged="#switchToClientForm" text="Person Client Form">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <StackPane prefHeight="1000.0" prefWidth="2000.0">
+                           <children>
+                              <BorderPane prefHeight="200.0" prefWidth="200.0">
+                                 <center>
+                                    <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+                                       <BorderPane.margin>
+                                          <Insets top="4.0" />
+                                       </BorderPane.margin>
+                                       <children>
+                                          <Text layoutX="35.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add person client details on the form">
+                                             <font>
+                                                <Font name="Arial Bold" size="12.0" />
+                                             </font>
+                                          </Text>
+                                          <Separator layoutX="35.0" layoutY="53.0" prefHeight="0.0" prefWidth="823.0" />
+                                          <Text layoutX="32.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Input national ID(*)">
+                                             <font>
+                                                <Font name="Arial Bold" size="12.0" />
+                                             </font>
+                                          </Text>
+                                          <TextField fx:id="nationaId" layoutX="31.0" layoutY="101.0" prefHeight="30.0" prefWidth="220.0" promptText="mandatory" styleClass="textfieldColor">
+                                             <font>
+                                                <Font name="Arial" size="12.0" />
+                                             </font>
+                                          </TextField>
+                                          <Text layoutX="31.0" layoutY="190.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Input firstname">
+                                             <font>
+                                                <Font name="Arial Bold" size="12.0" />
+                                             </font>
+                                          </Text>
+                                          <TextField fx:id="fname" layoutX="30.0" layoutY="200.0" prefHeight="30.0" prefWidth="220.0" promptText="mandatory" styleClass="textfieldColor">
+                                             <font>
+                                                <Font name="Arial" size="12.0" />
+                                             </font>
+                                          </TextField>
+                                          <Text layoutX="31.0" layoutY="288.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Input lastname">
+                                             <font>
+                                                <Font name="Arial Bold" size="12.0" />
+                                             </font>
+                                          </Text>
+                                          <TextField fx:id="lname" layoutX="30.0" layoutY="298.0" prefHeight="30.0" prefWidth="220.0" promptText="mandatory" styleClass="textfieldColor">
+                                             <font>
+                                                <Font name="Arial" size="12.0" />
+                                             </font>
+                                          </TextField>
+                                          <Text layoutX="31.0" layoutY="390.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select Gender">
+                                             <font>
+                                                <Font name="Arial Bold" size="12.0" />
+                                             </font>
+                                          </Text>
+                                          <TextField fx:id="nationality" layoutX="302.0" layoutY="200.0" prefHeight="30.0" prefWidth="220.0" promptText="mandatory" styleClass="textfieldColor">
+                                             <font>
+                                                <Font name="Arial" size="12.0" />
+                                             </font>
+                                          </TextField>
+                                          <Text layoutX="304.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Include date of birth">
+                                             <font>
+                                                <Font name="Arial Bold" size="12.0" />
+                                             </font>
+                                          </Text>
+                                          <JFXDatePicker fx:id="dob" layoutX="302.0" layoutY="101.0" minHeight="30.0" prefWidth="220.0" styleClass="textfieldColor" />
+                                          <JFXComboBox fx:id="gender" layoutX="30.0" layoutY="400.0" prefHeight="30.0" prefWidth="220.0" promptText="please select(*)" styleClass="textfieldColor" />
+                                          <Text layoutX="304.0" layoutY="190.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Input nationality">
+                                             <font>
+                                                <Font name="Arial Bold" size="12.0" />
+                                             </font>
+                                          </Text>
+                                          <JFXTextArea fx:id="address" layoutX="303.0" layoutY="296.0" maxWidth="444.0" minWidth="220.0" prefHeight="133.0" prefWidth="220.0" styleClass="topBanner" />
+                                          <Text layoutX="304.0" layoutY="288.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Input postall address">
+                                             <font>
+                                                <Font name="Arial Bold" size="12.0" />
+                                             </font>
+                                          </Text>
+                                          <TextField fx:id="residence" layoutX="579.0" layoutY="100.0" prefHeight="30.0" prefWidth="220.0" styleClass="textfieldColor">
+                                             <font>
+                                                <Font name="Arial" size="12.0" />
+                                             </font>
+                                          </TextField>
+                                          <Text layoutX="581.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Input residence">
+                                             <font>
+                                                <Font name="Arial Bold" size="12.0" />
+                                             </font>
+                                          </Text>
+                                          <TextField fx:id="phonenumber" layoutX="580.0" layoutY="199.0" prefHeight="30.0" prefWidth="220.0" promptText="mandatory" styleClass="textfieldColor">
+                                             <font>
+                                                <Font name="Arial" size="12.0" />
+                                             </font>
+                                          </TextField>
+                                          <Text layoutX="582.0" layoutY="189.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Input Phone number">
+                                             <font>
+                                                <Font name="Arial Bold" size="12.0" />
+                                             </font>
+                                          </Text>
+                                          <TextField fx:id="email" layoutX="580.0" layoutY="291.0" prefHeight="30.0" prefWidth="220.0" styleClass="textfieldColor">
+                                             <font>
+                                                <Font name="Arial" size="12.0" />
+                                             </font>
+                                          </TextField>
+                                          <Text layoutX="582.0" layoutY="281.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Input email">
+                                             <font>
+                                                <Font name="Arial Bold" size="12.0" />
+                                             </font>
+                                          </Text>
+                                          <JFXButton graphicTextGap="10.0" layoutX="581.0" layoutY="400.0" onAction="#addClientPerson" prefHeight="30.0" prefWidth="100.0" styleClass="btnSubmit" text="Save" textFill="WHITE">
+                                             <font>
+                                                <Font name="Arial" size="12.0" />
+                                             </font>
+                                             <graphic>
+                                                <FontAwesomeIconView fill="WHITE" glyphName="CHECK_SQUARE_ALT" size="20" />
+                                             </graphic>
+                                          </JFXButton>
+                                          <JFXButton graphicTextGap="10.0" layoutX="697.0" layoutY="400.0" onAction="#cancelClientPersonRegistration" prefHeight="30.0" prefWidth="100.0" styleClass="btnCancel" text="Cancel" textFill="WHITE">
+                                             <font>
+                                                <Font name="Arial" size="12.0" />
+                                             </font>
+                                             <graphic>
+                                                <FontAwesomeIconView fill="WHITE" glyphName="TIMES_CIRCLE" size="20" />
+                                             </graphic>
+                                          </JFXButton>
+                                       </children>
+                                    </Pane>
+                                 </center>
+                              </BorderPane>
+                           </children>
+                        </StackPane>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab onSelectionChanged="#switchToOrganizationForm" text="Organization Client Form">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <StackPane fx:id="organizationStackPane" prefHeight="1000.0" prefWidth="2000.0" />
+                     </children></AnchorPane>
+               </content>
+            </Tab>
+         </tabs>
+      </JFXTabPane>
+   </children>
+</StackPane>

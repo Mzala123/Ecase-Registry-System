@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<StackPane fx:id="mainStackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1300.0" stylesheets="@../Css/Admin.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.CasePanelController">
+   <children>
+      <BorderPane fx:id="borderpane" prefHeight="200.0" prefWidth="200.0">
+         <left>
+            <VBox alignment="TOP_CENTER" prefHeight="571.0" prefWidth="208.0" styleClass="vboxBGColor" BorderPane.alignment="CENTER">
+               <children>
+                  <Circle fx:id="imageViewCircle" fill="WHITE" radius="52.0" stroke="BLACK" strokeType="INSIDE">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </Circle>
+                  <Label fx:id="labelUsername" alignment="CENTER" prefHeight="26.0" prefWidth="169.0">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font name="Arial Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Separator prefWidth="200.0">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </Separator>
+                  <JFXButton onAction="#switchToDashboard" prefHeight="40.0" prefWidth="200.0" styleClass="btnMenus" text="Dashboard [Overview]">
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                     <graphic>
+                        <FontAwesomeIconView glyphName="DESKTOP" size="20" wrappingWidth="30.0" />
+                     </graphic>
+                     <font>
+                        <Font name="Arial" size="14.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton layoutX="10.0" layoutY="218.0" onAction="#switchToClient" prefHeight="40.0" prefWidth="200.0" styleClass="btnMenus" text="Add Client(s)">
+                     <graphic>
+                        <FontAwesomeIconView glyphName="PLUS_CIRCLE" size="24" wrappingWidth="30.0" />
+                     </graphic>
+                     <font>
+                        <Font name="Arial" size="14.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton layoutX="10.0" layoutY="164.0" onAction="#switchToRegisterComplaint" prefHeight="40.0" prefWidth="200.0" styleClass="btnMenus" text="Register Complaint">
+                     <graphic>
+                        <FontAwesomeIconView glyphName="PLUS_SQUARE_ALT" size="25" wrappingWidth="30.0" />
+                     </graphic>
+                     <font>
+                        <Font name="Arial" size="14.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton layoutX="14.0" layoutY="218.0" onAction="#switchToClientList" prefHeight="40.0" prefWidth="200.0" styleClass="btnMenus" text="Clients List">
+                     <graphic>
+                        <FontAwesomeIconView glyphName="EYE_SLASH" size="22" wrappingWidth="30.0" />
+                     </graphic>
+                     <font>
+                        <Font name="Arial" size="14.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton layoutX="10.0" layoutY="244.0" onAction="#switchToComplaintsList" prefHeight="40.0" prefWidth="200.0" styleClass="btnMenus" text="Complaints List ">
+                     <graphic>
+                        <FontAwesomeIconView glyphName="LIST_ALT" size="22" wrappingWidth="30.0" />
+                     </graphic>
+                     <font>
+                        <Font name="Arial" size="14.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton layoutX="10.0" layoutY="284.0" onAction="#switchToSettings" prefHeight="40.0" prefWidth="200.0" styleClass="btnMenus" text="User Settings">
+                     <graphic>
+                        <FontAwesomeIconView glyphName="COG" size="25" wrappingWidth="30.0" />
+                     </graphic>
+                     <font>
+                        <Font name="Arial" size="14.0" />
+                     </font>
+                  </JFXButton>
+                  <Separator layoutX="10.0" layoutY="144.0" prefWidth="200.0">
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </Separator>
+                  <JFXButton layoutX="10.0" layoutY="348.0" onAction="#existSystem" prefHeight="40.0" prefWidth="200.0" styleClass="btnMenus" text="Exit">
+                     <graphic>
+                        <FontAwesomeIconView glyphName="WINDOWS" size="20" wrappingWidth="30.0" />
+                     </graphic>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font name="Arial" size="14.0" />
+                     </font>
+                  </JFXButton>
+               </children>
+               <BorderPane.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </BorderPane.margin>
+            </VBox>
+         </left>
+         <top>
+            <HBox alignment="CENTER_RIGHT" prefHeight="74.0" prefWidth="762.0" styleClass="topBanner" BorderPane.alignment="CENTER">
+               <children>
+                  <JFXButton onAction="#logOut" styleClass="btnLogOut" text="LOG OUT" textFill="WHITE">
+                     <graphic>
+                        <FontAwesomeIconView fill="WHITE" glyphName="SIGN_OUT" size="20" />
+                     </graphic>
+                     <font>
+                        <Font name="Arial Bold" size="12.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                  </JFXButton>
+               </children>
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
+            </HBox>
+         </top>
+         <bottom>
+            <HBox alignment="CENTER" prefHeight="45.0" prefWidth="1300.0" styleClass="vboxBGColor" BorderPane.alignment="CENTER">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Copyright @Mzala. All rights reserved">
+                     <font>
+                        <Font name="Arial" size="12.0" />
+                     </font>
+                  </Text>
+               </children>
+            </HBox>
+         </bottom>
+         <center>
+            <StackPane fx:id="stackpaneMiddle" prefHeight="570.0" prefWidth="1100.0" style="-fx-background-color: #c7e0e0;" styleClass="middlestackpane" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </BorderPane.margin>
+            </StackPane>
+         </center>
+      </BorderPane>
+   </children>
+</StackPane>
