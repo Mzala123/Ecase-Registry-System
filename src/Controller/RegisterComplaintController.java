@@ -71,8 +71,9 @@ public class RegisterComplaintController implements Initializable {
 
     private void initializeComplaintNature(){
         String[] nature = {"Alleged Excluding liability for defective products", "Alleged Unconscionable conduct",
-            "Alleged anti-competitive business practice" ,
-            "Alleged supply of products likely to cause harm when consumed"};
+            "Alleged supply of products likely to cause harm when consumed",
+            "Alleged Predatory Pricing","Alleged Hoarding()", "Alleged Discriminatory pricing",
+            };
         ObservableList<String> list = FXCollections.observableArrayList(nature);
         this.natureComplaint.getItems().addAll(list);
     }

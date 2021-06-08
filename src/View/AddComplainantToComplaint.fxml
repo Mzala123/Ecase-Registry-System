@@ -30,7 +30,7 @@
                      </font>
                   </Text>
                   <FontAwesomeIconView glyphName="SEARCH" layoutX="532.0" layoutY="69.0" size="18" />
-                  <JFXTextField focusColor="BLACK" layoutX="548.0" layoutY="49.0" prefWidth="300.0" promptText="Find Complaint" styleClass="jfx-text-field">
+                  <JFXTextField fx:id="searchField" focusColor="BLACK" layoutX="548.0" layoutY="49.0" onKeyReleased="#findComplainant" prefWidth="300.0" promptText="Find Complainant" styleClass="jfx-text-field">
                      <font>
                         <Font name="Arial Bold" size="14.0" />
                      </font>

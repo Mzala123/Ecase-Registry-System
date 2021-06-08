@@ -5,17 +5,22 @@
  */
 package Controller;
 
+import static Controller.ClientListController.personList;
 import Model.Employee;
 import Model.Person;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
+import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -26,6 +31,7 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
@@ -54,6 +60,8 @@ public class AddComplainantToComplaintController implements Initializable {
     private final int rowsPerPage = 8;
     
     public static StackPane tempComplainantPane;
+    @FXML
+    private JFXTextField searchField;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -166,5 +174,43 @@ public class AddComplainantToComplaintController implements Initializable {
             };
     
     // end here 
+
+    @FXML
+    private void findComplainant(KeyEvent event) {
+        
+        FilteredList <Person> filteredList = new FilteredList<>(personList,p->true);  
+            searchField.textProperty().addListener((ObservableValue,oldValue,newValue)->{
+            filteredList.setPredicate((Predicate<? super Person>) person->{ 
+                
+               if (newValue == null || newValue.isEmpty()){
+                        return true;
+                    }  
+                 String filterLowerCase = newValue.toLowerCase();
+                 
+               if (person.getNationalId().toLowerCase().contains(filterLowerCase)){
+                        return true;
+                    }
+               if (person.getFirstName().toLowerCase().contains(filterLowerCase)){
+                        return true;
+                    }
+               if (person.getLastName().toLowerCase().contains(filterLowerCase)){
+                        return true;
+                    }
+               
+                if (person.getGender().toLowerCase().contains(filterLowerCase)){
+                        return true;
+                    }
+                 if (person.getNationalId().toLowerCase().contains(filterLowerCase)){
+                        return true;
+                    }                    
+                    return false;
+                  });
+    
+              SortedList<Person> sortedData = new SortedList<>(filteredList); 
+              sortedData.comparatorProperty().bind(tablePerson.comparatorProperty());
+              tablePerson.setItems(sortedData);
+           });
+             
+    }
     
 }

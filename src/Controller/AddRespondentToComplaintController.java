@@ -6,18 +6,23 @@
 package Controller;
 
 import static Controller.AddComplainantToComplaintController.personList;
+import static Controller.ClientListController.personList;
 import Model.DBHandler;
 import Model.Organization;
 import Model.Person;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
+import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -59,6 +64,8 @@ public class AddRespondentToComplaintController implements Initializable {
     private StackPane stackpaneMain;
     
     public static StackPane tempRespondentStackPane;
+    @FXML
+    private JFXTextField searchField;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -70,11 +77,41 @@ public class AddRespondentToComplaintController implements Initializable {
 
     @FXML
     private void findRespondent(KeyEvent event) {
+        FilteredList <Organization> filteredList = new FilteredList<>(orgList,p->true);  
+            searchField.textProperty().addListener((ObservableValue,oldValue,newValue)->{
+            filteredList.setPredicate((Predicate<? super Organization>) organization->{ 
+                
+               if (newValue == null || newValue.isEmpty()){
+                        return true;
+                    }  
+                 String filterLowerCase = newValue.toLowerCase();
+                 
+               if (organization.getOrgName().toLowerCase().contains(filterLowerCase)){
+                        return true;
+                    }
+               if (organization.getBusinessType().toLowerCase().contains(filterLowerCase)){
+                        return true;
+                    }
+               if (organization.getId().toLowerCase().contains(filterLowerCase)){
+                        return true;
+                    }
+               
+                if (organization.getPostalAddress().toLowerCase().contains(filterLowerCase)){
+                        return true;
+                    }
+                 if (organization.getEmail().toLowerCase().contains(filterLowerCase)){
+                        return true;
+                    }                    
+                    return false;
+                  });
+    
+              SortedList<Organization> sortedData = new SortedList<>(filteredList); 
+              sortedData.comparatorProperty().bind(tableOrg.comparatorProperty());
+              tableOrg.setItems(sortedData);
+           });
+             
     }
 
-    @FXML
-    private void findRespondent(ActionEvent event) {
-    }
     
     private void initializeData(){
         organization.listOrganizationData();

@@ -35,6 +35,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Separator;
@@ -452,8 +454,28 @@ public class Person {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setHeaderText("COMPLAINANT DETAILS");
                 alert.setContentText("are these the complainant's details on the lodged Complaint?");
-                alert.showAndWait();
-                if (alert.getResult().getText().equals("OK")) {
+                ButtonType okButton = new ButtonType("YES", ButtonBar.ButtonData.YES);
+                ButtonType noButton = new ButtonType("NO", ButtonBar.ButtonData.NO);
+                alert.getButtonTypes().setAll(okButton, noButton);
+                
+                alert.showAndWait().ifPresent(type ->{
+                if(type == okButton){
+                    SwitchWindow window = new SwitchWindow();
+                    listOfIDs.addAll(id);
+                    System.out.println("The time is " + RegisterComplaintController.passdate);
+                    System.out.println("The details are " + listOfIDs);
+
+                    window.loadNewWindow("/View/AddRespondentToComplaint.fxml",
+                            "Respondent Details", true, true);
+                    AddComplainantToComplaintController.tempComplainantPane.getScene().getWindow().hide();
+                }
+                else if(type == noButton){
+                    alert.close();
+                }
+                
+                });
+                
+              /*  if (alert.getResult().getText().equals("YES")) {
 
                     SwitchWindow window = new SwitchWindow();
                     listOfIDs.addAll(id);
@@ -464,9 +486,9 @@ public class Person {
                             "Respondent Details", true, true);
                     AddComplainantToComplaintController.tempComplainantPane.getScene().getWindow().hide();
 
-                } else {
+                } else if (alert.getResult().getText().equals("NO")) {
                     alert.close();
-                }
+                }*/
 
             }
 

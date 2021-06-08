@@ -23,6 +23,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.paint.Paint;
 import javafx.util.Duration;
@@ -268,18 +270,40 @@ public class Organization extends Client {
         button.setOnAction((event) -> {
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            //alert.set
             alert.setHeaderText("RESPONDENT DETAILS");
             alert.setContentText("are these the RESPONDENT's details on the lodged Complaint?");
-            alert.showAndWait();
-
-            if (alert.getResult().getText().equals("OK")) {
+            ButtonType okButton = new ButtonType("YES", ButtonBar.ButtonData.YES);
+            ButtonType noButton = new ButtonType("NO", ButtonBar.ButtonData.NO);
+            alert.getButtonTypes().setAll(okButton, noButton);
+            alert.showAndWait().ifPresent(type ->{
+            if(type == okButton){
                 listOfIDs.addAll(id);
                 System.out.println("The fetched data are " + listOfIDs);
                 int complaintId = fetchID(listOfIDs.get(0));
                 String complainantId = listOfIDs.get(1);
                 String respondentId = listOfIDs.get(2);
                 createComplaint(complaintId, complainantId, respondentId);
-                assignCaseAutomatically();  
+                assignCaseAutomatically();
+                SwitchWindow window = new SwitchWindow();
+                window.loadNewWindow("/View/ComplaintList.fxml", "List of complaints", true, true);
+                tempRespondentStackPane.getScene().getWindow().hide();
+                CasePanelController.tempStackPane.getScene().getWindow().hide();
+            }
+            else if(type == noButton){
+                alert.close();
+            }
+            
+            });
+
+           /* if (alert.getResult().getText().equals("OK")) {
+                listOfIDs.addAll(id);
+                System.out.println("The fetched data are " + listOfIDs);
+                int complaintId = fetchID(listOfIDs.get(0));
+                String complainantId = listOfIDs.get(1);
+                String respondentId = listOfIDs.get(2);
+                createComplaint(complaintId, complainantId, respondentId);
+                assignCaseAutomatically();
                 SwitchWindow window = new SwitchWindow();
                 window.loadNewWindow("/View/ComplaintList.fxml", "List of complaints", true, true);
                 tempRespondentStackPane.getScene().getWindow().hide();
@@ -287,7 +311,7 @@ public class Organization extends Client {
 
             } else {
                 alert.close();
-            }
+            }*/
         });
 
         return button;
