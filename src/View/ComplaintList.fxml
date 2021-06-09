@@ -22,7 +22,7 @@
                <children>
                   <HBox alignment="CENTER" minHeight="45.0" prefHeight="45.0" prefWidth="276.0">
                      <children>
-                        <TextField fx:id="searchComplaintField" onKeyPressed="#findComplaint" onKeyReleased="#findComplaint" prefHeight="35.0" prefWidth="320.0" promptText="Find Complaint" styleClass="searchBar">
+                        <TextField fx:id="searchComplaintField" onKeyReleased="#findComplaint" prefHeight="35.0" prefWidth="320.0" promptText="Find Complaint" styleClass="searchBar">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>

@@ -322,7 +322,9 @@ public class DBHandler {
                         + "complainantId varchar(50),\n"
                         + "respondentId varchar(50),\n"  
                         + "isAssigned boolean default false,\n"
-                        + "caseOfficerId int \n"
+                        + "caseOfficerId int ,\n"
+                        + "progressMade longtext default 'New Case',\n"
+                        + "status varchar(100) default 'Ongoing' \n"
                         + ")");
                 
                 
