@@ -407,7 +407,7 @@ public class Employee {
                     SignUpPageController.tempStackPane.getScene().getWindow().hide();
 
                 } else if (usertype.toLowerCase().equals("case officer")) {
-                    window.loadNewWindow("/View/AdminPanel.fxml", "Admin Section", true, true);
+                    window.loadNewWindow("/View/OfficerPanel.fxml", "Admin Section", true, true);
                     SignUpPageController.tempStackPane.getScene().getWindow().hide();
                 } else if (usertype.toLowerCase().equals("case allocator")) {
                     window.loadNewWindow("/View/CasePanel.fxml", "Case Section", true, true);

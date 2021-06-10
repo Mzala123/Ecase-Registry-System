@@ -5,12 +5,14 @@
  */
 package Controller;
 
+import Model.SwitchWindow;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 
 /**
@@ -24,6 +26,8 @@ public class OfficerPanelController implements Initializable {
     private Circle imageViewCircle;
     @FXML
     private Label labelUsername;
+    @FXML
+    private StackPane mainStackPane;
 
     /**
      * Initializes the controller class.
@@ -35,26 +39,34 @@ public class OfficerPanelController implements Initializable {
 
     @FXML
     private void logOut(ActionEvent event) {
+        
     }
 
     @FXML
     private void switchToDashboard(ActionEvent event) {
+        
     }
 
     @FXML
     private void switchToOfficerCases(ActionEvent event) {
+       SwitchWindow window = new SwitchWindow();
+       window.loadNewWindow("/View/OfficerCasesList.fxml", "List of complaints", true, true);
+       mainStackPane.getScene().getWindow().hide();
     }
 
     @FXML
     private void switchToUpdateCase(ActionEvent event) {
+        
     }
 
     @FXML
     private void switchToSettings(ActionEvent event) {
+        
     }
 
     @FXML
     private void existSystem(ActionEvent event) {
+        
     }
     
 }

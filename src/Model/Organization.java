@@ -285,6 +285,7 @@ public class Organization extends Client {
                 String respondentId = listOfIDs.get(2);
                 createComplaint(complaintId, complainantId, respondentId);
                 assignCaseAutomatically();
+                listOfIDs.clear();
                 SwitchWindow window = new SwitchWindow();
                 window.loadNewWindow("/View/ComplaintList.fxml", "List of complaints", true, true);
                 tempRespondentStackPane.getScene().getWindow().hide();
@@ -376,14 +377,14 @@ public class Organization extends Client {
         //int caseno = 0;
         int detailId = selectCase();
         System.out.println(detailId);
-        String query = "Select count(*) as totalOfficer from ecase.user where Usertype ='Case Officer'";
+        String query = "Select Id as totalOfficer from ecase.user where Usertype ='Case Officer'";
         int seedingValue;
 
         // String caseDetailQuery = "Select detailId from ecase.complaint_details where isAssigned = 0";
         try {
             preparedStatement = handler.connection.prepareStatement(query);
             handler.result = preparedStatement.executeQuery(query);
-            if (handler.result.next()) {
+            while (handler.result.next()) {
                 seedingValue = handler.result.getInt("totalOfficer");
                 face = 1 + randomNumber.nextInt(seedingValue);
                 String updateQuery = "UPDATE complaint_details SET isAssigned = '1', "

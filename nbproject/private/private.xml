@@ -4,8 +4,10 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/F:/DAEyanG/D%23%20SEMESTER%201/Khumbo%20Final%20year%20project/E%20case%20registry%20system/src/Controller/ComplaintListController.java</file>
-            <file>file:/F:/DAEyanG/D%23%20SEMESTER%201/Khumbo%20Final%20year%20project/E%20case%20registry%20system/src/Controller/RegisterComplaintController.java</file>
-            <file>file:/F:/DAEyanG/D%23%20SEMESTER%201/Khumbo%20Final%20year%20project/E%20case%20registry%20system/src/Controller/ClientListController.java</file>
+            <file>file:/F:/DAEyanG/D%23%20SEMESTER%201/Khumbo%20Final%20year%20project/E%20case%20registry%20system/src/Controller/AddRespondentToComplaintController.java</file>
+            <file>file:/F:/DAEyanG/D%23%20SEMESTER%201/Khumbo%20Final%20year%20project/E%20case%20registry%20system/src/Controller/OfficerPanelController.java</file>
+            <file>file:/F:/DAEyanG/D%23%20SEMESTER%201/Khumbo%20Final%20year%20project/E%20case%20registry%20system/src/Model/Organization.java</file>
+            <file>file:/F:/DAEyanG/D%23%20SEMESTER%201/Khumbo%20Final%20year%20project/E%20case%20registry%20system/src/Model/DBHandler.java</file>
         </group>
     </open-files>
 </project-private>
