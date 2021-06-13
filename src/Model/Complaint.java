@@ -230,9 +230,7 @@ public class Complaint {
                 ImageView imageView = setImage();
                 HBox box = createHBox(imageView, complaint_detailId, complaintName);
                 ComplaintListController.tempVbox.getChildren().addAll(box);
-                
                 // ComplaintListController.complaintList.getItems().add(box);
-
             }
 
         } catch (SQLException ex) {
@@ -278,6 +276,7 @@ public class Complaint {
         hbox.getChildren().addAll(vbox, vboxMin);
         hbox.setOnMouseClicked((event) -> {
                     ComplaintListController.tempCaseDetails.getChildren().clear();
+                    
                     displayComplaintDetails(caseNo);
                    
                 }); 
@@ -289,9 +288,7 @@ public class Complaint {
         iconButton = new JFXButton();
         iconButton.setPrefSize(55, 55);
         FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.FOLDER);
-        //  button.setStyle("-fx-background-color: linear-gradient(to top right,#088584,#daa520)");
         icon.setGlyphSize(30);
-
         icon.setStyle("-fx-fill: #ffffff");
         iconButton.setGraphic(icon);
         iconButton.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);

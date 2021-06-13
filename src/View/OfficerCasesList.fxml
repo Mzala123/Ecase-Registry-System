@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.OfficerCasesListController">
+<StackPane fx:id="mainStackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.OfficerCasesListController">
    <children>
       <BorderPane prefHeight="200.0" prefWidth="200.0">
          <top>
@@ -67,36 +67,40 @@
             </VBox>
          </left>
          <center>
-            <ScrollPane BorderPane.alignment="CENTER">
-               <content>
-                  <VBox fx:id="contentVbox" styleClass="vboxCaseDetail">
-                     <padding>
-                        <Insets left="8.0" />
-                     </padding>
+            <BorderPane fx:id="borderpane" BorderPane.alignment="CENTER">
+               <center>
+                  <ScrollPane>
+                     <content>
+                        <VBox fx:id="contentVbox" styleClass="vboxCaseDetail">
+                           <padding>
+                              <Insets left="8.0" />
+                           </padding>
+                        </VBox>
+                     </content>
+                     <styleClass>
+                        <String fx:value="vboxLeftSide" />
+                        <String fx:value="caseArea" />
+                        <String fx:value="scroll-pane" />
+                        <String fx:value="scroll-bar" />
+                     </styleClass>
+                  </ScrollPane>
+               </center>
+               <right>
+                  <VBox prefHeight="200.0" prefWidth="150.0" styleClass="vboxLeftSide" BorderPane.alignment="CENTER">
+                     <children>
+                        <ScrollPane>
+                           <content>
+                              <VBox fx:id="listHbox1" alignment="TOP_RIGHT" spacing="2.0" />
+                           </content>
+                        </ScrollPane>
+                     </children>
                   </VBox>
-               </content>
-               <styleClass>
-                  <String fx:value="vboxLeftSide" />
-                  <String fx:value="caseArea" />
-                  <String fx:value="scroll-pane" />
-                  <String fx:value="scroll-bar" />
-               </styleClass>
-            </ScrollPane>
+               </right>
+            </BorderPane>
          </center>
          <bottom>
             <HBox prefHeight="20.0" prefWidth="1300.0" BorderPane.alignment="CENTER" />
          </bottom>
-         <right>
-            <VBox prefHeight="200.0" prefWidth="150.0" styleClass="vboxLeftSide" BorderPane.alignment="CENTER">
-               <children>
-                  <ScrollPane>
-                     <content>
-                        <VBox fx:id="listHbox1" alignment="TOP_RIGHT" spacing="2.0" />
-                     </content>
-                  </ScrollPane>
-               </children>
-            </VBox>
-         </right>
       </BorderPane>
    </children>
    <stylesheets>

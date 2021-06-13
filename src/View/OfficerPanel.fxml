@@ -11,7 +11,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
 <StackPane fx:id="mainStackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1300.0" stylesheets="@../Css/Admin.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.OfficerPanelController">
    <children>
@@ -19,14 +18,6 @@
          <top>
             <HBox alignment="CENTER_RIGHT" prefHeight="74.0" prefWidth="762.0" styleClass="topBanner" BorderPane.alignment="CENTER">
                <children>
-                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Case Officer Panel { As a case officer, You're responsible for providing updates to your cases, as well as include necessary attachments on the allocated cases }">
-                     <HBox.margin>
-                        <Insets right="100.0" />
-                     </HBox.margin>
-                     <font>
-                        <Font name="Arial" size="14.0" />
-                     </font>
-                  </Text>
                   <JFXButton onAction="#logOut" styleClass="btnLogOut" text="LOG OUT" textFill="WHITE">
                      <graphic>
                         <FontAwesomeIconView fill="WHITE" glyphName="SIGN_OUT" size="20" />
@@ -68,6 +59,14 @@
                      </VBox.margin>
                      <graphic>
                         <FontAwesomeIconView glyphName="DESKTOP" size="20" wrappingWidth="30.0" />
+                     </graphic>
+                     <font>
+                        <Font name="Arial" size="14.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton layoutX="14.0" layoutY="218.0" onAction="#switchToNotification" prefHeight="40.0" prefWidth="200.0" styleClass="btnMenus" text="Notification">
+                     <graphic>
+                        <FontAwesomeIconView glyphName="BELL" size="24" wrappingWidth="30.0" />
                      </graphic>
                      <font>
                         <Font name="Arial" size="14.0" />

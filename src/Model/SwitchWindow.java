@@ -37,14 +37,14 @@ public class SwitchWindow {
             stage.setResizable(resizable);
             stage.setMaximized(resizable);
             stage.setScene(scene);
-            TranslateTransition translate = new TranslateTransition(Duration.seconds(.7), root);
+          /*  TranslateTransition translate = new TranslateTransition(Duration.seconds(.7), root);
             translate.setFromX(100);
             translate.setToX(0);     
 //            FadeTransition fadeIn = new FadeTransition(Duration.seconds(.4), root);
 //            fadeIn.setFromValue(0);
 //            fadeIn.setToValue(1);
 //            fadeIn.setCycleCount(1); 
-            translate.play();
+            translate.play();*/
          //   fadeIn.play();
             stage.show();
   

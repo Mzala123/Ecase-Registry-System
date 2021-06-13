@@ -54,7 +54,7 @@
          <top>
             <HBox alignment="CENTER_LEFT" prefHeight="70.0" prefWidth="1300.0" styleClass="topBanner" BorderPane.alignment="CENTER">
                <BorderPane.margin>
-                  <Insets bottom="5.0" />
+                  <Insets />
                </BorderPane.margin>
                <children>
                   <JFXButton contentDisplay="TOP" layoutX="20.0" layoutY="15.0" minHeight="60.0" minWidth="40.0" onAction="#CasePanelArea" text="HOME" textFill="WHITE">
@@ -91,7 +91,7 @@
                         </VBox>
                      </content>
                      <BorderPane.margin>
-                        <Insets left="2.0" />
+                        <Insets />
                      </BorderPane.margin>
                      <styleClass>
                         <String fx:value="vboxLeftSide" />
