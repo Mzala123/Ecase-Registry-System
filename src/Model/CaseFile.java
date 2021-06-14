@@ -9,23 +9,39 @@ import Controller.ComplaintListController;
 import Controller.OfficerCasesListController;
 import Controller.OfficerPanelController;
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextArea;
+import com.sun.javafx.scene.control.skin.LabeledImpl;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.util.Duration;
+import org.controlsfx.control.Notifications;
 
 /**
  *
@@ -35,6 +51,7 @@ public class CaseFile {
 
     DBHandler handler = new DBHandler();
     PreparedStatement preparedStatement = null;
+    JFXComboBox<String> statusCombo = new JFXComboBox<>();
 
     private ImageView imageView;
 
@@ -304,23 +321,106 @@ public class CaseFile {
                 updateCaseHbox.setAlignment(Pos.TOP_LEFT);
 
                 JFXButton btnUpdate = new JFXButton("update");
-                
+
                 btnUpdate.getStyleClass().add("btnUpdateCase");
                 FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.PENCIL);
                 icon.setGlyphSize(15);
                 icon.setFill(Paint.valueOf("#daa520"));
                 btnUpdate.setGraphic(icon);
-                
+
                 VBox updateCaseVbox = new VBox();
                 updateCaseVbox.setAlignment(Pos.CENTER_LEFT);
                 updateCaseVbox.setMinSize(300, 50);
                 updateCaseVbox.getChildren().addAll(btnUpdate);
 
                 btnUpdate.setOnAction((event) -> {
-                    
-                    
+                    Stage stage = new Stage();
+                    Label label = new Label("Update Case File");
+                    label.getStyleClass().add("caseLabel");
+
+                    HBox hbox = new HBox(label);
+                    hbox.getStyleClass().add("vboxBGColor");
+                    hbox.setAlignment(Pos.CENTER);
+                    hbox.setMaxHeight(100);
+
+                    initializeStatusList();
+                    JFXTextArea progressField = new JFXTextArea();
+                    progressField.setPromptText("Input current progress");
+                    progressField.setMaxSize(250, 90);
+
+                    statusCombo.setMaxSize(250, 40);
+                    statusCombo.setPromptText("Choose Status");
+                    VBox vbox = new VBox();
+
+                    HBox middleHbox = new HBox();
+                    middleHbox.setMinSize(600, 300);
+                    middleHbox.setAlignment(Pos.CENTER);
+                    middleHbox.getChildren().addAll(progressField, statusCombo);
+
+                    HBox bottomHbox = new HBox();
+                    bottomHbox.setMaxHeight(70);
+
+                    JFXButton btnConfirm = new JFXButton("update");
+                    btnConfirm.getStyleClass().add("btnUpdateCase");
+                    btnConfirm.setMinSize(100, 40);
+                    FontAwesomeIconView icon2 = new FontAwesomeIconView(FontAwesomeIcon.CHECK_CIRCLE);
+                    icon2.setGlyphSize(15);
+                    icon2.setFill(Paint.valueOf("#daa520"));
+                    btnConfirm.setGraphic(icon2);
+                    bottomHbox.setAlignment(Pos.TOP_CENTER);
+                    bottomHbox.getChildren().add(btnConfirm);
+
+                    vbox.getChildren().addAll(middleHbox, bottomHbox);
+
+                    BorderPane borderpane = new BorderPane();
+                    borderpane.setTop(hbox);
+                    borderpane.setCenter(vbox);
+
+                    Scene scene = new Scene(borderpane, 600, 400);
+                    stage.setScene(scene);
+                    stage.initModality(Modality.APPLICATION_MODAL);
+                    stage.initStyle(StageStyle.UTILITY);
+                    stage.setMaximized(false);
+                    stage.show();
+
+                    btnConfirm.setOnAction((e) -> {
+
+                        try {
+                            String grabProgress = progressField.getText();
+                            String grabStatus = statusCombo.getValue().toString();
+
+                            String updateCaseQuery = "UPDATE ecase.complaint_details SET progressMade=?,"
+                                    + "status=? where detailId='" + caseFile + "'";
+                            preparedStatement = handler.connection.prepareStatement(updateCaseQuery);
+                            preparedStatement.setString(1, grabProgress);
+                            preparedStatement.setString(2, grabStatus);
+
+                            if (preparedStatement.execute() == true) {
+                                Notifications notification = Notifications.create();
+                                notification.title("Updating Case details");
+                                notification.text("Failed to update case");
+                                notification.hideAfter(Duration.seconds(5));
+                                notification.position(Pos.BOTTOM_CENTER);
+                                notification.darkStyle();
+                                notification.showError();
+                            } else {
+
+                                Notifications notification = Notifications.create();
+                                notification.title("Updating Case details");
+                                notification.text("Case Updated Sucessfully");
+                                notification.hideAfter(Duration.seconds(5));
+                                notification.position(Pos.BOTTOM_CENTER);
+                                notification.darkStyle();
+                                notification.showConfirm();
+                            }
+
+                        } catch (SQLException ex) {
+                            Logger.getLogger(CaseFile.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+
+                    });
                 });
-                
+
                 //end of progress section data.
                 //First row data
                 HBox TopHbox = new HBox();
@@ -552,6 +652,13 @@ public class CaseFile {
         } catch (SQLException ex) {
             Logger.getLogger(CaseFile.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+    }
+
+    private void initializeStatusList() {
+        String[] status = {"Ongoing", "Preliminary Dismissed", "Transferred", "Closed"};
+        ObservableList<String> list = FXCollections.observableArrayList(status);
+        this.statusCombo.getItems().addAll(list);
 
     }
 

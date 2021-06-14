@@ -171,3 +171,15 @@ and open the template in the editor.
     -fx-background-color: #e8c05c;
     -fx-cursor: hand;
 }
+
+.caseLabel{
+    -fx-font-weight:bold;
+    -fx-padding: 0 0 4 0;
+    -fx-font-size: 40px;
+}
+.caseHbox{
+    -fx-background-color: f6f9fa;
+    -fx-font-size: 14px;
+    -fx-font-weight: Bold;
+    -fx-font-family: Ubuntu;
+}
