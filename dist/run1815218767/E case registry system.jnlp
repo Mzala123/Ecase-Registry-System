@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="E case registry system.jnlp">
+  <information>
+    <title>E case registry system</title>
+    <vendor>bounce</vendor>
+    <description>null</description>
+    <offline-allowed/>
+  </information>
+  <resources>
+    <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+    <jar href="lib\commons-io-2.5.jar" size="208696" download="eager" />
+    <jar href="lib\controlsfx-8.40.12.jar" size="996389" download="eager" />
+    <jar href="lib\fontawesomefx-glyphsbrowser-all-1.3.0.jar" size="5379925" download="eager" />
+    <jar href="lib\itextpdf-5.4.0.jar" size="1889485" download="eager" />
+    <jar href="lib\javax.mail.jar" size="608084" download="eager" />
+    <jar href="lib\jfoenix.jar" size="2184810" download="eager" />
+    <jar href="lib\jfreechart-1.5.0.jar" size="1559088" download="eager" />
+    <jar href="lib\mysql-connector-java-5.1.44-bin.jar" size="999635" download="eager" />
+    <jar href="lib\ojdbc6-11.2.0.3.jar" size="2714189" download="eager" />
+    <jar href="lib\poi-3.15.jar" size="2579580" download="eager" />
+    <jar href="lib\poi-examples-3.15.jar" size="353854" download="eager" />
+    <jar href="lib\poi-excelant-3.15.jar" size="31364" download="eager" />
+    <jar href="lib\poi-ooxml-3.15.jar" size="1338241" download="eager" />
+    <jar href="lib\poi-ooxml-schemas-3.15.jar" size="5859007" download="eager" />
+    <jar href="lib\sqlite-jdbc-3.14.2.1.jar" size="4322173" download="eager" />
+    <jar href="lib\xmlbeans-2.6.0.jar" size="2730866" download="eager" />
+  </resources>
+  <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="E case registry system" >
+    <param name="requiredFXVersion" value="8.0+"/>
+  </applet-desc>
+  <jfx:javafx-desc  width="800" height="600" main-class="e.pkgcase.registry.system.ECaseRegistrySystem"  name="E case registry system" />
+  <update check="always"/>
+</jnlp>

@@ -6,7 +6,11 @@
 package Model;
 
 import Controller.ComplaintListController;
+import Controller.CreateUsersController;
+import static Controller.CreateUsersController.file;
 import Controller.OfficerCasesListController;
+import static Controller.OfficerCasesListController.tempAttachmentVbox;
+import static Controller.OfficerCasesListController.tempRightVbox;
 import Controller.OfficerPanelController;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
@@ -14,7 +18,15 @@ import com.jfoenix.controls.JFXTextArea;
 import com.sun.javafx.scene.control.skin.LabeledImpl;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import java.awt.Desktop;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.MalformedURLException;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -27,6 +39,7 @@ import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.image.Image;
@@ -35,8 +48,13 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.paint.Paint;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -52,7 +70,7 @@ public class CaseFile {
     DBHandler handler = new DBHandler();
     PreparedStatement preparedStatement = null;
     JFXComboBox<String> statusCombo = new JFXComboBox<>();
-
+    ObservableList<String> list;
     private ImageView imageView;
 
     public CaseFile() {
@@ -153,8 +171,104 @@ public class CaseFile {
         hbox.getChildren().addAll(vbox, vboxMin);
         hbox.setOnMouseClicked((event) -> {
             OfficerCasesListController.tempCaseDetails.getChildren().clear();
+            OfficerCasesListController.tempAttachmentVbox.getChildren().clear();
             displayCaseFileDetails(caseNo);
 
+        });
+
+        return hbox;
+    }
+
+    private void showAttachments(int caseFile) {
+
+        try {
+            //HBox hbox = new HBox();
+
+            String Query = "SELECT * FROM ecase.attachment where detailId ='" + caseFile + "'";
+            preparedStatement = handler.connection.prepareStatement(Query);
+            handler.result = preparedStatement.executeQuery(Query);
+            while (handler.result.next()) {
+
+                String nameOfFile = handler.result.getString("fileName");
+                HBox hbox = createAttachmentDesign(nameOfFile, caseFile);
+                tempAttachmentVbox.getChildren().addAll(hbox);
+                tempAttachmentVbox.setAlignment(Pos.TOP_LEFT);
+
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(CaseFile.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private HBox createAttachmentDesign(String fileName, int caseNo) {
+        HBox hbox = new HBox();
+        hbox.setPrefSize(240, 50);
+        //hbox.setStyle("-fx-background-color: white;");
+        hbox.getStyleClass().add("mainHbox");
+        Label labelFileName = new Label(fileName);
+        labelFileName.setPadding(new Insets(5, 5, 5, 5));
+        // labelFileName.setStyle("-fx-padding-right:5;");
+        labelFileName.setWrapText(true);
+        hbox.getChildren().addAll(labelFileName);
+
+        hbox.setOnMouseClicked((event) -> {
+            try {
+                String query = "Select * from ecase.attachment where fileName ='" + labelFileName.getText() + "'";
+                preparedStatement = handler.connection.prepareStatement(query);
+                handler.result = preparedStatement.executeQuery(query);
+                int size =0 ;
+                byte[] contents =new byte[1024];
+                if (handler.result.next()) {
+                    File file;
+                    InputStream inputstream;
+                    String Name = handler.result.getString("fileName");
+                    inputstream = handler.result.getBinaryStream("attachment");
+                    file = new File(System.getProperty("user.home")+ "\\Documents\\Attachments");
+                    if(file.exists()){
+                        
+                    }
+                    else{
+                        file.mkdir();
+                    }
+                    byte [] n = new byte[1024];
+                    File af = new File(System.getProperty("user.home") + "\\Documents\\"+Name+"");
+                    OutputStream outputStream = new FileOutputStream(af);
+                    while ((size = inputstream.read(contents)) != -1) {
+                    outputStream.write(contents, 0, size);
+                }
+                outputStream.close();
+                inputstream.close();
+                
+                new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                Thread.sleep(2000);
+                            } 
+                           
+                            catch (InterruptedException ex) {
+                                Logger.getLogger(CaseFile.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            Desktop desktop = Desktop.getDesktop();
+                            try {
+                                desktop.open(af);
+                            } catch (IOException ex) {
+                                Logger.getLogger(CaseFile.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                    }).start();
+                    
+                   
+                }
+                
+            } catch (SQLException ex) {
+                Logger.getLogger(CaseFile.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(CaseFile.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(CaseFile.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
 
         return hbox;
@@ -166,11 +280,12 @@ public class CaseFile {
                 + "complaint.complaintId, complaint.natureComplaint, complaint.complaintDescription, complaint.registrationMode,\n"
                 + "complaint.financialYear, complaint.department, organization.email as orgEmail, organization.registrationNo,\n"
                 + "organization.orgName, organization.postalAddress, organization.businessType, user.Firstname, user.Lastname, \n"
-                + "complaint_details.progressMade, complaint_details.status from complaint \n"
+                + "complaint_details.progressMade, complaint_details.status,attachment.fileName, attachment.attachment from complaint \n"
                 + "LEFT JOIN complaint_details ON complaint.complaintId = complaint_details.complaintId \n"
                 + "LEFT JOIN person ON person.nationalId = complaint_details.complainantId \n"
                 + "LEFT JOIN organization ON organization.registrationNo = complaint_details.respondentId \n"
                 + "LEFT JOIN user On user.Id = complaint_details.caseOfficerId\n"
+                + "LEFT JOIN attachment ON attachment.detailId = complaint_details.detailId\n"
                 + "where complaint_details.detailId = '" + caseFile + "' AND user.Firstname='" + OfficerPanelController.checkLabel.getText() + "'";
 
         try {
@@ -323,6 +438,7 @@ public class CaseFile {
                 JFXButton btnUpdate = new JFXButton("update");
 
                 btnUpdate.getStyleClass().add("btnUpdateCase");
+                btnUpdate.setMinSize(120, 30);
                 FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.PENCIL);
                 icon.setGlyphSize(15);
                 icon.setFill(Paint.valueOf("#daa520"));
@@ -336,24 +452,26 @@ public class CaseFile {
                 btnUpdate.setOnAction((event) -> {
                     Stage stage = new Stage();
                     Label label = new Label("Update Case File");
-                    label.getStyleClass().add("caseLabel");
-
+                    label.setFont(Font.font("Arial", FontWeight.BOLD, FontPosture.REGULAR,
+                            40));
+                    label.setStyle("-fx-text-fill: white");
                     HBox hbox = new HBox(label);
                     hbox.getStyleClass().add("vboxBGColor");
+                    hbox.setStyle("-fx-background-color:#088584");
                     hbox.setAlignment(Pos.CENTER);
-                    hbox.setMaxHeight(100);
+                    hbox.setMinHeight(100);
 
-                    initializeStatusList();
                     JFXTextArea progressField = new JFXTextArea();
                     progressField.setPromptText("Input current progress");
-                    progressField.setMaxSize(250, 90);
-
+                    progressField.setMaxSize(250, 135);
+                    progressField.setPadding(new Insets(10, 0, 0, 0));
                     statusCombo.setMaxSize(250, 40);
                     statusCombo.setPromptText("Choose Status");
+                    statusCombo.setPadding(new Insets(110, 0, 0, 20));
                     VBox vbox = new VBox();
 
                     HBox middleHbox = new HBox();
-                    middleHbox.setMinSize(600, 300);
+                    middleHbox.setMinSize(600, 100);
                     middleHbox.setAlignment(Pos.CENTER);
                     middleHbox.getChildren().addAll(progressField, statusCombo);
 
@@ -363,13 +481,16 @@ public class CaseFile {
                     JFXButton btnConfirm = new JFXButton("update");
                     btnConfirm.getStyleClass().add("btnUpdateCase");
                     btnConfirm.setMinSize(100, 40);
+                    btnConfirm.setStyle("-fx-background-color:#c7e0e0; "
+                            + "-fx-text-fill:white; -fx-border-radius:20; -fx-background-radius:20;"
+                            + "-fx-pref-height:30px; -fx-pref-width: 150; -fx-text-fill:black");
                     FontAwesomeIconView icon2 = new FontAwesomeIconView(FontAwesomeIcon.CHECK_CIRCLE);
-                    icon2.setGlyphSize(15);
+                    icon2.setGlyphSize(20);
                     icon2.setFill(Paint.valueOf("#daa520"));
                     btnConfirm.setGraphic(icon2);
-                    bottomHbox.setAlignment(Pos.TOP_CENTER);
+                    bottomHbox.setAlignment(Pos.CENTER);
                     bottomHbox.getChildren().add(btnConfirm);
-
+                    bottomHbox.setPadding(new Insets(40, 0, 0, 0));
                     vbox.getChildren().addAll(middleHbox, bottomHbox);
 
                     BorderPane borderpane = new BorderPane();
@@ -383,10 +504,18 @@ public class CaseFile {
                     stage.setMaximized(false);
                     stage.show();
 
+                    initializeStatusList();
+                    // list.clear();
                     btnConfirm.setOnAction((e) -> {
 
                         try {
                             String grabProgress = progressField.getText();
+
+                            if (grabProgress.isEmpty()) {
+                                Notification notification = new Notification(3, "Updating Case",
+                                        "Please fill in the required field");
+                                notification.start();
+                            }
                             String grabStatus = statusCombo.getValue().toString();
 
                             String updateCaseQuery = "UPDATE ecase.complaint_details SET progressMade=?,"
@@ -400,7 +529,7 @@ public class CaseFile {
                                 notification.title("Updating Case details");
                                 notification.text("Failed to update case");
                                 notification.hideAfter(Duration.seconds(5));
-                                notification.position(Pos.BOTTOM_CENTER);
+                                notification.position(Pos.TOP_RIGHT);
                                 notification.darkStyle();
                                 notification.showError();
                             } else {
@@ -409,9 +538,11 @@ public class CaseFile {
                                 notification.title("Updating Case details");
                                 notification.text("Case Updated Sucessfully");
                                 notification.hideAfter(Duration.seconds(5));
-                                notification.position(Pos.BOTTOM_CENTER);
+                                notification.position(Pos.TOP_RIGHT);
                                 notification.darkStyle();
                                 notification.showConfirm();
+
+                                //  displayCaseFileDetails(caseFile);
                             }
 
                         } catch (SQLException ex) {
@@ -422,6 +553,161 @@ public class CaseFile {
                 });
 
                 //end of progress section data.
+                //attachments section here
+                JFXButton btnAttach = new JFXButton("Attach File");
+                btnAttach.getStyleClass().add("btnAttachFile");
+                btnAttach.setMinSize(120, 30);
+                FontAwesomeIconView iconFile = new FontAwesomeIconView(FontAwesomeIcon.FILE);
+                iconFile.setGlyphSize(15);
+                iconFile.setFill(Paint.valueOf("#daa520"));
+                btnAttach.setContentDisplay(ContentDisplay.LEFT);
+                btnAttach.setGraphic(iconFile);
+                tempRightVbox.getChildren().addAll(btnAttach);
+                //tempRightVbox.setAlignment(Pos.CE);
+
+                VBox attachFileVbox = new VBox();
+                attachFileVbox.setAlignment(Pos.CENTER_LEFT);
+                attachFileVbox.setMinSize(300, 50);
+                attachFileVbox.getChildren().addAll(btnAttach);
+
+                btnAttach.setOnAction((event) -> {
+                    Stage stage = new Stage();
+
+                    //hello
+                    Label label = new Label("Attach Files related to this Case");
+                    label.setFont(Font.font("Arial", FontWeight.BOLD, FontPosture.REGULAR,
+                            30));
+                    label.setStyle("-fx-text-fill: white");
+                    HBox hbox = new HBox(label);
+                    hbox.getStyleClass().add("vboxBGColor");
+                    hbox.setStyle("-fx-background-color:#088584");
+                    hbox.setAlignment(Pos.CENTER);
+                    hbox.setMinHeight(100);
+
+                    JFXTextArea filePathField = new JFXTextArea();
+                    filePathField.setPromptText("File Paths");
+                    filePathField.setMaxSize(350, 135);
+                    filePathField.setPadding(new Insets(10, 0, 0, 0));
+
+                    VBox vbox = new VBox();
+
+                    HBox middleHbox = new HBox();
+                    middleHbox.setMinSize(600, 100);
+                    middleHbox.setAlignment(Pos.CENTER);
+                    middleHbox.getChildren().addAll(filePathField);
+
+                    HBox bottomHbox = new HBox();
+                    bottomHbox.setMaxHeight(70);
+
+                    JFXButton btnBrowse = new JFXButton("Browse Files");
+                    btnBrowse.getStyleClass().add("btnUpdateCase");
+                    btnBrowse.setMinSize(150, 30);
+                    btnBrowse.setStyle("-fx-background-color:#c7e0e0; "
+                            + "-fx-text-fill:white; -fx-border-radius:20; -fx-background-radius:20;"
+                            + "-fx-pref-height:30px; -fx-pref-width: 100; -fx-text-fill:black");
+                    FontAwesomeIconView icon2 = new FontAwesomeIconView(FontAwesomeIcon.PAPERCLIP);
+                    icon2.setGlyphSize(20);
+                    icon2.setFill(Paint.valueOf("#daa520"));
+                    btnBrowse.setGraphic(icon2);
+                    bottomHbox.setAlignment(Pos.CENTER);
+
+                    JFXButton btnSave = new JFXButton("Confirm");
+                    btnSave.getStyleClass().add("btnUpdateCase");
+                    btnSave.setMinSize(150, 30);
+                    btnSave.setStyle("-fx-background-color:#c7e0e0; "
+                            + "-fx-text-fill:white; -fx-border-radius:20; -fx-background-radius:20;"
+                            + "-fx-pref-height:30px; -fx-pref-width: 100; -fx-text-fill:black");
+                    FontAwesomeIconView iconSave = new FontAwesomeIconView(FontAwesomeIcon.SAVE);
+                    iconSave.setGlyphSize(20);
+                    iconSave.setFill(Paint.valueOf("#daa520"));
+                    btnSave.setGraphic(iconSave);
+                    // btnSave.setPadding(new Insets(0, 10, 0, 10));
+                    btnBrowse.setPadding(new Insets(0, 10, 0, 0));
+                    bottomHbox.getChildren().addAll(btnBrowse, btnSave);
+                    bottomHbox.setPadding(new Insets(40, 0, 0, 0));
+                    vbox.getChildren().addAll(middleHbox, bottomHbox);
+                    //end of hello
+
+                    BorderPane borderpane = new BorderPane();
+                    borderpane.setTop(hbox);
+                    borderpane.setCenter(vbox);
+
+                    Scene scene = new Scene(borderpane, 600, 400);
+                    stage.setScene(scene);
+                    stage.initModality(Modality.APPLICATION_MODAL);
+                    stage.initStyle(StageStyle.UTILITY);
+                    stage.setMaximized(false);
+                    stage.show();
+
+                    btnBrowse.setOnAction((e) -> {
+
+                        Stage primaryStage = new Stage();
+
+                        ImageView view = new ImageView();
+                        FileChooser chooser = new FileChooser();
+                        chooser.getExtensionFilters().addAll(
+                                new FileChooser.ExtensionFilter("All Files", "*.png", "*.jpg", "*.gif",
+                                        "*.doc", "*.pdf", "*.csv"));
+                        file = chooser.showOpenDialog(primaryStage);
+                        if (file != null) {
+                            filePathField.setText(file.getAbsolutePath().toString());
+
+                        }
+
+                    });
+
+                    btnSave.setOnAction((e) -> {
+                        try {
+                            File file = new File(filePathField.getText());
+                            String fileName = file.getName();
+
+                            FileInputStream inputstream;
+                            if (filePathField.getText().isEmpty()) {
+
+                            }
+                            if (file.length() > 1048576) {
+                                Notifications notification = Notifications.create();
+                                notification.title("Attaching file");
+                                notification.text("File too large");
+                                notification.hideAfter(Duration.seconds(4));
+                                notification.position(Pos.CENTER);
+                                notification.darkStyle();
+                                notification.showError();
+                            }
+
+                            String insertFileQuery = "INSERT INTO ecase.attachment(detailId, fileName, attachment)"
+                                    + "VALUES(?,?,?)";
+                            preparedStatement = handler.connection.prepareStatement(insertFileQuery);
+                            preparedStatement.setInt(1, caseFile);
+                            preparedStatement.setString(2, fileName);
+                            inputstream = new FileInputStream(file);
+                            preparedStatement.setBinaryStream(3, inputstream, (int) file.length());
+
+                            if (preparedStatement.execute()) {
+                                Notifications notification = Notifications.create();
+                                notification.title("Attaching file");
+                                notification.text("FAILED TO ATTACH A FILE");
+                                notification.hideAfter(Duration.seconds(5));
+                                notification.position(Pos.CENTER);
+                                notification.darkStyle();
+                                notification.showError();
+                            } else {
+
+                                Notification notification = new Notification(5, "Attaching a File", "File Attached Successfully");
+                                notification.start();
+                            }
+
+                        } catch (FileNotFoundException ex) {
+                            Logger.getLogger(CaseFile.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (SQLException ex) {
+                            Logger.getLogger(CaseFile.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+
+                    });
+
+                });
+
+                //End of attachment file
                 //First row data
                 HBox TopHbox = new HBox();
                 TopHbox.setPadding(new Insets(0, 0, 0, 10));
@@ -630,10 +916,12 @@ public class CaseFile {
                 section4.getChildren().addAll(labelSection4);
                 //End of row title sections
 
+                //pull file and attachment
+                //end of attachment function
                 //end of topic bar/
                 TopHbox.getChildren().addAll(firstTopVbox, secondTopVbox);
                 progressHbox.getChildren().addAll(progressVbox, statusVbox);
-                updateCaseHbox.getChildren().addAll(updateCaseVbox);
+                updateCaseHbox.getChildren().addAll(updateCaseVbox, attachFileVbox);
                 secondRowHbox.getChildren().addAll(firstSecondRowVbox, secondRowVbox);
                 thirdMainHbox.getChildren().addAll(thirdrowDataOne, thirdRowDataTwo);
                 fourthMainHbox.getChildren().addAll(fourthrowDataOne, fourthRowDataTwo, fourthRowDataThree);
@@ -647,6 +935,8 @@ public class CaseFile {
                         complaintHbox2, section4, progressHbox, updateCaseHbox, section1, TopHbox, secondRowHbox, thirdMainHbox, fourthMainHbox, section3,
                         respondentHbox1, resMainHbox);
 
+                showAttachments(caseFile);
+
             }
 
         } catch (SQLException ex) {
@@ -657,7 +947,8 @@ public class CaseFile {
 
     private void initializeStatusList() {
         String[] status = {"Ongoing", "Preliminary Dismissed", "Transferred", "Closed"};
-        ObservableList<String> list = FXCollections.observableArrayList(status);
+        // list.clear();
+        list = FXCollections.observableArrayList(status);
         this.statusCombo.getItems().addAll(list);
 
     }

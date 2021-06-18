@@ -5,6 +5,7 @@
 <?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
@@ -86,11 +87,23 @@
                   </ScrollPane>
                </center>
                <right>
-                  <VBox prefHeight="200.0" prefWidth="150.0" styleClass="vboxLeftSide" BorderPane.alignment="CENTER">
+                  <VBox fx:id="rightVbox" prefHeight="48.0" prefWidth="250.0" styleClass="vboxLeftSide" BorderPane.alignment="CENTER">
                      <children>
+                        <VBox styleClass="vboxLeftSide">
+                           <children>
+                              <Label text="List of Attachments">
+                                 <font>
+                                    <Font name="Arial Bold" size="12.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" left="15.0" top="10.0" />
+                                 </VBox.margin>
+                              </Label>
+                           </children>
+                        </VBox>
                         <ScrollPane>
                            <content>
-                              <VBox fx:id="listHbox1" alignment="TOP_RIGHT" spacing="2.0" />
+                              <VBox fx:id="attachmentVBox" alignment="TOP_RIGHT" spacing="2.0" />
                            </content>
                         </ScrollPane>
                      </children>

@@ -162,6 +162,18 @@ and open the template in the editor.
 .btnUpdateCase:hover{
     -fx-cursor: hand;
 }
+
+
+.btnAttachFile{
+    -fx-background-radius: 50px ;
+    -fx-border-radius: 50px;
+    -fx-background-color: #c7e0e0;
+    -fx-font-style: Bold;
+}
+
+.btnAttachFile:hover{
+    -fx-cursor: hand;
+}
 .circleButton{
     -fx-background-radius: 150;
     -fx-border-radius: 150;

@@ -47,6 +47,7 @@ public class DBHandler {
         createTableOrganization();
         createTableComplaint();
         createTableComplaintDetails();
+        createTableAttachmentFile();
     }
 
     public DBHandler(String DatabaseURL, String DB_Username, String DB_password) {
@@ -325,6 +326,32 @@ public class DBHandler {
                         + "caseOfficerId int ,\n"
                         + "progressMade longtext default 'New Case',\n"
                         + "status varchar(100) default 'Ongoing' \n"
+                        + ")");
+                
+                
+               System.out.println("Table " +tableName+ " has been created successfully");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    
+    private void createTableAttachmentFile(){
+        String tableName = "attachment";
+        try {
+            statement = connection.createStatement();
+            DatabaseMetaData dbm = connection.getMetaData();
+            ResultSet tables = dbm.getTables(null, null, tableName, null);
+            if(tables.next()){
+                System.out.println("Table " +tableName+ " Already exists in the database");
+            }
+            else{
+                statement.execute("CREATE TABLE "+tableName+"("
+                        + "fileId int NOT NULL AUTO_INCREMENT PRIMARY KEY,\n"
+                        + "detailId int,\n"
+                        + "fileName longtext,\n"
+                        + "attachment LONGBLOB\n"  
                         + ")");
                 
                 

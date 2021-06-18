@@ -11,6 +11,7 @@ import static Controller.ComplaintListController.tempVbox;
 import Model.CaseFile;
 import Model.Complaint;
 import Model.SwitchWindow;
+import com.sun.javafx.scene.control.skin.DatePickerContent;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
@@ -38,8 +39,6 @@ public class OfficerCasesListController implements Initializable {
     @FXML
     private VBox contentVbox;
     @FXML
-    private VBox listHbox1;
-    @FXML
     private StackPane mainStackPane;
 
     public static VBox tempCaseDetails = new VBox();
@@ -48,6 +47,14 @@ public class OfficerCasesListController implements Initializable {
     @FXML
     private BorderPane borderpane;
     public static VBox tempVbox = new VBox();
+    @FXML
+    private VBox rightVbox;
+    @FXML
+    private VBox attachmentVBox;
+    
+    public static VBox tempRightVbox= new VBox();
+    
+    public static VBox tempAttachmentVbox= new VBox();
 
     /**
      * Initializes the controller class.
@@ -57,6 +64,10 @@ public class OfficerCasesListController implements Initializable {
         tempVbox = listHbox;
         tempCaseDetails = contentVbox;
         tempBorderPane = borderpane;
+        tempRightVbox = rightVbox;
+        tempAttachmentVbox = attachmentVBox;
+        
+        
         Task<Void> task = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
