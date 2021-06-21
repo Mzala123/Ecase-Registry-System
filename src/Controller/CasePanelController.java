@@ -95,12 +95,16 @@ public class CasePanelController implements Initializable {
 
     @FXML
     private void switchToClientList(ActionEvent event) {
-         MenusSwitch change = new MenusSwitch();
-         SwitchCenterPane(change.clientList);
+       MenusSwitch change = new MenusSwitch();
+       SwitchCenterPane(change.clientList);
+  
     }
 
     @FXML
     private void switchToSettings(ActionEvent event) {
+         MenusSwitch change = new MenusSwitch();
+         SwitchCenterPane(change.adminSettings);
+        
     }
     
     
@@ -137,6 +141,7 @@ public class CasePanelController implements Initializable {
 
     @FXML
     private void existSystem(ActionEvent event) {
+        
     }
     
       public void setAdminProfile() {
@@ -152,6 +157,13 @@ public class CasePanelController implements Initializable {
             imageViewCircle.setFill(new ImagePattern(image));
     }
 
+    @FXML
+    private void switchToOrganizationClientList(ActionEvent event) {
+        MenusSwitch change = new MenusSwitch();
+       SwitchCenterPane(change.organizationList);
+    }
+
+      
 
     
     

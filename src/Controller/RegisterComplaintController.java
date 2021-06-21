@@ -96,6 +96,9 @@ public class RegisterComplaintController implements Initializable {
             ObservableList<String> list = FXCollections.observableArrayList(financialYear);
             this.financialYear.getItems().addAll(list);
         }
+        
+        
+        
     }
 
     @FXML

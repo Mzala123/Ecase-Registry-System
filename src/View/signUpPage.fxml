@@ -13,80 +13,84 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane fx:id="stackpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="467.0" prefWidth="709.0" stylesheets="@../Css/Login.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.SignUpPageController">
+<StackPane fx:id="stackpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@../Css/Login.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.SignUpPageController">
    <children>
+      <ImageView fitHeight="600.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Images/LoginBackground.png" />
+         </image></ImageView>
       <StackPane fx:id="stackpane" prefHeight="150.0" prefWidth="200.0">
          <children>
-            <ImageView fitHeight="467.0" fitWidth="712.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="601.0" fitWidth="801.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../Images/LOG%20BG.png" />
+                  <Image url="@../../../LoginBackground.png" />
                </image>
             </ImageView>
             <BorderPane fx:id="borderpane" prefHeight="200.0" prefWidth="200.0">
                <center>
-                  <Pane prefHeight="393.0" prefWidth="294.0" BorderPane.alignment="CENTER">
+                  <Pane prefHeight="600.0" prefWidth="427.0" BorderPane.alignment="CENTER">
                      <children>
                         <Text fill="WHITE" layoutX="17.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to E - Case">
                            <font>
-                              <Font name="Arial Rounded MT Bold" size="26.0" />
+                              <Font name="Arial Rounded MT Bold" size="36.0" />
                            </font>
                         </Text>
-                        <Text fill="WHITE" layoutX="19.0" layoutY="181.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Don't have an account?">
+                        <Text fill="WHITE" layoutX="95.0" layoutY="181.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Don't have an account?">
                            <font>
-                              <Font name="Arial Rounded MT Bold" size="11.0" />
+                              <Font name="Arial Rounded MT Bold" size="16.0" />
                            </font>
                         </Text>
-                        <JFXButton layoutX="158.0" layoutY="164.0" onAction="#createAdminAccount" prefHeight="25.0" prefWidth="116.0" styleClass="btnSignUp" text="Sign up" textAlignment="CENTER" textFill="WHITE">
+                        <JFXButton layoutX="90.0" layoutY="224.0" onAction="#createAdminAccount" prefHeight="45.0" prefWidth="188.0" styleClass="btnSignUp" text="Sign up" textAlignment="CENTER" textFill="WHITE">
                            <font>
-                              <Font name="Arial Rounded MT Bold" size="11.0" />
+                              <Font name="Arial Rounded MT Bold" size="18.0" />
                            </font>
                         </JFXButton>
                      </children>
                   </Pane>
                </center>
                <right>
-                  <Pane fx:id="paneLogin" prefHeight="467.0" prefWidth="351.0" BorderPane.alignment="CENTER">
+                  <Pane fx:id="paneLogin" prefHeight="600.0" prefWidth="402.0" BorderPane.alignment="CENTER">
                      <children>
-                        <JFXTextField fx:id="username" focusColor="WHITE" labelFloat="true" layoutX="56.0" layoutY="160.0" maxWidth="204.0" minWidth="240.0" prefHeight="35.0" prefWidth="220.0" promptText="Username" styleClass="textField" unFocusColor="WHITE">
+                        <JFXTextField fx:id="username" focusColor="WHITE" labelFloat="true" layoutX="56.0" layoutY="160.0" maxWidth="204.0" minWidth="240.0" prefHeight="35.0" prefWidth="230.0" promptText="Username" styleClass="textField" unFocusColor="WHITE">
                            <font>
-                              <Font name="Arial Rounded MT Bold" size="12.0" />
+                              <Font name="Arial Rounded MT Bold" size="18.0" />
                            </font>
                         </JFXTextField>
-                        <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="260.0" layoutY="158.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="255.0" layoutY="158.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../Images/Icons/user-3.png" />
                            </image>
                         </ImageView>
-                        <JFXPasswordField fx:id="password" focusColor="WHITE" labelFloat="true" layoutX="55.0" layoutY="221.0" maxWidth="282.0" minWidth="240.0" onAction="#OnEnterLogin" prefHeight="35.0" prefWidth="220.0" promptText="Password" styleClass="textField" unFocusColor="WHITE">
+                        <JFXPasswordField fx:id="password" focusColor="WHITE" labelFloat="true" layoutX="55.0" layoutY="221.0" maxWidth="282.0" minWidth="240.0" onAction="#OnEnterLogin" prefHeight="35.0" prefWidth="230.0" promptText="Password" styleClass="textField" unFocusColor="WHITE">
                            <font>
-                              <Font name="Arial Rounded MT Bold" size="12.0" />
+                              <Font name="Arial Rounded MT Bold" size="18.0" />
                            </font>
                         </JFXPasswordField>
-                        <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="260.0" layoutY="219.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="260.0" layoutY="219.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../Images/Icons/unlocked.png" />
                            </image>
                         </ImageView>
-                        <JFXButton fx:id="loginBtn" contentDisplay="RIGHT" layoutX="62.0" layoutY="292.0" onAction="#LoginFunction" prefHeight="30.0" prefWidth="225.0" styleClass="btnLogin" text="Login" textFill="WHITE">
+                        <JFXButton fx:id="loginBtn" contentDisplay="RIGHT" layoutX="65.0" layoutY="292.0" onAction="#LoginFunction" prefHeight="44.0" prefWidth="219.0" styleClass="btnLogin" text="Login" textFill="WHITE">
                            <font>
-                              <Font name="Arial Rounded MT Bold" size="12.0" />
+                              <Font name="Arial Rounded MT Bold" size="24.0" />
                            </font>
                            <graphic>
-                              <ImageView fitHeight="20.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="28.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../Images/Icons/login.png" />
                                  </image>
                               </ImageView>
                            </graphic>
                         </JFXButton>
-                        <Text fill="WHITE" layoutX="30.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="C  O  M  P  E  T  I  T  I  O  N      C  O  M  M  I  S  S  I  O  N">
+                        <Text fill="WHITE" layoutX="24.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="C  O  M  P  E  T  I  T  I  O  N      C  O  M  M  I  S  S  I  O  N">
                            <font>
-                              <Font name="Arial Rounded MT Bold" size="12.0" />
+                              <Font name="Arial Rounded MT Bold" size="15.0" />
                            </font>
                         </Text>
-                        <Text fill="WHITE" layoutX="64.0" layoutY="123.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Have an account? Please Login">
+                        <Text fill="WHITE" layoutX="66.0" layoutY="109.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Have an account? Please Login">
                            <font>
-                              <Font name="Arial Rounded MT Bold" size="12.0" />
+                              <Font name="Arial Rounded MT Bold" size="16.0" />
                            </font>
                         </Text>
                         <Label fx:id="labelCredetialnvalid" layoutX="36.0" layoutY="253.0" prefHeight="15.0" prefWidth="192.0" textFill="WHITE">
@@ -94,9 +98,9 @@
                               <Font name="Arial Rounded MT Bold" size="12.0" />
                            </font>
                         </Label>
-                        <Hyperlink layoutX="57.0" layoutY="357.0" onAction="#forgotPasswordMethod" text="Forgot password?" textFill="WHITE">
+                        <Hyperlink layoutX="57.0" layoutY="398.0" onAction="#forgotPasswordMethod" text="Forgot password?" textFill="WHITE">
                            <font>
-                              <Font name="Arial Rounded MT Bold" size="12.0" />
+                              <Font name="Arial Rounded MT Bold" size="18.0" />
                            </font>
                         </Hyperlink>
                      </children>

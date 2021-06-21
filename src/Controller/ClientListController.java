@@ -18,6 +18,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -56,7 +57,7 @@ public class ClientListController implements Initializable {
     FilteredList<Person> filteredList = new FilteredList<>(personList,e->true);
     
     public static int index = 0;
-    private final int rowsPerPage = 8;
+    private final int rowsPerPage = 6;
     
     public static StackPane tempComplainantPane;
     
@@ -220,6 +221,12 @@ public class ClientListController implements Initializable {
               tablePerson.setItems(sortedData);
            });
              
+    }
+
+    @FXML
+    private void exportToPdf(ActionEvent event) {
+        
+        
     }
     
 }

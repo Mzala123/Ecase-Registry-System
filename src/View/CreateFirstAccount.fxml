@@ -7,7 +7,6 @@
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Separator?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
@@ -15,13 +14,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane fx:id="stackpane" prefHeight="462.0" prefWidth="706.0" stylesheets="@../Css/Login.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.CreateFirstAccountController">
+<StackPane fx:id="stackpane" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #088584;" stylesheets="@../Css/Login.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.CreateFirstAccountController">
    <children>
-      <ImageView fitHeight="465.0" fitWidth="709.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../Images/admin.png" />
-         </image>
-      </ImageView>
+      <ImageView fitHeight="603.0" fitWidth="803.0" pickOnBounds="true" preserveRatio="true" />
       <VBox prefHeight="200.0" prefWidth="100.0">
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="78.0" prefWidth="706.0">
@@ -44,7 +39,7 @@
                   </Text>
                </children>
             </HBox>
-            <HBox prefHeight="100.0" prefWidth="200.0">
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
                   <VBox prefHeight="465.0" prefWidth="357.0">
                      <HBox.margin>

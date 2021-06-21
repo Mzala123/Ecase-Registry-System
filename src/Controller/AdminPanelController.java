@@ -88,7 +88,8 @@ public class AdminPanelController implements Initializable {
     @FXML
     private void switchToSettings(ActionEvent event) {
          MenusSwitch change = new MenusSwitch();
-        SwitchCenterPane(change.adminSettings);
+         SwitchCenterPane(change.adminSettings);
+   
     }
 
     @FXML

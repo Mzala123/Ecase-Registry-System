@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import java.net.URL?>
 <?import javafx.scene.control.Pagination?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
@@ -14,14 +17,14 @@
    <children>
       <BorderPane fx:id="borderpane" prefHeight="200.0" prefWidth="200.0">
          <top>
-            <Pane prefHeight="93.0" prefWidth="1300.0" style="-fx-background-color: white;" styleClass="vboxBGColor" BorderPane.alignment="CENTER">
+            <Pane prefHeight="93.0" prefWidth="1100.0" style="-fx-background-color: white;" styleClass="vboxBGColor" BorderPane.alignment="CENTER">
                <children>
-                  <Text layoutX="50.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Manage Clients">
+                  <Text layoutX="40.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Manage Client Person">
                      <font>
                         <Font name="Arial Bold" size="16.0" />
                      </font>
                   </Text>
-                  <Text layoutX="50.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Update Client Details | Search a client  ">
+                  <Text layoutX="41.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Update Client Details | Search a client  ">
                      <font>
                         <Font name="Arial Bold" size="12.0" />
                      </font>
@@ -32,12 +35,21 @@
                         <Font name="Arial Bold" size="14.0" />
                      </font>
                   </JFXTextField>
+                  <JFXButton layoutX="888.0" layoutY="41.0" onAction="#exportToPdf" prefHeight="30.0" prefWidth="140.0" styleClass="btnAttachFile" text="Export">
+                     <graphic>
+                        <ImageView fitHeight="26.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Images/Icons/document.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </JFXButton>
                </children>
             </Pane>
          </top>
-         <center>
-            <Pagination fx:id="pagination" prefHeight="600.0" prefWidth="1300.0" BorderPane.alignment="CENTER" />
-         </center>
+         <left>
+            <Pagination fx:id="pagination" prefHeight="600.0" prefWidth="1138.0" BorderPane.alignment="CENTER" />
+         </left>
       </BorderPane>
    </children>
    <stylesheets>

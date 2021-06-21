@@ -11,9 +11,11 @@ import Model.Notification;
 import Model.Person;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXTabPane;
 import com.jfoenix.controls.JFXTextArea;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -68,6 +70,10 @@ public class ClientFormController implements Initializable {
     Client client = new Client();
     @FXML
     private StackPane organizationStackPane;
+    @FXML
+    private JFXTabPane jfxTabPane;
+    @FXML
+    private JFXComboBox<String> ageCombo;
 
     /**
      * Initializes the controller class.
@@ -76,6 +82,7 @@ public class ClientFormController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
 
         initializeGender();
+        initiliazeAge();
 
     }
 
@@ -86,6 +93,22 @@ public class ClientFormController implements Initializable {
 
     }
 
+    private void initiliazeAge(){
+                
+        String date = LocalDateTime.now().toString();
+        System.out.println(date);
+        System.out.println(date.substring(0, 3));
+        
+     for(int count=Integer.parseInt(date.substring(0, 3)); count>17; count--)
+        {
+            String ages = count + "";
+            ageCombo.getItems().addAll(ages);
+  
+        }
+       
+    }
+    
+    
     @FXML
     private void addClientPerson(ActionEvent event) {
         String natinalID = nationaId.getText();
@@ -96,8 +119,10 @@ public class ClientFormController implements Initializable {
         person.setLastName(lname);
         String gender = this.gender.getValue().toString();
         person.setGender(gender);
-        String dob = this.dob.getValue().toString();
+        String dob = this.ageCombo.getValue().toString();
         person.setDob(dob);
+        /*String dob = this.dob.getValue().toString();
+        person.setDob(dob);*/
         String nationality = this.nationality.getText();
         person.setNationality(nationality);
         String address = this.address.getText();

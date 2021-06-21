@@ -29,6 +29,7 @@ import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
@@ -44,6 +45,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -217,37 +219,34 @@ public class CaseFile {
                 String query = "Select * from ecase.attachment where fileName ='" + labelFileName.getText() + "'";
                 preparedStatement = handler.connection.prepareStatement(query);
                 handler.result = preparedStatement.executeQuery(query);
-                int size =0 ;
-                byte[] contents =new byte[1024];
+                int size = 0;
+                byte[] contents = new byte[1024];
                 if (handler.result.next()) {
                     File file;
                     InputStream inputstream;
                     String Name = handler.result.getString("fileName");
                     inputstream = handler.result.getBinaryStream("attachment");
-                    file = new File(System.getProperty("user.home")+ "\\Documents\\Attachments");
-                    if(file.exists()){
-                        
-                    }
-                    else{
+                    file = new File(System.getProperty("user.home") + "\\Documents\\Attachments");
+                    if (file.exists()) {
+
+                    } else {
                         file.mkdir();
                     }
-                    byte [] n = new byte[1024];
-                    File af = new File(System.getProperty("user.home") + "\\Documents\\"+Name+"");
+                    byte[] n = new byte[1024];
+                    File af = new File(System.getProperty("user.home") + "\\Documents\\" + Name + "");
                     OutputStream outputStream = new FileOutputStream(af);
                     while ((size = inputstream.read(contents)) != -1) {
-                    outputStream.write(contents, 0, size);
-                }
-                outputStream.close();
-                inputstream.close();
-                
-                new Thread(new Runnable() {
+                        outputStream.write(contents, 0, size);
+                    }
+                    outputStream.close();
+                    inputstream.close();
+
+                    new Thread(new Runnable() {
                         @Override
                         public void run() {
                             try {
                                 Thread.sleep(2000);
-                            } 
-                           
-                            catch (InterruptedException ex) {
+                            } catch (InterruptedException ex) {
                                 Logger.getLogger(CaseFile.class.getName()).log(Level.SEVERE, null, ex);
                             }
                             Desktop desktop = Desktop.getDesktop();
@@ -258,10 +257,9 @@ public class CaseFile {
                             }
                         }
                     }).start();
-                    
-                   
+
                 }
-                
+
             } catch (SQLException ex) {
                 Logger.getLogger(CaseFile.class.getName()).log(Level.SEVERE, null, ex);
             } catch (FileNotFoundException ex) {
@@ -541,8 +539,11 @@ public class CaseFile {
                                 notification.position(Pos.TOP_RIGHT);
                                 notification.darkStyle();
                                 notification.showConfirm();
+                                OfficerCasesListController.tempCaseDetails.getChildren().clear();
+                                displayCaseFileDetails(caseFile);
+                                OfficerCasesListController.tempAttachmentVbox.getChildren().clear();
+                                showAttachments(caseFile);
 
-                                //  displayCaseFileDetails(caseFile);
                             }
 
                         } catch (SQLException ex) {
@@ -695,6 +696,10 @@ public class CaseFile {
 
                                 Notification notification = new Notification(5, "Attaching a File", "File Attached Successfully");
                                 notification.start();
+                                OfficerCasesListController.tempCaseDetails.getChildren().clear();
+                                displayCaseFileDetails(caseFile);
+                                OfficerCasesListController.tempAttachmentVbox.getChildren().clear();
+                                showAttachments(caseFile);
                             }
 
                         } catch (FileNotFoundException ex) {

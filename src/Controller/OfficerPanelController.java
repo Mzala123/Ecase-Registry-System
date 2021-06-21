@@ -6,20 +6,28 @@
 package Controller;
 
 import Model.Employee;
+import Model.MenusSwitch;
 import Model.SwitchWindow;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.animation.FadeTransition;
+import javafx.animation.PathTransition;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
+import javafx.util.Duration;
 
 /**
  * FXML Controller class
@@ -36,6 +44,8 @@ public class OfficerPanelController implements Initializable {
     private StackPane mainStackPane;
     
     public static Label checkLabel = new Label();
+    @FXML
+    private StackPane stackpaneMiddle;
 
     /**
      * Initializes the controller class.
@@ -49,6 +59,9 @@ public class OfficerPanelController implements Initializable {
 
     @FXML
     private void logOut(ActionEvent event) {
+        SwitchWindow window = new SwitchWindow();
+        window.loadNewWindow("/View/signUpPage.fxml", "Login Section", false, false);
+        mainStackPane.getScene().getWindow().hide();
         
     }
 
@@ -64,14 +77,11 @@ public class OfficerPanelController implements Initializable {
        mainStackPane.getScene().getWindow().hide();
     }
 
-    @FXML
-    private void switchToUpdateCase(ActionEvent event) {
-        
-    }
 
     @FXML
     private void switchToSettings(ActionEvent event) {
-        
+         MenusSwitch change = new MenusSwitch();
+         SwitchCenterPane(change.adminSettings);
     }
 
     @FXML
@@ -96,6 +106,37 @@ public class OfficerPanelController implements Initializable {
     private void switchToNotification(ActionEvent event) {
         
         
+    }
+    
+    
+    private void SwitchCenterPane(String pane) {
+
+        stackpaneMiddle.getChildren().clear();
+        try {
+            StackPane pane1 = FXMLLoader.load(getClass().getResource(pane));
+            ObservableList<Node> paneElements = pane1.getChildren();
+            stackpaneMiddle.getChildren().setAll(paneElements);
+            FadeTransition fadein = new FadeTransition(Duration.seconds(1), stackpaneMiddle);
+            fadein.setFromValue(0);
+            fadein.setToValue(1);
+            fadein.setCycleCount(1);
+            PathTransition path = new PathTransition();
+            path.setPath(stackpaneMiddle.getShape());
+            path.setNode(stackpaneMiddle);
+            path.setDuration(Duration.seconds(1));
+            path.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+            path.setCycleCount(1);
+            path.setAutoReverse(false);
+            path.play();
+            //  scaleIn.play();
+            fadein.play();
+
+        } catch (IOException ex) {
+            Logger.getLogger(AdminPanelController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        {
+
+        }
     }
 }
 

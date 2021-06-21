@@ -2,7 +2,6 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
-<?import com.jfoenix.controls.JFXDatePicker?>
 <?import com.jfoenix.controls.JFXTabPane?>
 <?import com.jfoenix.controls.JFXTextArea?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
@@ -80,12 +79,11 @@
                                                 <Font name="Arial" size="12.0" />
                                              </font>
                                           </TextField>
-                                          <Text layoutX="304.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Include date of birth">
+                                          <Text layoutX="304.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select Age of Client">
                                              <font>
                                                 <Font name="Arial Bold" size="12.0" />
                                              </font>
                                           </Text>
-                                          <JFXDatePicker fx:id="dob" layoutX="302.0" layoutY="101.0" minHeight="30.0" prefWidth="220.0" styleClass="textfieldColor" />
                                           <JFXComboBox fx:id="gender" layoutX="30.0" layoutY="400.0" prefHeight="30.0" prefWidth="220.0" promptText="please select(*)" styleClass="textfieldColor" />
                                           <Text layoutX="304.0" layoutY="190.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Input nationality">
                                              <font>
@@ -144,6 +142,7 @@
                                                 <FontAwesomeIconView fill="WHITE" glyphName="TIMES_CIRCLE" size="20" />
                                              </graphic>
                                           </JFXButton>
+                                          <JFXComboBox fx:id="ageCombo" layoutX="302.0" layoutY="98.0" prefHeight="30.0" prefWidth="220.0" promptText="please select(*)" styleClass="textfieldColor" />
                                        </children>
                                     </Pane>
                                  </center>

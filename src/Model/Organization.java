@@ -8,6 +8,7 @@ package Model;
 import Controller.AddRespondentToComplaintController;
 import static Controller.AddRespondentToComplaintController.tempRespondentStackPane;
 import Controller.CasePanelController;
+import Controller.ClientOrganizationListController;
 import Controller.RegisterComplaintController;
 import static Controller.RegisterComplaintController.listOfIDs;
 import com.jfoenix.controls.JFXButton;
@@ -435,4 +436,49 @@ public class Organization extends Client {
 
         return caseDetailId;
     }
+    
+    
+     public void OrganizationDataList() {
+        String query = "select * from ecase.organization";
+        try {
+            preparedStatement = handler.connection.prepareStatement(query);
+            handler.result = preparedStatement.executeQuery(query);
+            ClientOrganizationListController.orgList.clear();
+            while (handler.result.next()) {
+                String regNo = handler.result.getString("registrationNo");
+                OrgName = handler.result.getString("orgName");
+                businessType = handler.result.getString("businessType");
+                String address = handler.result.getString("postalAddress");
+                String email = handler.result.getString("email");
+
+                ClientOrganizationListController.orgList.add(new Organization(OrgName, businessType,
+                        regNo, address, email, selectRowToEdit(regNo)));
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Organization.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+     
+     
+      private JFXButton selectRowToEdit(String id) {
+        button = new JFXButton();
+        FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.PENCIL);
+        button.setStyle("-fx-background-color: #c7e0e0;");
+        button.getStyleClass().add("circleButton");
+        icon.setGlyphSize(20);
+        button.setId(id);
+        button.setPrefWidth(35);
+        button.setPrefHeight(35);
+        button.setGraphic(icon);
+        icon.setFill(Paint.valueOf("#daa520"));
+        button.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+
+       
+
+
+        return button;
+    }
+
+
 }

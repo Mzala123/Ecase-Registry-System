@@ -23,9 +23,8 @@ public class MenusSwitch {
     public static  final String createClient = "/View/ClientForm.fxml";
     public static final String  createOrganization = "/View/OrganizationForm.fxml";
     public static final String  clientList = "/View/ClientList.fxml";
-    
-    
-    
+   // public static final String  clientelleLists = "/View/ClientelleLists.fxml";
+    public static final String  organizationList = "/View/ClientOrganizationList.fxml";
     
       
 }

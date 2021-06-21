@@ -505,12 +505,12 @@ public class Person {
         button.setContentDisplay(ContentDisplay.CENTER);
         button.setId(id);
         button.getId();
-        FontAwesomeIconView icon2 = new FontAwesomeIconView(FontAwesomeIcon.PLUS_CIRCLE);
+        FontAwesomeIconView icon2 = new FontAwesomeIconView(FontAwesomeIcon.PENCIL);
         button.setStyle("-fx-background-color: #c7e0e0;");
         button.getStyleClass().add("circleButton");
         icon2.setGlyphSize(20);
         // icon2.setStyle("-fx-fill: #b78;");
-        icon2.setFill(Paint.valueOf("white"));
+        icon2.setFill(Paint.valueOf("#daa520"));
         button.setGraphic(icon2);
         button.setOnAction((event) -> {
 
@@ -521,7 +521,7 @@ public class Person {
                 Scene scene = new Scene(root);
                 primaryStage.setScene(scene);
                 primaryStage.setTitle("Client update section");
-                primaryStage.initStyle(StageStyle.DECORATED);
+                primaryStage.initStyle(StageStyle.UTILITY);
                 primaryStage.initModality(Modality.APPLICATION_MODAL);
                 primaryStage.setMaximized(false);
                 primaryStage.setFullScreen(false);
