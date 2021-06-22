@@ -27,6 +27,7 @@ import javafx.scene.control.Pagination;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
@@ -69,12 +70,17 @@ public class ClientListController implements Initializable {
     @FXML
     private JFXTextField searchField;
     
+    public static TextField tempNationalId = new TextField();
+    @FXML
+    private Label labelNationalId;
     
+    public static Label tempLabel = new Label();
     @Override
     public void initialize(URL url, ResourceBundle rb) {
          initializeData();
          tempComplainantPane = mainStackPane;
          tempBorderpane = borderpane;
+         tempLabel = labelNationalId;
         // TODO
     }    
     

@@ -11,6 +11,9 @@ import Controller.ClientListController;
 import static Controller.ClientListController.tempComplainantPane;
 import Controller.RegisterComplaintController;
 import static Controller.RegisterComplaintController.listOfIDs;
+import Controller.UpdateCaseController;
+import Controller.UpdateClientController;
+import static Controller.UpdateClientController.malawiId;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
@@ -457,38 +460,22 @@ public class Person {
                 ButtonType okButton = new ButtonType("YES", ButtonBar.ButtonData.YES);
                 ButtonType noButton = new ButtonType("NO", ButtonBar.ButtonData.NO);
                 alert.getButtonTypes().setAll(okButton, noButton);
-                
-                alert.showAndWait().ifPresent(type ->{
-                if(type == okButton){
-                    SwitchWindow window = new SwitchWindow();
-                    listOfIDs.addAll(id);
-                    System.out.println("The time is " + RegisterComplaintController.passdate);
-                    System.out.println("The details are " + listOfIDs);
 
-                    window.loadNewWindow("/View/AddRespondentToComplaint.fxml",
-                            "Respondent Details", true, true);
-                    AddComplainantToComplaintController.tempComplainantPane.getScene().getWindow().hide();
-                }
-                else if(type == noButton){
-                    alert.close();
-                }
-                
+                alert.showAndWait().ifPresent(type -> {
+                    if (type == okButton) {
+                        SwitchWindow window = new SwitchWindow();
+                        listOfIDs.addAll(id);
+                        System.out.println("The time is " + RegisterComplaintController.passdate);
+                        System.out.println("The details are " + listOfIDs);
+
+                        window.loadNewWindow("/View/AddRespondentToComplaint.fxml",
+                                "Respondent Details", true, true);
+                        AddComplainantToComplaintController.tempComplainantPane.getScene().getWindow().hide();
+                    } else if (type == noButton) {
+                        alert.close();
+                    }
+
                 });
-                
-              /*  if (alert.getResult().getText().equals("YES")) {
-
-                    SwitchWindow window = new SwitchWindow();
-                    listOfIDs.addAll(id);
-                    System.out.println("The time is " + RegisterComplaintController.passdate);
-                    System.out.println("The details are " + listOfIDs);
-
-                    window.loadNewWindow("/View/AddRespondentToComplaint.fxml",
-                            "Respondent Details", true, true);
-                    AddComplainantToComplaintController.tempComplainantPane.getScene().getWindow().hide();
-
-                } else if (alert.getResult().getText().equals("NO")) {
-                    alert.close();
-                }*/
 
             }
 
@@ -512,39 +499,119 @@ public class Person {
         // icon2.setStyle("-fx-fill: #b78;");
         icon2.setFill(Paint.valueOf("#daa520"));
         button.setGraphic(icon2);
-        button.setOnAction((event) -> {
-
-            Parent root;
-            try {
-                root = FXMLLoader.load(getClass().getResource("/View/UpdateClient.fxml"));
-                Stage primaryStage = new Stage();
-                Scene scene = new Scene(root);
-                primaryStage.setScene(scene);
-                primaryStage.setTitle("Client update section");
-                primaryStage.initStyle(StageStyle.UTILITY);
-                primaryStage.initModality(Modality.APPLICATION_MODAL);
-                primaryStage.setMaximized(false);
-                primaryStage.setFullScreen(false);
-                primaryStage.show();
-                System.out.println("The client to be edited is " + button.getId());
-                String query = "Select * from ecase.person where nationalId ='" + button.getId() + "'";
-                
+        button.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println(id);
                 try {
-                    preparedStatement = handler.connection.prepareStatement(query);
-                    if (handler.result.next()) {
+                    ClientListController.tempNationalId.setText(id);
 
-                    }
-                } catch (SQLException ex) {
+                    System.out.println("is it setting though " + ClientListController.tempNationalId.getText());
+
+                    Parent root = FXMLLoader.load(getClass().getResource("/View/UpdateClient.fxml"));
+                    Stage stage = new Stage();
+                    Scene scene = new Scene(root);
+                    stage.setScene(scene);
+                    stage.setTitle("Update Client Person");
+                    stage.setMaximized(false);
+                    stage.initStyle(StageStyle.UTILITY);
+                    stage.initModality(Modality.APPLICATION_MODAL);
+                    stage.show();
+                    //(id);
+
+                    System.out.println("is it is it " + id);
+
+                } catch (IOException ex) {
                     Logger.getLogger(Person.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
-            } catch (IOException ex) {
-                Logger.getLogger(Person.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         });
 
         return button;
+    }
+
+    public String setPersonDataOnFields(String id) {
+        try {
+
+            String query = "select * from ecase.person where nationalId='" + id + "'";
+            preparedStatement = handler.connection.prepareStatement(query);
+            handler.result = preparedStatement.executeQuery(query);
+            if (handler.result.next()) {
+                
+                nationalId = handler.result.getString("nationalId");
+                firstName = handler.result.getString("firstname");
+                lastName = handler.result.getString("lastname");
+                gender = handler.result.getString("gender");
+                dob = handler.result.getString("dob");
+                nationality = handler.result.getString("nationality");
+                postalAddress = handler.result.getString("address");
+                residence = handler.result.getString("residence");
+                contact = handler.result.getString("phonenumber");
+                email = handler.result.getString("email");
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Person.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return id;
+    }
+
+    public void updatePersonClientDetails() {
+        try {
+           // System.out.println("Lets check this pout " +UpdateClientController.tempLabel.getText());
+            String query = "select id from ecase.person where nationalId ='"+UpdateClientController.tempLabel.getText()+"'";
+            preparedStatement = handler.connection.prepareStatement(query);
+            handler.result = preparedStatement.executeQuery(query);
+            int id = 0;
+            
+            while(handler.result.next()){
+                
+             id = handler.result.getInt("id");
+            
+            }
+            
+            String updateQuery = "UPDATE ecase.person set nationalId=?, firstname=?, lastname=?, gender=?,"
+                    + "dob=?, nationality=?, address=?, residence=?, phonenumber=?, email=? where id ='"+id+"'";
+            preparedStatement = handler.connection.prepareStatement(updateQuery);      
+            preparedStatement.setString(1, getNationalId());
+            preparedStatement.setString(2, getFirstName());
+            preparedStatement.setString(3, getLastName());
+            preparedStatement.setString(4, getGender());
+            preparedStatement.setString(5, getDob());
+            preparedStatement.setString(6, getNationality());
+            preparedStatement.setString(7, getPostalAddress());
+            preparedStatement.setString(8, getResidence());
+            preparedStatement.setString(9, getContact());
+            preparedStatement.setString(10, getEmail());
+            
+             if (preparedStatement.execute() == true) {
+                Notifications notification = Notifications.create();
+                notification.title("Updating Client Person Details");
+                notification.text("Failed to update");
+                notification.hideAfter(Duration.seconds(3));
+                notification.position(Pos.CENTER);
+                notification.darkStyle();
+                notification.showError();
+            } else {
+
+                Notifications notification = Notifications.create();
+                notification.title("Updating Client Person details");
+                notification.text("Update Done Sucessfully");
+                notification.hideAfter(Duration.seconds(3));
+                notification.position(Pos.CENTER);
+                notification.darkStyle();
+                notification.showConfirm();
+               
+            }
+            ClientListController.personList.clear();
+            ClientList();
+             
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Person.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }

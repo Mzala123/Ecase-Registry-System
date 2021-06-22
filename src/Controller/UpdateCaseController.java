@@ -33,8 +33,5 @@ public class UpdateCaseController implements Initializable {
         // TODO
     }    
 
-    @FXML
-    private void updateCaseFile(ActionEvent event) {
-    }
     
 }

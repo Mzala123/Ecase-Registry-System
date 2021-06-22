@@ -93,18 +93,12 @@ public class ClientFormController implements Initializable {
 
     }
 
-    private void initiliazeAge(){
-                
-        String date = LocalDateTime.now().toString();
-        System.out.println(date);
-        System.out.println(date.substring(0, 3));
-        
-     for(int count=Integer.parseInt(date.substring(0, 3)); count>17; count--)
-        {
-            String ages = count + "";
-            ageCombo.getItems().addAll(ages);
-  
-        }
+    private void initiliazeAge(){  
+         for(int count=18; count<=100; count++){
+          String ages = count + "";
+          ageCombo.getItems().addAll(ages);
+          //System.out.println(" "+count);
+       }
        
     }
     
