@@ -80,7 +80,15 @@
                         <Font name="Arial" size="14.0" />
                      </font>
                   </JFXButton>
-                  <JFXButton layoutX="10.0" layoutY="244.0" onAction="#switchToComplaintsList" prefHeight="40.0" prefWidth="200.0" styleClass="btnMenus" text="Complaints List ">
+                  <JFXButton layoutX="14.0" layoutY="338.0" onAction="#switchToComplaintList" prefHeight="40.0" prefWidth="200.0" styleClass="btnMenus" text="Complaint Summary">
+                     <graphic>
+                        <FontAwesomeIconView glyphName="LIST_OL" size="22" wrappingWidth="30.0" />
+                     </graphic>
+                     <font>
+                        <Font name="Arial" size="14.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton layoutX="10.0" layoutY="244.0" onAction="#switchToComplaintsList" prefHeight="40.0" prefWidth="200.0" styleClass="btnMenus" text="Full Complaint Details">
                      <graphic>
                         <FontAwesomeIconView glyphName="LIST_ALT" size="22" wrappingWidth="30.0" />
                      </graphic>

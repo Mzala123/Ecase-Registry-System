@@ -163,6 +163,10 @@ public class CasePanelController implements Initializable {
        SwitchCenterPane(change.organizationList);
     }
 
+    @FXML
+    private void switchToComplaintList(ActionEvent event) {
+    }
+
       
 
     

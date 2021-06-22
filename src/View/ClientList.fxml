@@ -6,8 +6,6 @@
 <?import java.net.URL?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Pagination?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
@@ -36,13 +34,9 @@
                         <Font name="Arial Bold" size="14.0" />
                      </font>
                   </JFXTextField>
-                  <JFXButton layoutX="888.0" layoutY="41.0" onAction="#exportToPdf" prefHeight="30.0" prefWidth="140.0" styleClass="btnAttachFile" text="Export">
+                  <JFXButton graphicTextGap="10.0" layoutX="888.0" layoutY="41.0" onAction="#exportToPdf" prefHeight="30.0" prefWidth="140.0" styleClass="btnAttachFile" text="Export">
                      <graphic>
-                        <ImageView fitHeight="26.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../Images/Icons/document.png" />
-                           </image>
-                        </ImageView>
+                        <FontAwesomeIconView fill="GOLDENROD" glyphName="FILE_PDF_ALT" size="25" text="" />
                      </graphic>
                   </JFXButton>
                   <Label fx:id="labelNationalId" layoutX="291.0" layoutY="63.0" prefHeight="17.0" prefWidth="171.0" />

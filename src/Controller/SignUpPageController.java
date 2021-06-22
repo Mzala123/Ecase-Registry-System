@@ -96,6 +96,8 @@ public class SignUpPageController implements Initializable {
                     Logger.getLogger(SignUpPageController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             });
+            
+            
 
         } catch (IOException ex) {
 
