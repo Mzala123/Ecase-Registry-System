@@ -209,64 +209,15 @@ public class Employee {
     }
 
     public void addSystemUsers() throws FileNotFoundException {
-        
+
         try {
-             String checkIfRowExists = "select count(*) as no_rows from ecase.user";
-             int row_found = 0;
-             preparedStatement = handler.connection.prepareStatement(checkIfRowExists);
-             handler.result = preparedStatement.executeQuery(checkIfRowExists);
-             while(handler.result.next()){
-                 row_found = handler.result.getInt("no_rows");
-                 if(row_found == 0){
-                     String insert = "INSERT INTO ecase.user (UserId, Username, Firstname, Lastname, Email, Password, Usertype, Image) "
-                            + "VALUES (?,?,?,?,?,?,?,?)";
-                    preparedStatement = handler.connection.prepareStatement(insert);
-                    preparedStatement.setString(1, getEmpId());
-                    preparedStatement.setString(2, getEmpUsername());
-                    preparedStatement.setString(3, getEmpFname());
-                    preparedStatement.setString(4, getEmpLname());
-                    preparedStatement.setString(5, getEmpEmail());
-                    preparedStatement.setString(6, getEmpPassword());
-                    preparedStatement.setString(7, getEmpType());
-                    inputStream = new FileInputStream(getImage());
-                    preparedStatement.setBinaryStream(8, inputStream, (int) getImage().length());
-
-                    if (preparedStatement.execute()) {
-                        Notifications notification = Notifications.create();
-                        notification.title("CREATING USER");
-                        notification.text("FAILED TO ADD USER");
-                        notification.hideAfter(Duration.seconds(5));
-                        notification.position(Pos.BOTTOM_RIGHT);
-                        notification.darkStyle();
-                        notification.showError();
-                    } else {
-
-                        Notification notification = new Notification(5, "CREATING USER", "USER ADDED SUCCESSFULLY");
-                        notification.start();
-                    }
-                 }
-             
-            else if(row_found > 0){
-            String pullId = "Select * FROM ecase.user where UserId ='" + getEmpId() + "'";
-            String id = "";
-            preparedStatement = handler.connection.prepareStatement(pullId);
-            handler.result = preparedStatement.executeQuery(pullId);
-            if (handler.result.next()) {
-                id = handler.result.getString("UserId");
-                System.out.println("The pulled id is " + id);
-                if (getEmpId().equalsIgnoreCase(id) == true) {
-                    Notifications notification = Notifications.create();
-                    notification.title("CREATING USER");
-                    notification.text("USER WITH SUCH ID ALREADY EXISTS");
-                    notification.hideAfter(Duration.seconds(5));
-                    notification.position(Pos.CENTER);
-                    notification.darkStyle();
-                    notification.showWarning();
-                }
-
-                } 
-            else {
-                
+            String checkIfRowExists = "select count(*) as no_rows from ecase.user";
+            int row_found = 0;
+            preparedStatement = handler.connection.prepareStatement(checkIfRowExists);
+            handler.result = preparedStatement.executeQuery(checkIfRowExists);
+            while (handler.result.next()) {
+                row_found = handler.result.getInt("no_rows");
+                if (row_found == 0) {
                     String insert = "INSERT INTO ecase.user (UserId, Username, Firstname, Lastname, Email, Password, Usertype, Image) "
                             + "VALUES (?,?,?,?,?,?,?,?)";
                     preparedStatement = handler.connection.prepareStatement(insert);
@@ -293,10 +244,120 @@ public class Employee {
                         Notification notification = new Notification(5, "CREATING USER", "USER ADDED SUCCESSFULLY");
                         notification.start();
                     }
-               }
+                } else if (row_found > 0) {
+                    String pullId = "Select * FROM ecase.user where UserId ='" + getEmpId() + "'";
+                    String id = "";
+                    preparedStatement = handler.connection.prepareStatement(pullId);
+                    handler.result = preparedStatement.executeQuery(pullId);
+                    if (handler.result.next()) {
+                        id = handler.result.getString("UserId");
+                        System.out.println("The pulled id is " + id);
+                        if (getEmpId().equalsIgnoreCase(id) == true) {
+                            Notifications notification = Notifications.create();
+                            notification.title("CREATING USER");
+                            notification.text("USER WITH SUCH ID ALREADY EXISTS");
+                            notification.hideAfter(Duration.seconds(5));
+                            notification.position(Pos.CENTER);
+                            notification.darkStyle();
+                            notification.showWarning();
+                        }
+
+                    } else {
+
+                        String insert = "INSERT INTO ecase.user (UserId, Username, Firstname, Lastname, Email, Password, Usertype, Image) "
+                                + "VALUES (?,?,?,?,?,?,?,?)";
+                        preparedStatement = handler.connection.prepareStatement(insert);
+                        preparedStatement.setString(1, getEmpId());
+                        preparedStatement.setString(2, getEmpUsername());
+                        preparedStatement.setString(3, getEmpFname());
+                        preparedStatement.setString(4, getEmpLname());
+                        preparedStatement.setString(5, getEmpEmail());
+                        preparedStatement.setString(6, getEmpPassword());
+                        preparedStatement.setString(7, getEmpType());
+                        inputStream = new FileInputStream(getImage());
+                        preparedStatement.setBinaryStream(8, inputStream, (int) getImage().length());
+
+                        if (preparedStatement.execute()) {
+                            Notifications notification = Notifications.create();
+                            notification.title("CREATING USER");
+                            notification.text("FAILED TO ADD USER");
+                            notification.hideAfter(Duration.seconds(5));
+                            notification.position(Pos.BOTTOM_RIGHT);
+                            notification.darkStyle();
+                            notification.showError();
+                        } else {
+
+                            Notification notification = new Notification(5, "CREATING USER", "USER ADDED SUCCESSFULLY");
+                            notification.start();
+
+                            if (getEmpType().toLowerCase().equals("case officer")) {
+                                String checkUsertypeQuery = "select * from ecase.user where Usertype='" + getEmpType() + "' "
+                                        + "AND UserId='" + getEmpId() + "'";
+                                preparedStatement = handler.connection.prepareStatement(checkUsertypeQuery);
+                                handler.result = preparedStatement.executeQuery(checkUsertypeQuery);
+                                int ids = 0;
+                                if (handler.result.next()) {
+                                    ids = handler.result.getInt("id");
+                                    empId = handler.result.getString("UserId");
+                                    empUsername = handler.result.getString("UserName");
+                                    empFname = handler.result.getString("Firstname");
+                                    empLname = handler.result.getString("Lastname");
+                                    empEmail = handler.result.getString("Email");
+                                    empPassword = handler.result.getString("Password");
+                                    empType = handler.result.getString("Usertype");
+                                    InputStream inputstream;
+                                    inputstream = handler.result.getBinaryStream("Image");
+
+                                    Image = new File("Admin.png");
+                                    OutputStream outputStream = new FileOutputStream(Image);
+                                    byte[] content = new byte[1024];
+                                    int size = 0;
+                                    while ((size = inputstream.read(content)) != -1) {
+                                        outputStream.write(content, 0, size);
+                                    }
+                                    outputStream.close();
+                                    inputstream.close();
+                                }
+
+                                String insertQuery = "INSERT INTO ecase.userofficer (id,UserId, Username, Firstname,"
+                                        + "Lastname, Email, Password, Usertype, Image) "
+                                        + "VALUES (?,?,?,?,?,?,?,?,?)";
+                                preparedStatement = handler.connection.prepareStatement(insertQuery);
+                                preparedStatement.setInt(1, ids);
+                                preparedStatement.setString(2, empId);
+                                preparedStatement.setString(3, empUsername);
+                                preparedStatement.setString(4, empFname);
+                                preparedStatement.setString(5, empLname);
+                                preparedStatement.setString(6, empEmail);
+                                preparedStatement.setString(7, empPassword);
+                                preparedStatement.setString(8, empType);
+                                inputStream = new FileInputStream(Image);
+                                preparedStatement.setBinaryStream(9, inputStream, (int) Image.length());
+
+                                if (preparedStatement.execute()) {
+                                    Notifications notification1 = Notifications.create();
+                                    notification1.title("CREATING USER");
+                                    notification1.text("FAILED TO ADD USER");
+                                    notification1.hideAfter(Duration.seconds(3));
+                                    notification1.position(Pos.BOTTOM_RIGHT);
+                                    notification1.darkStyle();
+                                    notification1.showError();
+                                } else {
+
+                                    notification = new Notification(3, "CREATING USER", "USER ADDED TO NEW"
+                                            + " TABLE SUCCESSFULLY");
+                                    notification.start();
+                                }
+
+                            }
+                        }
+                    }
+                }
             }
-             }
         } catch (SQLException ex) {
+            Logger.getLogger(Employee.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
             Logger.getLogger(Employee.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -319,7 +380,7 @@ public class Employee {
 
                 InputStream inputstream;
                 inputstream = handler.result.getBinaryStream("Image");
-             
+
                 Image = new File("Admin.png");
                 OutputStream outputStream = new FileOutputStream(Image);
                 byte[] content = new byte[1024];
@@ -329,15 +390,19 @@ public class Employee {
                 }
                 outputStream.close();
                 inputstream.close();
-                
-                
+
             }
         } catch (SQLException ex) {
-            Logger.getLogger(AdminSettingsController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AdminSettingsController.class
+                    .getName()).log(Level.SEVERE, null, ex);
+
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(Employee.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Employee.class
+                    .getName()).log(Level.SEVERE, null, ex);
+
         } catch (IOException ex) {
-            Logger.getLogger(Employee.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Employee.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
 
     }
@@ -356,8 +421,10 @@ public class Employee {
             preparedStatement.setString(5, getEmpPassword());
             try {
                 inputStream = new FileInputStream(getImage());
+
             } catch (FileNotFoundException ex) {
-                Logger.getLogger(Employee.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Employee.class
+                        .getName()).log(Level.SEVERE, null, ex);
             }
             preparedStatement.setBinaryStream(6, inputStream, (int) getImage().length());
 
@@ -378,10 +445,12 @@ public class Employee {
                 notification.position(Pos.BOTTOM_CENTER);
                 notification.darkStyle();
                 notification.showConfirm();
+
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(Employee.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Employee.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
 
     }
@@ -412,9 +481,9 @@ public class Employee {
                 } else if (usertype.toLowerCase().equals("case allocator")) {
                     window.loadNewWindow("/View/CasePanel.fxml", "Case Section", true, true);
                     SignUpPageController.tempStackPane.getScene().getWindow().hide();
-                   /* Organization org = new Organization();
+                    /* Organization org = new Organization();
                     org.assignCaseAutomatically();*/
-                    
+
                 } else if (usertype.toLowerCase().equals("director")) {
                     window.loadNewWindow("/View/AdminPanel.fxml", "Admin Section", true, true);
                     SignUpPageController.tempStackPane.getScene().getWindow().hide();
@@ -427,10 +496,12 @@ public class Employee {
                 notification.position(Pos.CENTER);
                 notification.darkStyle();
                 notification.showError();
+
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(Employee.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Employee.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
 
     }
@@ -448,11 +519,13 @@ public class Employee {
                 empLname = handler.result.getString("Lastname");
                 empEmail = handler.result.getString("Email");
                 empType = handler.result.getString("Usertype");
-                ManageUsersController.userAccountList.add(new Employee(empId, empUsername, empFname, 
-                empLname, empEmail, empType));
+                ManageUsersController.userAccountList.add(new Employee(empId, empUsername, empFname,
+                        empLname, empEmail, empType));
+
             }
         } catch (SQLException ex) {
-            Logger.getLogger(Employee.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Employee.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
 
     }
@@ -468,8 +541,10 @@ public class Employee {
                 AdminCount = handler.result.getInt(1);
             }
             DashBoardController.tempLabelAdmin.setText("" + AdminCount);
+
         } catch (SQLException ex) {
-            Logger.getLogger(Employee.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Employee.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -484,8 +559,10 @@ public class Employee {
                 officerCount = handler.result.getInt(1);
             }
             DashBoardController.tempLabelCaseOfficer.setText("" + officerCount);
+
         } catch (SQLException ex) {
-            Logger.getLogger(Employee.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Employee.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
         // Case Officer", "Case Allocator", "Director
     }
@@ -501,8 +578,10 @@ public class Employee {
                 allocatorCount = handler.result.getInt(1);
             }
             DashBoardController.tempLabelCaseAllocator.setText("" + allocatorCount);
+
         } catch (SQLException ex) {
-            Logger.getLogger(Employee.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Employee.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -519,7 +598,8 @@ public class Employee {
             DashBoardController.tempLabelDirector.setText("" + directorCount);
 
         } catch (SQLException ex) {
-            Logger.getLogger(Employee.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Employee.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -532,9 +612,11 @@ public class Employee {
             AdminCount = 0;
             if (handler.result.next()) {
                 AdminCount = handler.result.getInt(1);
+
             }
         } catch (SQLException ex) {
-            Logger.getLogger(Employee.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Employee.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -547,10 +629,12 @@ public class Employee {
             officerCount = 0;
             if (handler.result.next()) {
                 officerCount = handler.result.getInt(1);
+
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(Employee.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Employee.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -563,9 +647,11 @@ public class Employee {
             directorCount = 0;
             if (handler.result.next()) {
                 directorCount = handler.result.getInt(1);
+
             }
         } catch (SQLException ex) {
-            Logger.getLogger(Employee.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Employee.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -585,8 +671,10 @@ public class Employee {
                     new PieChart.Data("Directors", directorCount),
                     new PieChart.Data("Case Allocators", allocatorCount));
             DashBoardController.tempPieChart.setData(pieChartData);
+
         } catch (SQLException ex) {
-            Logger.getLogger(Employee.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Employee.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -599,10 +687,12 @@ public class Employee {
             AdminCount = 0;
             if (handler.result.next()) {
                 AdminCount = handler.result.getInt(1);
+
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(Employee.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Employee.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -615,10 +705,12 @@ public class Employee {
             officerCount = 0;
             if (handler.result.next()) {
                 officerCount = handler.result.getInt(1);
+
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(Employee.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Employee.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -631,9 +723,11 @@ public class Employee {
             directorCount = 0;
             if (handler.result.next()) {
                 directorCount = handler.result.getInt(1);
+
             }
         } catch (SQLException ex) {
-            Logger.getLogger(Employee.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Employee.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -655,7 +749,8 @@ public class Employee {
             DashBoardController.tempBarChar.getData().addAll(setData);
 
         } catch (SQLException ex) {
-            Logger.getLogger(Employee.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Employee.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -682,7 +777,5 @@ public class Employee {
             // Logger.getLogger(DashBoardController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    
 
 }

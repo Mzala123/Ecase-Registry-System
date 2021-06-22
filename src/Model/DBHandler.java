@@ -48,6 +48,7 @@ public class DBHandler {
         createTableComplaint();
         createTableComplaintDetails();
         createTableAttachmentFile();
+        createTableUserCaseOfficer();
     }
 
     public DBHandler(String DatabaseURL, String DB_Username, String DB_password) {
@@ -165,7 +166,46 @@ public class DBHandler {
             
         }
     }
-    
+  
+        void createTableUserCaseOfficer(){
+        String TableName = "userOfficer";
+        try
+        {
+            statement = connection.createStatement();
+            DatabaseMetaData dbm = connection.getMetaData();
+            ResultSet tables = dbm.getTables(null, null, TableName.toUpperCase(), null);
+            if(tables.next())
+            {
+                System.out.println("Table " + TableName +" Already exists in the database");
+                
+            }
+            else
+            {
+                statement.execute("CREATE TABLE " +TableName+ "(" + ""
+                        + "Id int,\n"
+                        + "UserId varchar(200),\n"
+                        + "UserName varchar(40),\n"
+                        + "Firstname varchar(40),\n"
+                        + "Lastname varchar(40),\n"
+                        + "Email varchar(40),\n"
+                        + "Password varchar(100),\n"
+                        + "DateIncluded varchar(40),\n"
+                        + "Usertype varchar(100),\n"
+                        + "Image LONGBLOB\n"
+                        + ")");
+                System.out.println("Table "+TableName+" has been Created successfully");
+            }
+            
+        }
+        catch(SQLException e)
+        {
+            System.err.println(e.getMessage()+"setup database please");
+        }
+        finally
+        {
+            
+        }
+    }
 
     private void createTablePerson(){
         
