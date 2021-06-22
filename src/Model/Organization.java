@@ -9,25 +9,34 @@ import Controller.AddRespondentToComplaintController;
 import static Controller.AddRespondentToComplaintController.tempRespondentStackPane;
 import Controller.CasePanelController;
 import Controller.ClientOrganizationListController;
-import Controller.RegisterComplaintController;
 import static Controller.RegisterComplaintController.listOfIDs;
+import Controller.UpdateOrganizationDataController;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.paint.Paint;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
 
@@ -216,7 +225,7 @@ public class Organization extends Client {
     }
 
     public void listOrganizationData() {
-        String query = "select * from ecase.organization";
+        String query = "select * from ecase.organization ORDER BY orgName ASC";
         try {
             preparedStatement = handler.connection.prepareStatement(query);
             handler.result = preparedStatement.executeQuery(query);
@@ -277,28 +286,27 @@ public class Organization extends Client {
             ButtonType okButton = new ButtonType("YES", ButtonBar.ButtonData.YES);
             ButtonType noButton = new ButtonType("NO", ButtonBar.ButtonData.NO);
             alert.getButtonTypes().setAll(okButton, noButton);
-            alert.showAndWait().ifPresent(type ->{
-            if(type == okButton){
-                listOfIDs.addAll(id);
-                System.out.println("The fetched data are " + listOfIDs);
-                int complaintId = fetchID(listOfIDs.get(0));
-                String complainantId = listOfIDs.get(1);
-                String respondentId = listOfIDs.get(2);
-                createComplaint(complaintId, complainantId, respondentId);
-                assignCaseAutomatically();
-                listOfIDs.clear();
-                SwitchWindow window = new SwitchWindow();
-                window.loadNewWindow("/View/ComplaintList.fxml", "List of complaints", true, true);
-                tempRespondentStackPane.getScene().getWindow().hide();
-                CasePanelController.tempStackPane.getScene().getWindow().hide();
-            }
-            else if(type == noButton){
-                alert.close();
-            }
-            
+            alert.showAndWait().ifPresent(type -> {
+                if (type == okButton) {
+                    listOfIDs.addAll(id);
+                    System.out.println("The fetched data are " + listOfIDs);
+                    int complaintId = fetchID(listOfIDs.get(0));
+                    String complainantId = listOfIDs.get(1);
+                    String respondentId = listOfIDs.get(2);
+                    createComplaint(complaintId, complainantId, respondentId);
+                    assignCaseAutomatically();
+                    listOfIDs.clear();
+                    SwitchWindow window = new SwitchWindow();
+                    window.loadNewWindow("/View/ComplaintList.fxml", "List of complaints", true, true);
+                    tempRespondentStackPane.getScene().getWindow().hide();
+                    CasePanelController.tempStackPane.getScene().getWindow().hide();
+                } else if (type == noButton) {
+                    alert.close();
+                }
+
             });
 
-           /* if (alert.getResult().getText().equals("OK")) {
+            /* if (alert.getResult().getText().equals("OK")) {
                 listOfIDs.addAll(id);
                 System.out.println("The fetched data are " + listOfIDs);
                 int complaintId = fetchID(listOfIDs.get(0));
@@ -436,10 +444,9 @@ public class Organization extends Client {
 
         return caseDetailId;
     }
-    
-    
-     public void OrganizationDataList() {
-        String query = "select * from ecase.organization";
+
+    public void OrganizationDataList() {
+        String query = "select * from ecase.organization ORDER BY orgName ASC";
         try {
             preparedStatement = handler.connection.prepareStatement(query);
             handler.result = preparedStatement.executeQuery(query);
@@ -459,9 +466,8 @@ public class Organization extends Client {
             Logger.getLogger(Organization.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-     
-     
-      private JFXButton selectRowToEdit(String id) {
+
+    private JFXButton selectRowToEdit(String id) {
         button = new JFXButton();
         FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.PENCIL);
         button.setStyle("-fx-background-color: #c7e0e0;");
@@ -474,11 +480,144 @@ public class Organization extends Client {
         icon.setFill(Paint.valueOf("#daa520"));
         button.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
 
-       
+        button.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println(id);
+                try {
+                    ClientOrganizationListController.tempLabelOrgNo.setText(id);
 
+                    //  System.out.println("is it setting though " + ClientListController.tempNationalId.getText());
+                    Parent root = FXMLLoader.load(getClass().getResource("/View/UpdateOrganizationData.fxml"));
+                    Stage stage = new Stage();
+                    Scene scene = new Scene(root);
+                    stage.setScene(scene);
+                    stage.setTitle("Update Client Organization");
+                    stage.setMaximized(false);
+                    stage.initStyle(StageStyle.UTILITY);
+                    stage.initModality(Modality.APPLICATION_MODAL);
+                    stage.show();
+
+                    System.out.println("is it is it " + id);
+
+                } catch (IOException ex) {
+                    Logger.getLogger(Person.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+
+        });
 
         return button;
     }
 
+    public String setOrganizationData(String businessNo) {
+        Organization organization = new Organization();
+        try {
+            String query = "select * from ecase.organization where registrationNo ='" + businessNo + "'";
+            preparedStatement = handler.connection.prepareStatement(query);
+            handler.result = preparedStatement.executeQuery(query);
+            if (handler.result.next()) {
+                String businessID = handler.result.getString("registrationNo");
+                UpdateOrganizationDataController.tempBusinessRegNo.setText(businessID);
+                OrgName = handler.result.getString("orgName");
+                businessType = handler.result.getString("businessType");
+                String address = handler.result.getString("postalAddress");
+                UpdateOrganizationDataController.tempPostalAddress.setText(address);
+                String email = handler.result.getString("email");
+                UpdateOrganizationDataController.tempBusinessEmail.setText(email);
+                String regDate = handler.result.getString("regDate");
+                try {
+                    UpdateOrganizationDataController.tempRegDate.setValue(LOCAL_DATE(regDate));
+                } catch (NullPointerException e) {
+                }
+            }
 
+        } catch (SQLException ex) {
+            Logger.getLogger(Organization.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return businessNo;
+    }
+
+    public static final LocalDate LOCAL_DATE(String dateString) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss.s");
+        LocalDate localDate = LocalDate.parse(dateString, formatter);
+        return localDate;
+    }
+
+    public void updateClientOrgdetails() {
+        try {
+            String query = "select id from ecase.organization "
+                    + "where registrationNo='" + UpdateOrganizationDataController.tempLabelRegNo.getText()+ "'";
+            preparedStatement = handler.connection.prepareStatement(query);
+            handler.result = preparedStatement.executeQuery(query);
+            int id = 0;
+            while (handler.result.next()) {
+                
+                id = handler.result.getInt("id");
+            }
+            String updateQuery = "Update ecase.organization set registrationNo=?, orgName=?,"
+                    + "postalAddress=?, businessType=?, email=?, regDate=? where id='"+id+"'";
+            preparedStatement = handler.connection.prepareStatement(updateQuery);
+            preparedStatement.setString(1, getId());
+            preparedStatement.setString(2, getOrgName());
+            preparedStatement.setString(3, getPostalAddress());
+            preparedStatement.setString(4, getBusinessType());
+            preparedStatement.setString(5, getEmail());
+            preparedStatement.setString(6, getRedDate());
+            
+            if (preparedStatement.execute() == true) {
+                Notifications notification = Notifications.create();
+                notification.title("Updating Client Organization Details");
+                notification.text("Failed to update");
+                notification.hideAfter(Duration.seconds(3));
+                notification.position(Pos.CENTER);
+                notification.darkStyle();
+                notification.showError();
+            } else {
+
+                Notifications notification = Notifications.create();
+                notification.title("Updating Client Organization details");
+                notification.text("Update Done Sucessfully");
+                notification.hideAfter(Duration.seconds(2));
+                notification.position(Pos.TOP_RIGHT);
+                notification.darkStyle();
+                notification.showConfirm();
+               
+                String updatequery1 = "UPDATE ecase.complaint_details set respondentId=?"
+                        + "where respondentId='"+UpdateOrganizationDataController.tempLabelRegNo.getText()+"'";
+                preparedStatement = handler.connection.prepareStatement(updatequery1);
+                preparedStatement.setString(1, getId());
+                
+                if (preparedStatement.execute() == true) {
+                notification = Notifications.create();
+                notification.title("Updating Client Organization Details");
+                notification.text("Failed to update");
+                notification.hideAfter(Duration.seconds(3));
+                notification.position(Pos.CENTER);
+                notification.darkStyle();
+                notification.showError();
+                }
+                else {
+
+                notification = Notifications.create();
+                notification.title("Updating Client Organization details");
+                notification.text("Table Complaint Details Also Updated Sucessfully");
+                notification.hideAfter(Duration.seconds(3));
+                notification.position(Pos.TOP_RIGHT);
+                notification.darkStyle();
+                notification.showConfirm();
+                }
+                
+            }
+                
+            } catch (SQLException ex) {
+            Logger.getLogger(Organization.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
+        /* catch (SQLException ex) {
+            Logger.getLogger(Organization.class.getName()).log(Level.SEVERE, null, ex);
+        }*/
+    }
 }

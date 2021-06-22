@@ -63,13 +63,17 @@ public class ClientOrganizationListController implements Initializable {
      public static StackPane tempRespondentStackPane;
     @FXML
     private StackPane stackPaneMain;
+    @FXML
+    private Label labelBusinessOrgNo;
+    
+    public static Label tempLabelOrgNo = new Label();
 
-    /**
-     * Initializes the controller class.
-     */
+   
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         tempRespondentStackPane = stackPaneMain;
+        tempLabelOrgNo = labelBusinessOrgNo;
         initializeData();
         
         // TODO

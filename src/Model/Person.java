@@ -14,6 +14,7 @@ import static Controller.RegisterComplaintController.listOfIDs;
 import Controller.UpdateCaseController;
 import Controller.UpdateClientController;
 import static Controller.UpdateClientController.malawiId;
+import Controller.UpdateOrganizationDataController;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
@@ -370,7 +371,7 @@ public class Person {
     }
 
     public void showClientPersonDetails() {
-        String query = "select * from ecase.person";
+        String query = "select * from ecase.person ORDER BY firstname, lastname ASC";
         try {
             preparedStatement = handler.connection.prepareStatement(query);
             handler.result = preparedStatement.executeQuery(query);
@@ -401,7 +402,7 @@ public class Person {
     }
 
     public void ClientList() {
-        String query = "select * from ecase.person";
+        String query = "select * from ecase.person ORDER BY firstname, lastname ASC";
         try {
             preparedStatement = handler.connection.prepareStatement(query);
             handler.result = preparedStatement.executeQuery(query);
@@ -586,7 +587,7 @@ public class Person {
             preparedStatement.setString(9, getContact());
             preparedStatement.setString(10, getEmail());
             
-             if (preparedStatement.execute() == true) {
+             if (preparedStatement.execute()== true) {
                 Notifications notification = Notifications.create();
                 notification.title("Updating Client Person Details");
                 notification.text("Failed to update");
@@ -603,10 +604,34 @@ public class Person {
                 notification.position(Pos.CENTER);
                 notification.darkStyle();
                 notification.showConfirm();
+                
+                 String updatequery1 = "UPDATE ecase.complaint_details set complainantId=?"
+                        + "where complainantId='"+UpdateClientController.tempLabel.getText()+"'";
+                preparedStatement = handler.connection.prepareStatement(updatequery1);
+                preparedStatement.setString(1, getNationalId());
+                
+                if (preparedStatement.execute() == true) {
+                notification = Notifications.create();
+                notification.title("Updating Client Organization Details");
+                notification.text("Failed to update");
+                notification.hideAfter(Duration.seconds(3));
+                notification.position(Pos.CENTER);
+                notification.darkStyle();
+                notification.showError();
+                }
+                else {
+
+                notification = Notifications.create();
+                notification.title("Updating Client Organization details");
+                notification.text("Table Complaint Details Also Updated Sucessfully");
+                notification.hideAfter(Duration.seconds(3));
+                notification.position(Pos.TOP_RIGHT);
+                notification.darkStyle();
+                notification.showConfirm();
+                }
                
             }
-            ClientListController.personList.clear();
-            ClientList();
+            
              
             
         } catch (SQLException ex) {

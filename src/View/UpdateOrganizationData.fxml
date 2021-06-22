@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="750.0" stylesheets="@../Css/Admin.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.UpdateOrganizationDataController">
+   <children>
+      <BorderPane prefHeight="200.0" prefWidth="200.0">
+         <center>
+            <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+               <children>
+                  <Text layoutX="44.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Edit Organization Client Details ">
+                     <font>
+                        <Font name="Arial Bold" size="14.0" />
+                     </font>
+                  </Text>
+                  <Separator layoutX="41.0" layoutY="59.0" prefHeight="5.0" prefWidth="707.0" />
+                  <Text layoutX="86.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Input Org/Company Registration No">
+                     <font>
+                        <Font name="Arial Bold" size="12.0" />
+                     </font>
+                  </Text>
+                  <TextField fx:id="businessRegNo" layoutX="85.0" layoutY="105.0" prefHeight="30.0" prefWidth="220.0" promptText="mandatory" styleClass="textfieldColor">
+                     <font>
+                        <Font name="Arial" size="12.0" />
+                     </font>
+                  </TextField>
+                  <Text layoutX="86.0" layoutY="190.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Input Org/Company Name">
+                     <font>
+                        <Font name="Arial Bold" size="12.0" />
+                     </font>
+                  </Text>
+                  <TextField fx:id="businessName" layoutX="85.0" layoutY="199.0" prefHeight="30.0" prefWidth="220.0" promptText="mandatory" styleClass="textfieldColor">
+                     <font>
+                        <Font name="Arial" size="12.0" />
+                     </font>
+                  </TextField>
+                  <Text layoutX="86.0" layoutY="290.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Input Company Postal Address">
+                     <font>
+                        <Font name="Arial Bold" size="12.0" />
+                     </font>
+                  </Text>
+                  <JFXTextArea fx:id="postalAddress" layoutX="85.0" layoutY="300.0" maxWidth="221.0" minWidth="220.0" prefHeight="133.0" prefWidth="220.0" styleClass="topBanner" />
+                  <Text layoutX="415.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Input Org/Company Email">
+                     <font>
+                        <Font name="Arial Bold" size="12.0" />
+                     </font>
+                  </Text>
+                  <TextField fx:id="businessEmail" layoutX="414.0" layoutY="104.0" prefHeight="30.0" prefWidth="220.0" promptText="mandatory" styleClass="textfieldColor">
+                     <font>
+                        <Font name="Arial" size="12.0" />
+                     </font>
+                  </TextField>
+                  <Text layoutX="414.0" layoutY="246.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select Business Type">
+                     <font>
+                        <Font name="Arial Bold" size="12.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="413.0" layoutY="396.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select Registration Date">
+                     <font>
+                        <Font name="Arial Bold" size="12.0" />
+                     </font>
+                  </Text>
+                  <JFXDatePicker fx:id="registrationDate" layoutX="413.0" layoutY="404.0" minHeight="30.0" prefWidth="220.0" styleClass="textfieldColor" />
+                  <JFXButton graphicTextGap="10.0" layoutX="81.0" layoutY="492.0" onAction="#updateOrganizationDetails" prefHeight="30.0" prefWidth="220.0" styleClass="btnSubmit" text="Update" textFill="WHITE">
+                     <font>
+                        <Font name="Arial" size="12.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIconView fill="WHITE" glyphName="PENCIL_SQUARE" size="20" />
+                     </graphic>
+                  </JFXButton>
+                  <JFXButton graphicTextGap="10.0" layoutX="413.0" layoutY="492.0" onAction="#CloseOrgUpdateWindow" prefHeight="30.0" prefWidth="220.0" styleClass="btnCancel" text="Close" textFill="WHITE">
+                     <font>
+                        <Font name="Arial" size="12.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIconView fill="WHITE" glyphName="TIMES_CIRCLE" size="20" />
+                     </graphic>
+                  </JFXButton>
+                  <JFXComboBox fx:id="businessType" layoutX="414.0" layoutY="256.0" minHeight="30.0" prefWidth="220.0" promptText="please select" styleClass="textfieldColor" />
+                  <Label fx:id="labelRegNo" layoutX="314.0" layoutY="35.0" prefHeight="17.0" prefWidth="196.0" />
+               </children>
+            </Pane>
+         </center>
+      </BorderPane>
+   </children>
+</StackPane>
