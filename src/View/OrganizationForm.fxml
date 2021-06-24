@@ -13,7 +13,6 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
 <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1000.0" prefWidth="2000.0" style="-fx-background-color: white;" stylesheets="@../Css/Admin.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.OrganizationFormController">
    <children>
       <BorderPane prefHeight="200.0" prefWidth="200.0">
@@ -26,64 +25,64 @@
                      </font>
                   </Text>
                   <Separator layoutX="42.0" layoutY="61.0" prefHeight="3.0" prefWidth="823.0" />
-                  <Text layoutX="43.0" layoutY="97.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Input Org/Company Registration No">
+                  <Text layoutX="71.0" layoutY="97.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Input Org/Company Registration No">
                      <font>
                         <Font name="Arial Bold" size="12.0" />
                      </font>
                   </Text>
-                  <TextField fx:id="businessRegNo" layoutX="42.0" layoutY="106.0" prefHeight="30.0" prefWidth="220.0" promptText="mandatory" styleClass="textfieldColor">
+                  <TextField fx:id="businessRegNo" layoutX="70.0" layoutY="106.0" prefHeight="30.0" prefWidth="220.0" promptText="mandatory" styleClass="textfieldColor">
                      <font>
                         <Font name="Arial" size="12.0" />
                      </font>
                   </TextField>
-                  <Text layoutX="43.0" layoutY="190.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Input Org/Company Name">
+                  <Text layoutX="71.0" layoutY="190.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Input Org/Company Name">
                      <font>
                         <Font name="Arial Bold" size="12.0" />
                      </font>
                   </Text>
-                  <TextField fx:id="businessName" layoutX="42.0" layoutY="199.0" prefHeight="30.0" prefWidth="220.0" promptText="mandatory" styleClass="textfieldColor">
+                  <TextField fx:id="businessName" layoutX="70.0" layoutY="199.0" prefHeight="30.0" prefWidth="220.0" promptText="mandatory" styleClass="textfieldColor">
                      <font>
                         <Font name="Arial" size="12.0" />
                      </font>
                   </TextField>
-                  <Text layoutX="43.0" layoutY="290.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Input Company Postal Address">
+                  <Text layoutX="71.0" layoutY="290.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Input Company Postal Address">
                      <font>
                         <Font name="Arial Bold" size="12.0" />
                      </font>
                   </Text>
-                  <JFXTextArea fx:id="postalAddress" layoutX="42.0" layoutY="300.0" maxWidth="221.0" minWidth="220.0" prefHeight="133.0" prefWidth="220.0" styleClass="topBanner" />
-                  <Text layoutX="333.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Input Org/Company Email">
+                  <JFXTextArea fx:id="postalAddress" layoutX="70.0" layoutY="300.0" maxWidth="221.0" minWidth="220.0" prefHeight="133.0" prefWidth="220.0" styleClass="topBanner" />
+                  <Text layoutX="426.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Input Org/Company Email">
                      <font>
                         <Font name="Arial Bold" size="12.0" />
                      </font>
                   </Text>
-                  <TextField fx:id="businessEmail" layoutX="332.0" layoutY="104.0" prefHeight="30.0" prefWidth="220.0" promptText="mandatory" styleClass="textfieldColor">
+                  <TextField fx:id="businessEmail" layoutX="425.0" layoutY="105.0" prefHeight="30.0" prefWidth="220.0" promptText="mandatory" styleClass="textfieldColor">
                      <font>
                         <Font name="Arial" size="12.0" />
                      </font>
                   </TextField>
-                  <Text layoutX="332.0" layoutY="190.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Input Org/Company Contact">
+                  <Text layoutX="425.0" layoutY="191.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Input Org/Company Contact">
                      <font>
                         <Font name="Arial Bold" size="12.0" />
                      </font>
                   </Text>
-                  <TextField fx:id="businessContact" layoutX="331.0" layoutY="199.0" prefHeight="30.0" prefWidth="220.0" promptText="mandatory" styleClass="textfieldColor">
+                  <TextField fx:id="businessContact" layoutX="424.0" layoutY="200.0" prefHeight="30.0" prefWidth="220.0" promptText="mandatory" styleClass="textfieldColor">
                      <font>
                         <Font name="Arial" size="12.0" />
                      </font>
                   </TextField>
-                  <Text layoutX="332.0" layoutY="290.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select Business Type">
+                  <Text layoutX="425.0" layoutY="291.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select Business Type">
                      <font>
                         <Font name="Arial Bold" size="12.0" />
                      </font>
                   </Text>
-                  <Text layoutX="331.0" layoutY="396.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select Registration Date">
+                  <Text layoutX="424.0" layoutY="397.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select Registration Date">
                      <font>
                         <Font name="Arial Bold" size="12.0" />
                      </font>
                   </Text>
-                  <JFXDatePicker fx:id="registrationDate" layoutX="331.0" layoutY="404.0" minHeight="30.0" prefWidth="220.0" styleClass="textfieldColor" />
-                  <JFXButton graphicTextGap="10.0" layoutX="614.0" layoutY="352.0" onAction="#registerOrganization" prefHeight="30.0" prefWidth="220.0" styleClass="btnSubmit" text="Save" textFill="WHITE">
+                  <JFXDatePicker fx:id="registrationDate" layoutX="424.0" layoutY="405.0" minHeight="30.0" prefWidth="220.0" styleClass="textfieldColor" />
+                  <JFXButton graphicTextGap="10.0" layoutX="424.0" layoutY="481.0" onAction="#registerOrganization" prefHeight="30.0" prefWidth="100.0" styleClass="btnSubmit" text="Save" textFill="WHITE">
                      <font>
                         <Font name="Arial" size="12.0" />
                      </font>
@@ -91,7 +90,7 @@
                         <FontAwesomeIconView fill="WHITE" glyphName="CHECK_SQUARE_ALT" size="20" />
                      </graphic>
                   </JFXButton>
-                  <JFXButton graphicTextGap="10.0" layoutX="614.0" layoutY="404.0" onAction="#canceOrganizationRegistration" prefHeight="30.0" prefWidth="220.0" styleClass="btnCancel" text="Cancel" textFill="WHITE">
+                  <JFXButton graphicTextGap="10.0" layoutX="545.0" layoutY="481.0" onAction="#canceOrganizationRegistration" prefHeight="30.0" prefWidth="100.0" styleClass="btnCancel" text="Cancel" textFill="WHITE">
                      <font>
                         <Font name="Arial" size="12.0" />
                      </font>
@@ -99,7 +98,7 @@
                         <FontAwesomeIconView fill="WHITE" glyphName="TIMES_CIRCLE" size="20" />
                      </graphic>
                   </JFXButton>
-                  <JFXComboBox fx:id="businessType" layoutX="332.0" layoutY="300.0" minHeight="30.0" prefWidth="220.0" promptText="please select" styleClass="textfieldColor" />
+                  <JFXComboBox fx:id="businessType" layoutX="425.0" layoutY="301.0" minHeight="30.0" prefWidth="220.0" promptText="please select" styleClass="textfieldColor" />
                </children>
             </Pane>
          </center>

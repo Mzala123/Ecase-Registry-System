@@ -122,7 +122,7 @@ public class UpdateClientController implements Initializable {
     private void setPersonValues(){
         Person person = new Person();
         person.setPersonDataOnFields(ClientListController.tempNationalId.getText());
-        labelNationalId.setText(ClientListController.tempNationalId.getText());
+       // labelNationalId.setText(ClientListController.tempNationalId.getText());
         tempLabel= labelNationalId;
         nationaId.setText(person.getNationalId());
         fname.setText(person.getFirstName());

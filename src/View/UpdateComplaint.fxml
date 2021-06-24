@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@../Css/Admin.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.UpdateComplaintController">
+   <children>
+      <BorderPane prefHeight="200.0" prefWidth="200.0">
+         <top>
+            <Pane prefHeight="70.0" prefWidth="1100.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+               <children>
+                  <Text layoutX="30.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Edit complaint  details">
+                     <font>
+                        <Font name="Arial Bold" size="16.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="29.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Case allocator edits the  lodged complaints">
+                     <font>
+                        <Font name="Arial" size="12.0" />
+                     </font>
+                  </Text>
+               </children>
+               <BorderPane.margin>
+                  <Insets bottom="5.0" />
+               </BorderPane.margin>
+            </Pane>
+         </top>
+         <center>
+            <Pane prefHeight="200.0" prefWidth="220.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+               <children>
+                  <Text layoutX="31.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Change the details ">
+                     <font>
+                        <Font name="Arial Bold" size="12.0" />
+                     </font>
+                  </Text>
+                  <Separator layoutX="30.0" layoutY="47.0" prefHeight="6.0" prefWidth="731.0" />
+                  <Text layoutX="29.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nature of complaint">
+                     <font>
+                        <Font name="Arial" size="12.0" />
+                     </font>
+                  </Text>
+                  <JFXTextArea fx:id="complaintDesc" layoutX="443.0" layoutY="222.0" maxWidth="429.0" minWidth="220.0" prefHeight="197.0" prefWidth="290.0">
+                     <styleClass>
+                        <String fx:value="topBanner" />
+                        <String fx:value="textfieldColor" />
+                     </styleClass>
+                  </JFXTextArea>
+                  <Text layoutX="30.0" layoutY="378.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mode of registration">
+                     <font>
+                        <Font name="Arial" size="12.0" />
+                     </font>
+                  </Text>
+                  <ComboBox fx:id="regMode" layoutX="28.0" layoutY="388.0" prefHeight="30.0" prefWidth="290.0" styleClass="textfieldColor" />
+                  <Text layoutX="32.0" layoutY="226.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Financial Year">
+                     <font>
+                        <Font name="Arial" size="12.0" />
+                     </font>
+                  </Text>
+                  <ComboBox fx:id="financialYear" layoutX="30.0" layoutY="247.0" prefHeight="30.0" prefWidth="290.0" styleClass="textfieldColor" />
+                  <Text layoutX="439.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Department">
+                     <font>
+                        <Font name="Arial" size="12.0" />
+                     </font>
+                  </Text>
+                  <JFXButton graphicTextGap="10.0" layoutX="445.0" layoutY="451.0" onAction="#updateComplaint" prefHeight="30.0" prefWidth="130.0" styleClass="btnSubmit" text="Submit" textFill="WHITE">
+                     <font>
+                        <Font name="Arial" size="12.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIconView fill="WHITE" glyphName="PENCIL_SQUARE" size="20" />
+                     </graphic>
+                  </JFXButton>
+                  <JFXButton graphicTextGap="10.0" layoutX="603.0" layoutY="451.0" onAction="#cancelRegistration" prefHeight="30.0" prefWidth="130.0" styleClass="btnCancel" text="Close" textFill="WHITE">
+                     <font>
+                        <Font name="Arial" size="12.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIconView fill="WHITE" glyphName="TIMES_CIRCLE" size="20" />
+                     </graphic>
+                  </JFXButton>
+                  <ComboBox fx:id="department" layoutX="439.0" layoutY="89.0" prefHeight="30.0" prefWidth="290.0" styleClass="textfieldColor" />
+                  <Text layoutX="443.0" layoutY="203.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Complaint Summary">
+                     <font>
+                        <Font name="Arial" size="12.0" />
+                     </font>
+                  </Text>
+                  <ComboBox fx:id="natureComplaint" layoutX="28.0" layoutY="90.0" prefHeight="30.0" prefWidth="290.0" styleClass="textfieldColor" />
+               </children>
+            </Pane>
+         </center>
+      </BorderPane>
+   </children>
+</StackPane>

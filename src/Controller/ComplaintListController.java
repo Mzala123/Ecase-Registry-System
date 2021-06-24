@@ -138,16 +138,53 @@ public class ComplaintListController implements Initializable {
     }
 
     private void backToCasePanel(ActionEvent event) {
-        SwitchWindow window = new SwitchWindow();
-        window.loadNewWindow("/View/CasePanel.fxml", "List of complaints", true, true);
-        mainStackPane.getScene().getWindow().hide();
+
+        try {
+            Task<Void> task = new Task<Void>() {
+                @Override
+                protected Void call() throws Exception {
+                    Thread.sleep(1000);
+
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            SwitchWindow window = new SwitchWindow();
+                            window.loadNewWindow("/View/CasePanel.fxml", "List of complaints", true, true);
+                            mainStackPane.getScene().getWindow().hide();
+                        }
+                    });
+                    return null;
+                }
+            };
+            new Thread(task).start();
+        } catch (Exception ex) {
+
+        }
     }
 
     @FXML
     private void CasePanelArea(ActionEvent event) {
-        SwitchWindow window = new SwitchWindow();
-        window.loadNewWindow("/View/CasePanel.fxml", "List of complaints", true, true);
-        mainStackPane.getScene().getWindow().hide();
+         try {
+            Task<Void> task = new Task<Void>() {
+                @Override
+                protected Void call() throws Exception {
+                    Thread.sleep(1000);
+
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            SwitchWindow window = new SwitchWindow();
+                            window.loadNewWindow("/View/CasePanel.fxml", "List of complaints", true, true);
+                            mainStackPane.getScene().getWindow().hide();
+                        }
+                    });
+                    return null;
+                }
+            };
+            new Thread(task).start();
+        } catch (Exception ex) {
+
+        }
     }
 
 }

@@ -89,7 +89,7 @@
                      </graphic>
                   </JFXButton>
                   <ComboBox fx:id="department" layoutX="439.0" layoutY="89.0" prefHeight="30.0" prefWidth="290.0" styleClass="textfieldColor" />
-                  <Text layoutX="443.0" layoutY="203.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Complaint Description">
+                  <Text layoutX="443.0" layoutY="203.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Complaint Summary">
                      <font>
                         <Font name="Arial" size="12.0" />
                      </font>

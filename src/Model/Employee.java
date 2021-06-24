@@ -345,7 +345,7 @@ public class Employee {
                                 } else {
 
                                     notification = new Notification(3, "CREATING USER", "USER ADDED TO NEW"
-                                            + " TABLE SUCCESSFULLY");
+                                            + "TABLE SUCCESSFULLY");
                                     notification.start();
                                 }
 

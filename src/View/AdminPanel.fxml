@@ -105,6 +105,14 @@
          <top>
             <HBox alignment="CENTER_RIGHT" prefHeight="74.0" prefWidth="762.0" styleClass="topBanner" BorderPane.alignment="CENTER">
                <children>
+                  <Label text="Ecase Registry System" textFill="WHITE">
+                     <font>
+                        <Font name="Arial Bold" size="40.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="635.0" />
+                     </HBox.margin>
+                  </Label>
                   <JFXButton onAction="#logOut" styleClass="btnLogOut" text="LOG OUT" textFill="WHITE">
                      <graphic>
                         <FontAwesomeIconView fill="WHITE" glyphName="SIGN_OUT" size="20" />

@@ -58,7 +58,7 @@ public class ClientOrganizationListController implements Initializable {
     public static ObservableList<Organization> orgList = FXCollections.observableArrayList();
     
     public static int index = 0;
-    private final int rowsPerPage = 6;
+    private final int rowsPerPage = 10;
     
      public static StackPane tempRespondentStackPane;
     @FXML

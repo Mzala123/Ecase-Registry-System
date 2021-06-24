@@ -58,7 +58,7 @@ public class ClientListController implements Initializable {
     FilteredList<Person> filteredList = new FilteredList<>(personList,e->true);
     
     public static int index = 0;
-    private final int rowsPerPage = 6;
+    private final int rowsPerPage = 10;
     
     public static StackPane tempComplainantPane;
     

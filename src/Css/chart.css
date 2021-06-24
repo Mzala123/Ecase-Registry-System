@@ -1,0 +1,23 @@
+
+
+.chart-bar{
+    -fx-background-color:#ccffff;
+}
+.data0 .chart-bar{
+    -fx-background-color: linear-gradient(to top right,#088584,#daa520);
+}
+.data1 .chart-bar{
+    -fx-background-color: linear-gradient(to top right,#088584,#daa520);
+}
+.data2 .chart-bar{
+    
+}
+.data3 .chart-bar{
+    
+}
+.data4 .chart-bar{
+    
+}
+.data5 .chart-bar{
+    
+}

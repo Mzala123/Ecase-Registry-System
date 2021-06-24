@@ -5,22 +5,32 @@
  */
 package Model;
 
+import Controller.CaseAllocatorDashboardController;
 import Controller.ComplaintListController;
 //import static Controller.ComplaintListController.arrayComlainptList;
-import static Controller.ComplaintListController.list;
+import Controller.ComplaintSummaryListController;
 import com.jfoenix.controls.JFXButton;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
@@ -28,10 +38,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Paint;
+import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
-import org.controlsfx.glyphfont.Glyph;
 
 /**
  *
@@ -45,16 +59,23 @@ public class Complaint {
     private String complaintDesc;
     private String financialYear;
     private String department;
+    private int complaintId;
 
     private String complaint_DetailId;
     private String natureComplaint;
     private JFXButton iconButton;
     private JFXButton iconButton1;
 
+    private JFXButton button;
+
     private ImageView imageView;
 
     DBHandler handler = new DBHandler();
     PreparedStatement preparedStatement = null;
+
+    private int totalCases;
+    private int allConsumerCases;
+    private int allCompetitionCases;
 
     public Complaint() {
     }
@@ -66,6 +87,17 @@ public class Complaint {
         this.complaintDesc = complaintDesc;
         this.financialYear = financialYear;
         this.department = department;
+    }
+
+    public Complaint(String complaintNature, String regMode, String regDate, String complaintDesc, String financialYear, String department, int complaintId, JFXButton button) {
+        this.complaintNature = complaintNature;
+        this.regMode = regMode;
+        this.regDate = regDate;
+        this.complaintDesc = complaintDesc;
+        this.financialYear = financialYear;
+        this.department = department;
+        this.complaintId = complaintId;
+        this.button = button;
     }
 
     public Complaint(String complaint_DetailId, String natureComplaint, JFXButton iconButton, JFXButton iconButton1) {
@@ -175,6 +207,46 @@ public class Complaint {
         return imageView;
     }
 
+    public void setButton(JFXButton button) {
+        this.button = button;
+    }
+
+    public JFXButton getButton() {
+        return button;
+    }
+
+    public void setComplaintId(int complaintId) {
+        this.complaintId = complaintId;
+    }
+
+    public int getComplaintId() {
+        return complaintId;
+    }
+
+    public int getTotalCases() {
+        return totalCases;
+    }
+
+    public void setTotalCases(int totalCases) {
+        this.totalCases = totalCases;
+    }
+
+    public int getAllConsumerCases() {
+        return allConsumerCases;
+    }
+
+    public void setAllConsumerCases(int allConsumerCases) {
+        this.allConsumerCases = allConsumerCases;
+    }
+
+    public int getAllCompetitionCases() {
+        return allCompetitionCases;
+    }
+
+    public void setAllCompetitionCases(int allCompetitionCases) {
+        this.allCompetitionCases = allCompetitionCases;
+    }
+
     public void registerComplaint() {
         try {
 
@@ -215,11 +287,21 @@ public class Complaint {
 
         int complaint_detailId = 0;
         String complaintName = "";
-        String query = "SELECT * from complaint "
+        String caseOfficer = "";
+        String firstname = "";
+        String lastname = "";
+        /*String query = "SELECT * from complaint "
                 + "LEFT JOIN complaint_details ON complaint.complaintId = complaint_details.complaintId "
                 + "LEFT JOIN person ON  person.nationalId = complaint_details.complainantId "
                 + "LEFT JOIN organization ON organization.registrationNo = complaint_details.respondentId "
+                + "where complaint_details.detailId > 0 ORDER BY complaint_details.detailId";*/
+        String query = "SELECT complaint_details.detailId, complaint.natureComplaint, userofficer.Firstname as Fname,"
+                + "userofficer.Lastname as Lname from complaint LEFT JOIN complaint_details ON complaint.complaintId = complaint_details.complaintId \n"
+                + "LEFT JOIN person ON person.nationalId = complaint_details.complainantId \n"
+                + "LEFT JOIN organization ON organization.registrationNo = complaint_details.respondentId \n"
+                + "LEFT JOIN userofficer ON userofficer.Id = complaint_details.caseOfficerId "
                 + "where complaint_details.detailId > 0 ORDER BY complaint_details.detailId";
+
         try {
             preparedStatement = handler.connection.prepareStatement(query);
             handler.result = preparedStatement.executeQuery(query);
@@ -227,8 +309,11 @@ public class Complaint {
             while (handler.result.next()) {
                 complaint_detailId = handler.result.getInt("detailId");
                 complaintName = handler.result.getString("natureComplaint");
+                firstname = handler.result.getString("Fname");
+                lastname = handler.result.getString("Lname");
+                caseOfficer = firstname + " " + lastname;
                 ImageView imageView = setImage();
-                HBox box = createHBox(imageView, complaint_detailId, complaintName);
+                HBox box = createHBox(imageView, caseOfficer, complaint_detailId, complaintName);
                 ComplaintListController.tempVbox.getChildren().addAll(box);
                 // ComplaintListController.complaintList.getItems().add(box);
             }
@@ -239,7 +324,7 @@ public class Complaint {
 
     }
 
-    private HBox createHBox(ImageView Icon, int caseNo, String caseName) {
+    private HBox createHBox(ImageView Icon, String caseOfficer, int caseNo, String caseName) {
         HBox hbox = new HBox();
         hbox.setPrefSize(360, 60);
         //  hbox.setStyle("-fx-background-color: white;");
@@ -261,6 +346,9 @@ public class Complaint {
         labelCaseName.setStyle("-fx-padding-left:5px;");
         labelCaseNo.setStyle("-fx-padding-left:5px;");
 
+        Label labelOfficer = new Label("Officer " + caseOfficer);
+        labelOfficer.setStyle("-fx-padding-left:5px;");
+
         Separator separator = new Separator();
         separator.setOrientation(Orientation.HORIZONTAL);
         separator.setStyle(""
@@ -272,14 +360,14 @@ public class Complaint {
         separator.setScaleZ(.5);
         separator.setScaleY(.5);
 
-        vboxMin.getChildren().addAll(labelCaseNo, labelCaseName);
+        vboxMin.getChildren().addAll(labelOfficer, labelCaseNo, labelCaseName);
         hbox.getChildren().addAll(vbox, vboxMin);
         hbox.setOnMouseClicked((event) -> {
-                    ComplaintListController.tempCaseDetails.getChildren().clear();
-                    
-                    displayComplaintDetails(caseNo);
-                   
-                }); 
+            ComplaintListController.tempCaseDetails.getChildren().clear();
+
+            displayComplaintDetails(caseNo);
+
+        });
 
         return hbox;
     }
@@ -324,7 +412,7 @@ public class Complaint {
                 + "LEFT JOIN complaint_details ON complaint.complaintId = complaint_details.complaintId "
                 + "LEFT JOIN person ON person.nationalId = complaint_details.complainantId "
                 + "LEFT JOIN organization ON organization.registrationNo = complaint_details.respondentId "
-                + "where complaint_details.detailId = '"+complaint_id+"'";
+                + "where complaint_details.detailId = '" + complaint_id + "'";
         try {
             preparedStatement = handler.connection.prepareStatement(query);
             handler.result = preparedStatement.executeQuery(query);
@@ -335,7 +423,7 @@ public class Complaint {
                 national_id.getStyleClass().add("labelBold");
                 String nationalId = handler.result.getString("nationalId");
                 Label idValue = new Label(nationalId);
-                
+
                 Label fullname = new Label(("Complainant Fullname"));
                 fullname.getStyleClass().add("labelBold");
                 String firstname = handler.result.getString("firstname");
@@ -346,7 +434,7 @@ public class Complaint {
                 dob.getStyleClass().add("labelBold");
                 String dateBirth = handler.result.getString("dob");
                 Label dobValue = new Label(dateBirth);
-                
+
                 Label gender = new Label("Gender");
                 gender.getStyleClass().add("labelBold");
                 String sex = handler.result.getString("gender");
@@ -431,13 +519,13 @@ public class Complaint {
                 Label businesemailValue = new Label(businessemail);
 
                 String caseName = handler.result.getString("natureComplaint");
-                
+
                 Label casename = new Label(caseName);
                 casename.getStyleClass().add("labelBold");
                 casename.setWrapText(true);
-              //  casename.setMaxWidth(800);
+                //  casename.setMaxWidth(800);
                 casename.setTextAlignment(TextAlignment.JUSTIFY);
-                
+
                 //First row data
                 HBox TopHbox = new HBox();
                 TopHbox.setPadding(new Insets(0, 0, 0, 10));
@@ -611,7 +699,7 @@ public class Complaint {
                 TopicBarHbox.setAlignment(Pos.CENTER_LEFT);
 
                 TopicBarHbox.getChildren().add(casename);
-                
+
                 HBox section1 = new HBox();
                 section1.setPadding(new Insets(4, 4, 0, 5));
                 section1.setPrefSize(960, 40);
@@ -619,7 +707,7 @@ public class Complaint {
                 section1.setAlignment(Pos.CENTER_LEFT);
                 Label labelSection1 = new Label("Complainant Details");
                 section1.getChildren().addAll(labelSection1);
-                
+
                 HBox section2 = new HBox();
                 section2.setPadding(new Insets(4, 4, 0, 5));
                 section2.setPrefSize(960, 40);
@@ -627,7 +715,7 @@ public class Complaint {
                 section2.setAlignment(Pos.CENTER_LEFT);
                 Label labelSection2 = new Label("Complaint Details");
                 section2.getChildren().addAll(labelSection2);
-                
+
                 HBox section3 = new HBox();
                 section3.setPadding(new Insets(4, 4, 0, 5));
                 section3.setPrefSize(960, 40);
@@ -635,7 +723,6 @@ public class Complaint {
                 section3.setAlignment(Pos.CENTER_LEFT);
                 Label labelSection3 = new Label("Respondent Details");
                 section3.getChildren().addAll(labelSection3);
-
 
                 //end of topic bar/
                 TopHbox.getChildren().addAll(firstTopVbox, secondTopVbox);
@@ -646,11 +733,11 @@ public class Complaint {
                 complaintHbox2.getChildren().addAll(regModeVbox, regDateVbox);
                 respondentHbox1.getChildren().addAll(businessRegBoVBox, orgNameVbox);
                 resMainHbox.getChildren().addAll(resRowDataOne, resRowDataTwo, resRowDataThree);
-                
+
                 ComplaintListController.tempBorderPane.setTop(TopicBarHbox);
                 ComplaintListController.tempCaseDetails.getChildren().addAll(section1, TopHbox,
                         secondRowHbox, thirdMainHbox, fourthMainHbox, section2, fifthRowData, complaintHbox1,
-                        complaintHbox2,section3, respondentHbox1, resMainHbox);
+                        complaintHbox2, section3, respondentHbox1, resMainHbox);
 
             }
         } catch (SQLException ex) {
@@ -658,4 +745,447 @@ public class Complaint {
         }
 
     }
+
+    public void complaintDataList() {
+        try {
+            String query = "Select * from ecase.complaint";
+            preparedStatement = handler.connection.prepareStatement(query);
+            handler.result = preparedStatement.executeQuery(query);
+            ComplaintSummaryListController.complaintList.clear();
+            while (handler.result.next()) {
+                complaintId = handler.result.getInt("complaintId");
+                complaintNature = handler.result.getString("natureComplaint");
+                complaintDesc = handler.result.getString("complaintDescription");
+                regMode = handler.result.getString("registrationMode");
+                financialYear = handler.result.getString("financialYear");
+                department = handler.result.getString("department");
+                regDate = handler.result.getString("regDate");
+                ComplaintSummaryListController.complaintList.add(new Complaint(complaintNature, regMode,
+                        regDate, complaintDesc, financialYear, department, complaintId, selectRowToEdit(complaintId)));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Complaint.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private JFXButton selectRowToEdit(int id) {
+        button = new JFXButton();
+        FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.PENCIL);
+        button.setStyle("-fx-background-color: #c7e0e0;");
+        button.getStyleClass().add("circleButton");
+        icon.setGlyphSize(20);
+        button.setId(id + "");
+        button.setPrefWidth(35);
+        button.setPrefHeight(35);
+        button.setGraphic(icon);
+        icon.setFill(Paint.valueOf("#daa520"));
+        button.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+        button.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println(id);
+                try {
+                    ComplaintSummaryListController.tempLabelComplaintId.setText(id + "");
+                    Parent root = FXMLLoader.load(getClass().getResource("/View/UpdateComplaint.fxml"));
+                    Stage stage = new Stage();
+                    Scene scene = new Scene(root);
+                    stage.setScene(scene);
+                    stage.setTitle("Update Complaint");
+                    stage.setMaximized(false);
+                    stage.initStyle(StageStyle.UTILITY);
+                    stage.initModality(Modality.APPLICATION_MODAL);
+                    stage.show();
+                    //(id);
+
+                    System.out.println("is it is it " + id);
+
+                } catch (IOException ex) {
+                    Logger.getLogger(Person.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+
+        });
+        return button;
+    }
+
+    public String setComplaintValues(String id) {
+        try {
+            String query = "SELECT * FROM ecase.complaint where complaintId='" + id + "'";
+            preparedStatement = handler.connection.prepareStatement(query);
+            handler.result = preparedStatement.executeQuery(query);
+            if (handler.result.next()) {
+                complaintNature = handler.result.getString("natureComplaint");
+                complaintDesc = handler.result.getString("complaintDescription");
+                financialYear = handler.result.getString("financialYear");
+                department = handler.result.getString("department");
+                regMode = handler.result.getString("registrationMode");
+
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Complaint.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return id;
+    }
+
+    public void updateCoplaint() {
+        try {
+            String query = "UPDATE ecase.complaint SET natureComplaint=?, complaintDescription=?,"
+                    + "registrationMode=?, financialYear=?, department=? "
+                    + "where complaintId='" + ComplaintSummaryListController.tempLabelComplaintId.getText() + "'";
+            preparedStatement = handler.connection.prepareStatement(query);
+            preparedStatement.setString(1, getComplaintNature());
+            preparedStatement.setString(2, getComplaintDesc());
+            preparedStatement.setString(3, getRegMode());
+            preparedStatement.setString(4, getFinancialYear());
+            preparedStatement.setString(5, getDepartment());
+            if (preparedStatement.execute() == true) {
+                Notifications notification = Notifications.create();
+                notification.title("Updating Client Person Details");
+                notification.text("Failed to update");
+                notification.hideAfter(Duration.seconds(3));
+                notification.position(Pos.CENTER);
+                notification.darkStyle();
+                notification.showError();
+            } else {
+
+                Notifications notification = Notifications.create();
+                notification.title("Updating Client Person details");
+                notification.text("Update Done Sucessfully");
+                notification.hideAfter(Duration.seconds(3));
+                notification.position(Pos.TOP_RIGHT);
+                notification.darkStyle();
+                notification.showConfirm();
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Complaint.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void AllRegisteredCases() {
+        try {
+            String query = "Select Count(*) as totalCases from ecase.complaint";
+            preparedStatement = handler.connection.prepareStatement(query);
+            handler.result = preparedStatement.executeQuery(query);
+            while (handler.result.next()) {
+                totalCases = handler.result.getInt("totalCases");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Complaint.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        CaseAllocatorDashboardController.tempAllCaseLabel.setText(totalCases + "");
+    }
+
+    public void AllConsumerCases() {
+        CaseAllocatorDashboardController.tempConsumerGauge.setMaxValue(totalCases);
+        System.out.println("Total cases" + totalCases);
+        try {
+            String query = "Select Count(*) as totalCases from ecase.complaint"
+                    + " where department='Consumer Affairs'";
+            preparedStatement = handler.connection.prepareStatement(query);
+            handler.result = preparedStatement.executeQuery(query);
+            while (handler.result.next()) {
+                allConsumerCases = handler.result.getInt("totalCases");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Complaint.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        CaseAllocatorDashboardController.tempConsumerGauge.setValue(allConsumerCases);
+    }
+
+    public void AllCompetitionCases() {
+        CaseAllocatorDashboardController.tempCompetitionGauge.setMaxValue(totalCases);
+        try {
+            String query = "Select Count(*) as totalCases from ecase.complaint"
+                    + " where department='Competition Affairs'";
+            preparedStatement = handler.connection.prepareStatement(query);
+            handler.result = preparedStatement.executeQuery(query);
+            while (handler.result.next()) {
+                allCompetitionCases = handler.result.getInt("totalCases");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Complaint.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        CaseAllocatorDashboardController.tempCompetitionGauge.setValue(allCompetitionCases);
+    }
+
+    public void natureComplaintGraph() {
+        int predatoryCount = 0;
+        int hoardingCount = 0;
+        int unconscionableCount = 0;
+        int harmfulCount = 0;
+        int liabilityCount = 0;
+        int discrimanatoryCount = 0;
+        try {
+            String query = "Select count(If(natureComplaint='Alleged Predatory Pricing', 1, NULL)) as predatoryCount, \n"
+                    + "count(If(natureComplaint='Alleged Hoarding()',1,NULL)) as hoardingCount,\n"
+                    + "count(If(natureComplaint='Alleged Unconscionable conduct',1,NULL)) as unconscionableCount,\n"
+                    + "count(If(natureComplaint='Alleged supply of products likely to cause harm when consumed',1,NULL)) as harmfulCount,\n"
+                    + "count(If(natureComplaint='Alleged Excluding liability for defective products',1,NULL)) as liabilityCount,\n"
+                    + "count(If(natureComplaint='Alleged Discriminatory pricing',1,NULL)) as discrimatoryCount\n"
+                    + "from complaint";
+            preparedStatement = handler.connection.prepareStatement(query);
+            handler.result = preparedStatement.executeQuery(query);
+            if (handler.result.next()) {
+                predatoryCount = handler.result.getInt("predatoryCount");
+                hoardingCount = handler.result.getInt("hoardingCount");
+                unconscionableCount = handler.result.getInt("unconscionableCount");
+                harmfulCount = handler.result.getInt("harmfulCount");
+                liabilityCount = handler.result.getInt("liabilityCount");
+                discrimanatoryCount = handler.result.getInt("discrimatoryCount");
+            }
+
+            final String predatory = "Predatory Pricing";
+            final String hoarding = "Hoarding";
+            final String unconscionable = "Unconscionable conduct";
+            final String harmful = "Harmful Product Supply";
+            final String liability = "Excluding liability";
+            final String discrimanatory = "Discrimanatory Pricing";
+
+            XYChart.Series series1 = new XYChart.Series();
+            series1.setName("Alleged Nature of Complaint");
+
+            final XYChart.Data<String, Number> data = new XYChart.Data(predatory, predatoryCount);
+            data.nodeProperty().addListener(new ChangeListener<Node>() {
+                @Override
+                public void changed(ObservableValue<? extends Node> ov, Node oldNode, final Node node) {
+                    if (node != null) {
+                        node.setStyle("-fx-background-color:linear-gradient(to top right,#088584,#daa520)");
+                        displayLabelForData(data);
+                    }
+                }
+            });
+
+            final XYChart.Data<String, Number> data1 = new XYChart.Data(hoarding, hoardingCount);
+            data1.nodeProperty().addListener(new ChangeListener<Node>() {
+                @Override
+                public void changed(ObservableValue<? extends Node> ov, Node oldNode, final Node node) {
+                    if (node != null) {
+                        node.setStyle("-fx-background-color:linear-gradient(to top right,#088584,#daa520)");
+                        displayLabelForData(data1);
+                    }
+                }
+            });
+
+            final XYChart.Data<String, Number> data2 = new XYChart.Data(unconscionable, unconscionableCount);
+            data2.nodeProperty().addListener(new ChangeListener<Node>() {
+                @Override
+                public void changed(ObservableValue<? extends Node> ov, Node oldNode, final Node node) {
+                    if (node != null) {
+                        node.setStyle("-fx-background-color:linear-gradient(to top right,#088584,#daa520)");
+                        displayLabelForData(data2);
+                    }
+                }
+            });
+
+            final XYChart.Data<String, Number> data3 = new XYChart.Data(harmful, harmfulCount);
+            data3.nodeProperty().addListener(new ChangeListener<Node>() {
+                @Override
+                public void changed(ObservableValue<? extends Node> ov, Node oldNode, final Node node) {
+                    if (node != null) {
+                        node.setStyle("-fx-background-color:linear-gradient(to top right,#088584,#daa520)");
+                        displayLabelForData(data3);
+                    }
+                }
+            });
+
+            final XYChart.Data<String, Number> data4 = new XYChart.Data(liability, liabilityCount);
+            data4.nodeProperty().addListener(new ChangeListener<Node>() {
+                @Override
+                public void changed(ObservableValue<? extends Node> ov, Node oldNode, final Node node) {
+                    if (node != null) {
+                        node.setStyle("-fx-background-color:linear-gradient(to top right,#088584,#daa520)");
+                        displayLabelForData(data4);
+                    }
+                }
+            });
+
+            final XYChart.Data<String, Number> data5 = new XYChart.Data(discrimanatory, discrimanatoryCount);
+            data5.nodeProperty().addListener(new ChangeListener<Node>() {
+                @Override
+                public void changed(ObservableValue<? extends Node> ov, Node oldNode, final Node node) {
+                    if (node != null) {
+                        node.setStyle("-fx-background-color:linear-gradient(to top right,#088584,#daa520)");
+                        displayLabelForData(data5);
+                    }
+                }
+            });
+
+            series1.getData().addAll(data, data1, data2, data3, data4, data5);
+
+            // CaseAllocatorDashboardController.tempnatureBarChar.getStyleClass().add("chart-bar");
+            CaseAllocatorDashboardController.tempnatureBarChar.getData().addAll(series1);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Complaint.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void modeRegistrationGraph() {
+        int walkCount = 0;
+        int faceBookCount = 0;
+        int websiteCount = 0;
+        int phoneCount = 0;
+        int emailCount = 0;
+        int whatsappCount = 0;
+        int postCount = 0;
+        int otherCount = 0;
+        try {
+            String query = "Select count(If(registrationMode='Walk-In', 1, NULL)) as walkCount, \n"
+                    + "count(If(registrationMode='Facebook', 1, NULL)) as faceBookCount, \n"
+                    + "count(If(registrationMode='Website', 1, NULL)) as websiteCount, \n"
+                    + "count(If(registrationMode='Phone Call', 1, NULL)) as phoneCount, \n"
+                    + "count(If(registrationMode='Email', 1, NULL)) as emailCount, \n"
+                    + "count(If(registrationMode='WhatsApp', 1, NULL)) as whatsappCount, \n"
+                    + "count(If(registrationMode='Post Office', 1, NULL)) as postCount, \n"
+                    + "count(If(registrationMode='Other', 1, NULL)) as otherCount\n"
+                    + "from complaint";
+            preparedStatement = handler.connection.prepareStatement(query);
+            handler.result = preparedStatement.executeQuery(query);
+            if (handler.result.next()) {
+                walkCount = handler.result.getInt("walkCount");
+                faceBookCount = handler.result.getInt("faceBookCount");
+                websiteCount = handler.result.getInt("websiteCount");
+                phoneCount = handler.result.getInt("phoneCount");
+                emailCount = handler.result.getInt("emailCount");
+                whatsappCount = handler.result.getInt("whatsappCount");
+                postCount = handler.result.getInt("postCount");
+                otherCount = handler.result.getInt("otherCount");
+            }
+            final String walkIn= "Walk-In";
+            final String facebook= "Facebook";
+            final String website= "Website";
+            final String phone= "Phone Call";
+            final String email= "Email";
+            final String whatsapp= "WhatsApp";
+            final String post= "Post Office";
+            final String other= "Others";
+            
+            XYChart.Series series1 = new XYChart.Series();
+            series1.setName("Mode of registration");
+
+            final XYChart.Data<String, Number> data = new XYChart.Data(walkIn, walkCount);
+            data.nodeProperty().addListener(new ChangeListener<Node>() {
+                @Override
+                public void changed(ObservableValue<? extends Node> ov, Node oldNode, final Node node) {
+                    if (node != null) {
+                        node.setStyle("-fx-background-color:linear-gradient(to top right,#088584,#daa520)");
+                        displayLabelForData(data);
+                    }
+                }
+            });
+            
+            final XYChart.Data<String, Number> data1 = new XYChart.Data(facebook, faceBookCount);
+            data1.nodeProperty().addListener(new ChangeListener<Node>() {
+                @Override
+                public void changed(ObservableValue<? extends Node> ov, Node oldNode, final Node node) {
+                    if (node != null) {
+                        node.setStyle("-fx-background-color:linear-gradient(to top right,#088584,#daa520)");
+                        displayLabelForData(data1);
+                    }
+                }
+            });
+            
+             final XYChart.Data<String, Number> data2 = new XYChart.Data(website, websiteCount);
+            data2.nodeProperty().addListener(new ChangeListener<Node>() {
+                @Override
+                public void changed(ObservableValue<? extends Node> ov, Node oldNode, final Node node) {
+                    if (node != null) {
+                        node.setStyle("-fx-background-color:linear-gradient(to top right,#088584,#daa520)");
+                        displayLabelForData(data2);
+                    }
+                }
+            });
+            
+            
+               final XYChart.Data<String, Number> data3 = new XYChart.Data(phone, phoneCount);
+            data3.nodeProperty().addListener(new ChangeListener<Node>() {
+                @Override
+                public void changed(ObservableValue<? extends Node> ov, Node oldNode, final Node node) {
+                    if (node != null) {
+                        node.setStyle("-fx-background-color:linear-gradient(to top right,#088584,#daa520)");
+                        displayLabelForData(data3);
+                    }
+                }
+            });
+            
+            
+               final XYChart.Data<String, Number> data4 = new XYChart.Data(email, emailCount);
+            data4.nodeProperty().addListener(new ChangeListener<Node>() {
+                @Override
+                public void changed(ObservableValue<? extends Node> ov, Node oldNode, final Node node) {
+                    if (node != null) {
+                        node.setStyle("-fx-background-color:linear-gradient(to top right,#088584,#daa520)");
+                        displayLabelForData(data4);
+                    }
+                }
+            });
+            
+            
+               final XYChart.Data<String, Number> data5 = new XYChart.Data(whatsapp, whatsappCount);
+            data5.nodeProperty().addListener(new ChangeListener<Node>() {
+                @Override
+                public void changed(ObservableValue<? extends Node> ov, Node oldNode, final Node node) {
+                    if (node != null) {
+                        node.setStyle("-fx-background-color:linear-gradient(to top right,#088584,#daa520)");
+                        displayLabelForData(data5);
+                    }
+                }
+            });
+            
+            
+               final XYChart.Data<String, Number> data6 = new XYChart.Data(post, postCount);
+            data6.nodeProperty().addListener(new ChangeListener<Node>() {
+                @Override
+                public void changed(ObservableValue<? extends Node> ov, Node oldNode, final Node node) {
+                    if (node != null) {
+                        node.setStyle("-fx-background-color:linear-gradient(to top right,#088584,#daa520)");
+                        displayLabelForData(data6);
+                    }
+                }
+            });
+            
+            
+               final XYChart.Data<String, Number> data7 = new XYChart.Data(other, otherCount);
+            data7.nodeProperty().addListener(new ChangeListener<Node>() {
+                @Override
+                public void changed(ObservableValue<? extends Node> ov, Node oldNode, final Node node) {
+                    if (node != null) {
+                        node.setStyle("-fx-background-color:linear-gradient(to top right,#088584,#daa520)");
+                        displayLabelForData(data7);
+                    }
+                }
+            });
+            
+            
+            series1.getData().addAll(data, data1, data2, data3, data4, data5, data6, data7);
+            CaseAllocatorDashboardController.tempregModeBarChar.getData().addAll(series1);
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Complaint.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void displayLabelForData(XYChart.Data<String, Number> data) {
+        final Node node = data.getNode();
+        final Text dataText = new Text(data.getYValue() + "");
+        node.parentProperty().addListener(new ChangeListener<Parent>() {
+            @Override
+            public void changed(ObservableValue<? extends Parent> ov, Parent oldParent, Parent parent) {
+                Group parentGroup = (Group) parent;
+                parentGroup.getChildren().add(dataText);
+            }
+
+        });
+        node.boundsInParentProperty().addListener(new ChangeListener<Bounds>() {
+            @Override
+            public void changed(ObservableValue<? extends Bounds> ov, Bounds oldBounds, Bounds bounds) {
+                dataText.setLayoutX(Math.round(bounds.getMinX() + bounds.getWidth() / 2 - dataText.prefWidth(-1) / 2));
+                dataText.setLayoutY(Math.round(bounds.getMinY() - dataText.prefHeight(-1) * 0.5));
+            }
+        });
+    }
+
 }

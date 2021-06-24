@@ -386,7 +386,7 @@ public class Organization extends Client {
         //int caseno = 0;
         int detailId = selectCase();
         System.out.println(detailId);
-        String query = "Select Id as totalOfficer from ecase.user where Usertype ='Case Officer'";
+        String query = "Select Id as totalOfficer from ecase.userofficer where Usertype ='Case Officer'";
         int seedingValue;
 
         // String caseDetailQuery = "Select detailId from ecase.complaint_details where isAssigned = 0";

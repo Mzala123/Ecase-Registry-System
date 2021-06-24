@@ -38,8 +38,6 @@ public class RegisterComplaintController implements Initializable {
     private ComboBox<String> regMode;
     @FXML
     private ComboBox<String> financialYear;
-    @FXML
-    private JFXTextArea complaintNature;
 
     public static String passdate;
 
@@ -185,6 +183,7 @@ public class RegisterComplaintController implements Initializable {
         
         
     }
+
     
     
 
