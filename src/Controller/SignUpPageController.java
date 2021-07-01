@@ -92,6 +92,8 @@ public class SignUpPageController implements Initializable {
                 try {
                     StackPane paneStage = FXMLLoader.load(getClass().getResource("/View/signUpPage.fxml"));
                     stackpane.getChildren().setAll(paneStage);
+                    
+                    
                 } catch (IOException ex) {
                     Logger.getLogger(SignUpPageController.class.getName()).log(Level.SEVERE, null, ex);
                 }

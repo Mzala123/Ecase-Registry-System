@@ -29,19 +29,19 @@ public class CaseAllocatorDashboardController implements Initializable {
     private SimpleMetroArcGauge consumerGauge;
     @FXML
     private SimpleMetroArcGauge competitionGauge;
-    
+
     public static Label tempAllCaseLabel = new Label();
-    public static  SimpleMetroArcGauge tempConsumerGauge = new SimpleMetroArcGauge();
-    public static  SimpleMetroArcGauge tempCompetitionGauge = new SimpleMetroArcGauge();
+    public static SimpleMetroArcGauge tempConsumerGauge = new SimpleMetroArcGauge();
+    public static SimpleMetroArcGauge tempCompetitionGauge = new SimpleMetroArcGauge();
     @FXML
     private BarChart<?, ?> natureBarchart;
     @FXML
     private BarChart<?, ?> regModeBarchart;
-    
+
     public static BarChart<?, ?> tempnatureBarChar;
     public static BarChart<?, ?> tempregModeBarChar;
-     
-     Complaint complaint = new Complaint();
+
+    Complaint complaint = new Complaint();
 
     /**
      * Initializes the controller class.
@@ -51,44 +51,40 @@ public class CaseAllocatorDashboardController implements Initializable {
         tempAllCaseLabel = allCasesLabel;
         tempConsumerGauge = consumerGauge;
         tempCompetitionGauge = competitionGauge;
-        
+
         tempnatureBarChar = natureBarchart;
         tempregModeBarChar = regModeBarchart;
-        
+
         loadDashBoardData();
-        complaint.natureComplaintGraph();
-        complaint.modeRegistrationGraph();
-        
-    }  
-    
-    private void loadDashBoardData(){
-        try{
-              Task<Void> task = new Task<Void>() {
-               @Override
-               protected Void call() throws Exception {
-                         Thread.sleep(1000);
-                      
-                         Platform.runLater(new Runnable() {
-                             @Override
-                             public void run() {
-                               
-                                complaint.AllRegisteredCases();
-                                complaint.AllConsumerCases();
-                                complaint.AllCompetitionCases();
-                               
-                             }
-                         });
-                   return null;
-               }
-           };
-           new Thread(task).start();
-        }catch(Exception ex){
-            
+
+    }
+
+    private void loadDashBoardData() {
+        try {
+            Task<Void> task = new Task<Void>() {
+                @Override
+                protected Void call() throws Exception {
+                    Thread.sleep(1000);
+
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            complaint.AllRegisteredCases();
+                            complaint.AllConsumerCases();
+                            complaint.AllCompetitionCases();
+                            complaint.natureComplaintGraph();
+                            complaint.modeRegistrationGraph();
+
+                        }
+                    });
+                    return null;
+                }
+            };
+            new Thread(task).start();
+        } catch (Exception ex) {
+
         }
-     }
-    
-    
-    
-    
-    
+    }
+
 }

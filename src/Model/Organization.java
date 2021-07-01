@@ -11,10 +11,23 @@ import Controller.CasePanelController;
 import Controller.ClientOrganizationListController;
 import static Controller.RegisterComplaintController.listOfIDs;
 import Controller.UpdateOrganizationDataController;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -386,7 +399,7 @@ public class Organization extends Client {
         //int caseno = 0;
         int detailId = selectCase();
         System.out.println(detailId);
-        String query = "Select Id as totalOfficer from ecase.userofficer where Usertype ='Case Officer'";
+        String query = "Select uniqueId as totalOfficer from ecase.userofficer";
         int seedingValue;
 
         // String caseDetailQuery = "Select detailId from ecase.complaint_details where isAssigned = 0";
@@ -620,4 +633,103 @@ public class Organization extends Client {
             Logger.getLogger(Organization.class.getName()).log(Level.SEVERE, null, ex);
         }*/
     }
+    
+      public void exportToPdf(String filename) {
+        
+        try {
+            Document document = new Document(PageSize.A4, 36, 36, 90, 90);
+            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(filename));
+
+            // add header and footer
+            /*HeaderFooterPageEvent event = new HeaderFooterPageEvent();
+            writer.setPageEvent(event);*/
+            document.open();
+            LocalDate date = LocalDate.now();
+            String formatedDate = date.getDayOfMonth() + " "
+                    + date.getMonth().name() + ", " + date.getYear();
+            Font font = FontFactory.getFont("Times-Roman", 16, Font.BOLD);
+            document.add(new Paragraph("LIST OF CLIENT ORGANIZATIONS REPORT | " + formatedDate, font));
+
+            PdfPTable table = new PdfPTable(5);
+            float[] widths = {100f, 120f, 100f, 100f, 120f};
+            table.setTotalWidth(widths);
+            table.setLockedWidth(true);
+
+            Font font1 = FontFactory.getFont("Times-Roman", 12, Font.BOLD);
+            Font font2 = FontFactory.getFont("Times-Roman", 10, Font.NORMAL);
+            Font font3 = FontFactory.getFont("Times-Roman", 13, Font.BOLD);
+            BaseFont bf = font1.getCalculatedBaseFont(false);
+
+            table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
+            PdfPCell Id = new PdfPCell(new Paragraph("REGISTRATION NO", font1));
+            table.addCell(Id).setBorder(0);
+            PdfPCell orgName = new PdfPCell(new Paragraph("ORGANIZATION NAME", font1));
+            table.addCell(orgName).setBorder(0);
+            PdfPCell type = new PdfPCell(new Paragraph("BUSINESS TYPE", font1));
+            table.addCell(type).setBorder(0);
+            PdfPCell emails = new PdfPCell(new Paragraph("EMAIL", font1));
+            table.addCell(emails).setBorder(0);
+            PdfPCell address = new PdfPCell(new Paragraph("ADDRESS", font1));
+            table.addCell(address).setBorder(0);
+
+            PdfPCell spaceCell1 = new PdfPCell(new Paragraph(" "));
+            spaceCell1.setColspan(6);
+            table.addCell(spaceCell1).setBorder(0);
+
+            table.setSpacingBefore(15f);
+
+            table.setSpacingAfter(50f);
+
+            table.setHeaderRows(1);
+            
+            String query = "select * from ecase.organization ORDER BY orgName ASC";
+            preparedStatement = handler.connection.prepareStatement(query);
+            handler.result = preparedStatement.executeQuery(query);
+            ClientOrganizationListController.orgList.clear();
+            while (handler.result.next()) {
+                PdfPCell regNo = new PdfPCell(new Paragraph( handler.result.getString("registrationNo"),font2));
+                table.addCell(regNo).setBorder(0);
+                PdfPCell  OrgName= new PdfPCell(new Paragraph( handler.result.getString("orgName"),font2));
+                table.addCell(OrgName).setBorder(0);
+                PdfPCell businessType = new PdfPCell(new Paragraph( handler.result.getString("businessType"),font2));
+                table.addCell(businessType).setBorder(0);
+                PdfPCell email = new PdfPCell(new Paragraph( handler.result.getString("email"),font2));
+                table.addCell(email).setBorder(0);
+                PdfPCell addresse = new PdfPCell(new Paragraph( handler.result.getString("postalAddress"),font2));
+                table.addCell(addresse).setBorder(0);
+                
+            }
+            
+            PdfPCell spaceCell2 = new PdfPCell(new Paragraph(" "));
+                spaceCell2.setColspan(3);
+                table.addCell(spaceCell2).setBorder(0);
+
+                document.add(table);
+                document.close();
+
+                Notifications notification = Notifications.create();
+                notification.title("Creating Organization List Report");
+                notification.text("Report executed successfully");
+                notification.hideAfter(Duration.seconds(3));
+                notification.position(Pos.TOP_RIGHT);
+                notification.darkStyle();
+                notification.showInformation();
+                
+        } catch (SQLException ex) {
+            Logger.getLogger(Organization.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (FileNotFoundException ex) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("Report Generation Failed");
+            alert.setContentText("Document not created or Already Opened with another Application!");
+            alert.show();
+           
+        } catch (DocumentException ex) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("Report Generation Failed");
+            alert.setContentText("Document Opened in another Application!");
+            alert.show();
+            Logger.getLogger(Organization.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
 }

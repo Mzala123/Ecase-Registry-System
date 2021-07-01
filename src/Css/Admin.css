@@ -8,6 +8,11 @@ and open the template in the editor.
     Author     : bounce
 */
 
+#loginBG{
+    /*-fx-background-insets: -20, -10;
+    -fx-background-image:url("../Images/");
+    -fx-background-repeat: no-repeat;*/
+}
 .vboxBGColor{
   -fx-background-color: white;  
   -fx-border-radius: 6.0px;
@@ -194,4 +199,17 @@ and open the template in the editor.
     -fx-font-size: 14px;
     -fx-font-weight: Bold;
     -fx-font-family: Ubuntu;
+}
+
+.loginPart{
+    -fx-background-color: #088584;
+   
+}
+.loginPart1{
+    -fx-background-color: #0e2e33; 
+     -fx-effect: dropshadow(gaussian,rgba(0.0, 0.0, 0.0, 0.15), 6.0, 0.7, 0.0,1.5) 
+     /*
+    -fx-background-color:  linear-gradient(to right, #088584, #007182);*/
+   
+   
 }

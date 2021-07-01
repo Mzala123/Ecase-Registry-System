@@ -79,7 +79,7 @@ public class CasePanelController implements Initializable {
                         @Override
                         public void run() {
                             SwitchWindow window = new SwitchWindow();
-                            window.loadNewWindow("/View/signUpPage.fxml", "Login Section", false, false);
+                            window.loadNewWindow("/View/signUpPage.fxml", "Login Section", true, true);
                             mainStackPane.getScene().getWindow().hide();
                         }
                     });
@@ -274,10 +274,6 @@ public class CasePanelController implements Initializable {
         }
     }
 
-    @FXML
-    private void existSystem(ActionEvent event) {
-
-    }
 
     public void setAdminProfile() {
         Employee employee = new Employee();

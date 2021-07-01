@@ -30,5 +30,10 @@ public class MenusSwitch {
     //OfficerPanel
     public static final String  officerDashBoard = "/View/OfficerPanelDashBoard.fxml";
     
+    //GeneralPanel
+     public static final String  generalDashBoard = "/View/GeneralDashboard.fxml";
+     public static final String  concludedCases = "/View/GeneralTable.fxml";
+    
+    
       
 }

@@ -226,6 +226,8 @@ public class ComplaintSummaryListController implements Initializable {
 
     @FXML
     private void exportToPdf(ActionEvent event) {
+        Complaint complaint = new Complaint();
+        complaint.exportToPdf(System.getProperty("user.home") +"\\Documents\\Ecase\\Reports\\RegisteredComplaints.pdf");
     }
     
     

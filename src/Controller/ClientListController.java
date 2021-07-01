@@ -232,6 +232,7 @@ public class ClientListController implements Initializable {
     @FXML
     private void exportToPdf(ActionEvent event) {
         
+        person.exportToPDF(System.getProperty("user.home") +"\\Documents\\Ecase\\Reports\\Person.pdf");
         
     }
     

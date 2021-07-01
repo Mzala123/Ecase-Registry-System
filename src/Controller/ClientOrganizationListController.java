@@ -259,6 +259,8 @@ public class ClientOrganizationListController implements Initializable {
 
     @FXML
     private void exportToPdf(ActionEvent event) {
+        Organization org = new Organization();
+        org.exportToPdf(System.getProperty("user.home") +"\\Documents\\Ecase\\Reports\\Organization.pdf");
     }
     
 }

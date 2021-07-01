@@ -17,6 +17,7 @@ import java.util.Formatter;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.control.Alert;
 
 /**
  *
@@ -26,7 +27,9 @@ public class DBHandler {
     
     static final String DatabaseURL = "jdbc:mysql://localhost:3307/ecase";
     static final String DB_Username = "root";
-    static final String DB_password = "";
+    static final String DB_password = "khumbo";
+    
+   // private String ipAddress = "192.168.0.1";
     
     String DatabaseURL1;
     String DB_Username1 ;
@@ -40,7 +43,8 @@ public class DBHandler {
     PreparedStatement preparedStatement = null;
 
     public DBHandler() {
-        createDBConnection1();
+        //createDBConnection1();
+        createRemoteConnection();
         createTableUser();
         createTablePerson();
         createTableClients();
@@ -50,6 +54,8 @@ public class DBHandler {
         createTableAttachmentFile();
         createTableUserCaseOfficer();
     }
+    
+    
 
     public DBHandler(String DatabaseURL, String DB_Username, String DB_password) {
         setDatabaseURL(DatabaseURL);
@@ -102,6 +108,28 @@ public class DBHandler {
             System.err.println("Failed to establish database connection");
         }
    }
+   
+   
+   public  void createRemoteConnection(){
+       
+        try{
+            
+            Class.forName("com.mysql.jdbc.Driver");
+            
+            //System.out.println(ipAddress);
+            
+            connection= DriverManager.getConnection("jdbc:mysql://" +"192.168.0.102"+ ":3307/ecase", DB_Username, DB_password);
+            connection.setAutoCommit(true); 
+             }catch (Exception e){
+              Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setHeaderText("Connection error");
+                        alert.setContentText("Please make sure you have correct ip address");
+                        alert.show();
+
+        }
+         
+     }
+   
 
     public void setDatabaseURL(String DatabaseURL) {
         this.DatabaseURL1 = DatabaseURL;
@@ -182,6 +210,7 @@ public class DBHandler {
             else
             {
                 statement.execute("CREATE TABLE " +TableName+ "(" + ""
+                        + "uniqueId int NOT NULL AUTO_INCREMENT PRIMARY KEY,\n"
                         + "Id int,\n"
                         + "UserId varchar(200),\n"
                         + "UserName varchar(40),\n"

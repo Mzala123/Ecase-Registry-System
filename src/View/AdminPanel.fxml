@@ -64,14 +64,6 @@
                         <Font name="Arial" size="13.0" />
                      </font>
                   </JFXButton>
-                  <JFXButton layoutX="10.0" layoutY="284.0" onAction="#switchToUserLogs" prefHeight="40.0" prefWidth="173.0" styleClass="btnMenus" text="User logs">
-                     <graphic>
-                        <FontAwesomeIconView glyphName="LINE_CHART" size="20" wrappingWidth="30.0" />
-                     </graphic>
-                     <font>
-                        <Font name="Arial" size="13.0" />
-                     </font>
-                  </JFXButton>
                   <JFXButton layoutX="10.0" layoutY="284.0" onAction="#switchToSettings" prefHeight="40.0" prefWidth="173.0" styleClass="btnMenus" text="Settings">
                      <graphic>
                         <FontAwesomeIconView glyphName="COG" size="20" wrappingWidth="30.0" />
@@ -85,17 +77,6 @@
                         <Insets top="5.0" />
                      </VBox.margin>
                   </Separator>
-                  <JFXButton layoutX="10.0" layoutY="348.0" onAction="#existSystem" prefHeight="40.0" prefWidth="173.0" styleClass="btnMenus" text="Exit">
-                     <graphic>
-                        <FontAwesomeIconView glyphName="WINDOWS" size="20" wrappingWidth="30.0" />
-                     </graphic>
-                     <VBox.margin>
-                        <Insets top="10.0" />
-                     </VBox.margin>
-                     <font>
-                        <Font name="Arial" size="13.0" />
-                     </font>
-                  </JFXButton>
                </children>
                <BorderPane.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

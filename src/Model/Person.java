@@ -15,13 +15,33 @@ import Controller.UpdateCaseController;
 import Controller.UpdateClientController;
 import static Controller.UpdateClientController.malawiId;
 import Controller.UpdateOrganizationDataController;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import java.awt.Desktop;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -43,6 +63,7 @@ import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Paint;
@@ -72,6 +93,7 @@ public class Person {
     protected String clientType = "Person";
     private JFXCheckBox checkBox;
     private JFXButton button;
+    
 
     public static List<String> complaintsDetails = new ArrayList<>();
 
@@ -540,7 +562,7 @@ public class Person {
             preparedStatement = handler.connection.prepareStatement(query);
             handler.result = preparedStatement.executeQuery(query);
             if (handler.result.next()) {
-                
+
                 nationalId = handler.result.getString("nationalId");
                 firstName = handler.result.getString("firstname");
                 lastName = handler.result.getString("lastname");
@@ -561,21 +583,21 @@ public class Person {
 
     public void updatePersonClientDetails() {
         try {
-           // System.out.println("Lets check this pout " +UpdateClientController.tempLabel.getText());
-            String query = "select id from ecase.person where nationalId ='"+UpdateClientController.tempLabel.getText()+"'";
+            // System.out.println("Lets check this pout " +UpdateClientController.tempLabel.getText());
+            String query = "select id from ecase.person where nationalId ='" + UpdateClientController.tempLabel.getText() + "'";
             preparedStatement = handler.connection.prepareStatement(query);
             handler.result = preparedStatement.executeQuery(query);
             int id = 0;
-            
-            while(handler.result.next()){
-                
-             id = handler.result.getInt("id");
-            
+
+            while (handler.result.next()) {
+
+                id = handler.result.getInt("id");
+
             }
-            
+
             String updateQuery = "UPDATE ecase.person set nationalId=?, firstname=?, lastname=?, gender=?,"
-                    + "dob=?, nationality=?, address=?, residence=?, phonenumber=?, email=? where id ='"+id+"'";
-            preparedStatement = handler.connection.prepareStatement(updateQuery);      
+                    + "dob=?, nationality=?, address=?, residence=?, phonenumber=?, email=? where id ='" + id + "'";
+            preparedStatement = handler.connection.prepareStatement(updateQuery);
             preparedStatement.setString(1, getNationalId());
             preparedStatement.setString(2, getFirstName());
             preparedStatement.setString(3, getLastName());
@@ -586,8 +608,8 @@ public class Person {
             preparedStatement.setString(8, getResidence());
             preparedStatement.setString(9, getContact());
             preparedStatement.setString(10, getEmail());
-            
-             if (preparedStatement.execute()== true) {
+
+            if (preparedStatement.execute() == true) {
                 Notifications notification = Notifications.create();
                 notification.title("Updating Client Person Details");
                 notification.text("Failed to update");
@@ -604,39 +626,161 @@ public class Person {
                 notification.position(Pos.CENTER);
                 notification.darkStyle();
                 notification.showConfirm();
-                
-                 String updatequery1 = "UPDATE ecase.complaint_details set complainantId=?"
-                        + "where complainantId='"+UpdateClientController.tempLabel.getText()+"'";
+
+                String updatequery1 = "UPDATE ecase.complaint_details set complainantId=?"
+                        + "where complainantId='" + UpdateClientController.tempLabel.getText() + "'";
                 preparedStatement = handler.connection.prepareStatement(updatequery1);
                 preparedStatement.setString(1, getNationalId());
-                
-                if (preparedStatement.execute() == true) {
-                notification = Notifications.create();
-                notification.title("Updating Client Organization Details");
-                notification.text("Failed to update");
-                notification.hideAfter(Duration.seconds(3));
-                notification.position(Pos.CENTER);
-                notification.darkStyle();
-                notification.showError();
-                }
-                else {
 
-                notification = Notifications.create();
-                notification.title("Updating Client Organization details");
-                notification.text("Table Complaint Details Also Updated Sucessfully");
-                notification.hideAfter(Duration.seconds(3));
-                notification.position(Pos.TOP_RIGHT);
-                notification.darkStyle();
-                notification.showConfirm();
+                if (preparedStatement.execute() == true) {
+                    notification = Notifications.create();
+                    notification.title("Updating Client Organization Details");
+                    notification.text("Failed to update");
+                    notification.hideAfter(Duration.seconds(3));
+                    notification.position(Pos.CENTER);
+                    notification.darkStyle();
+                    notification.showError();
+                } else {
+
+                    notification = Notifications.create();
+                    notification.title("Updating Client Organization details");
+                    notification.text("Table Complaint Details Also Updated Sucessfully");
+                    notification.hideAfter(Duration.seconds(3));
+                    notification.position(Pos.TOP_RIGHT);
+                    notification.darkStyle();
+                    notification.showConfirm();
                 }
-               
+
             }
-            
-             
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(Person.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    public void exportToPDF(String filename) {
+        try {
+
+            Document document = new Document(PageSize.A4, 36, 36, 90, 90);
+            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(filename));
+
+            // add header and footer
+            /*HeaderFooterPageEvent event = new HeaderFooterPageEvent();
+            writer.setPageEvent(event);*/
+            document.open();
+            LocalDate date = LocalDate.now();
+            String formatedDate = date.getDayOfMonth() + " "
+                    + date.getMonth().name() + ", " + date.getYear();
+            Font font = FontFactory.getFont("Times-Roman", 16, Font.BOLD);
+            document.add(new Paragraph("LIST OF COMPLAINANTS REPORT | " + formatedDate, font));
+
+            PdfPTable table = new PdfPTable(6);
+            float[] widths = {90f, 90f, 90f, 90f, 50f, 120f};
+            table.setTotalWidth(widths);
+            table.setLockedWidth(true);
+
+            Font font1 = FontFactory.getFont("Times-Roman", 12, Font.UNDERLINE);
+            Font font2 = FontFactory.getFont("Times-Roman", 10, Font.NORMAL);
+            Font font3 = FontFactory.getFont("Times-Roman", 13, Font.BOLD);
+            BaseFont bf = font1.getCalculatedBaseFont(false);
+
+            table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
+            PdfPCell Id = new PdfPCell(new Paragraph("NATIONAL ID", font1));
+            table.addCell(Id).setBorder(0);
+            PdfPCell fname = new PdfPCell(new Paragraph("FIRSTNAME", font1));
+            table.addCell(fname).setBorder(0);
+            PdfPCell lname = new PdfPCell(new Paragraph("LASTNAME", font1));
+            table.addCell(lname).setBorder(0);
+            PdfPCell sex = new PdfPCell(new Paragraph("GENDER", font1));
+            table.addCell(sex).setBorder(0);
+            PdfPCell age = new PdfPCell(new Paragraph("AGE", font1));
+            table.addCell(age).setBorder(0);
+            PdfPCell address = new PdfPCell(new Paragraph("ADDRESS", font1));
+            table.addCell(address).setBorder(0);
+            /*PdfPCell emails = new PdfPCell(new Paragraph("EMAIL", font1));
+            table.addCell(emails).setBorder(0);
+            PdfPCell phonenumber = new PdfPCell(new Paragraph("PHONE NUMBER", font1));
+            table.addCell(phonenumber).setBorder(0);
+            PdfPCell nation = new PdfPCell(new Paragraph("NATIONALITY", font1));
+            table.addCell(nation).setBorder(0);
+            PdfPCell place = new PdfPCell(new Paragraph("RESIDENCE", font1));
+            table.addCell(place).setBorder(0);*/
+
+            PdfPCell spaceCell1 = new PdfPCell(new Paragraph(" "));
+            spaceCell1.setColspan(6);
+            table.addCell(spaceCell1).setBorder(0);
+
+            table.setSpacingBefore(15f);
+
+            table.setSpacingAfter(50f);
+
+            table.setHeaderRows(1);
+
+
+            /* PdfPCell[] cells = table.getRow(0).getCells();
+            for (int j = 0; j < cells.length; j++) {
+                cells[j].setBackgroundColor(BaseColor.LIGHT_GRAY);
+            }*/
+            String query = "select * from ecase.person ORDER BY firstname, lastname ASC";
+            try {
+                preparedStatement = handler.connection.prepareStatement(query);
+                handler.result = preparedStatement.executeQuery(query);
+                ClientListController.personList.clear();
+                while (handler.result.next()) {
+                    PdfPCell nationalId = new PdfPCell(new Paragraph(handler.result.getString("nationalId"), font2));
+                    table.addCell(nationalId).setBorder(0);
+                    PdfPCell firstName = new PdfPCell(new Paragraph(handler.result.getString("firstname"), font2));
+                    table.addCell(firstName).setBorder(0);
+                    PdfPCell lastName = new PdfPCell(new Paragraph(handler.result.getString("lastname"), font2));
+                    table.addCell(lastName).setBorder(0);
+                    PdfPCell gender = new PdfPCell(new Paragraph(handler.result.getString("gender"), font2));
+                    table.addCell(gender).setBorder(0);
+                    PdfPCell dob = new PdfPCell(new Paragraph(handler.result.getString("dob"), font2));
+                    table.addCell(dob).setBorder(0);
+                    PdfPCell postalAddress = new PdfPCell(new Paragraph(handler.result.getString("address"), font2));
+                    table.addCell(postalAddress).setBorder(0);
+                    
+
+                }
+                PdfPCell spaceCell2 = new PdfPCell(new Paragraph(" "));
+                spaceCell2.setColspan(3);
+                table.addCell(spaceCell2).setBorder(0);
+
+                document.add(table);
+                document.close();
+
+                Notifications notification = Notifications.create();
+                notification.title("Creating Person List Report");
+                notification.text("Report executed successfully");
+                notification.hideAfter(Duration.seconds(3));
+                notification.position(Pos.TOP_RIGHT);
+                notification.darkStyle();
+                notification.showInformation();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(Person.class
+                        .getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (FileNotFoundException ex) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("Report Generation Failed");
+            alert.setContentText("Document not created or Already Opened with another Application!");
+            alert.show();
+          
+        } catch (DocumentException ex) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("Report Generation Failed");
+            alert.setContentText("Document Exception!");
+            alert.show();
+           
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
 
 }

@@ -61,7 +61,7 @@ public class SwitchWindow {
             stage.setTitle(title);
             stage.setResizable(resizable);
             stage.setMaximized(resizable);
-            stage.initStyle(StageStyle.DECORATED);
+            /*stage.initStyle(StageStyle.DECORATED);*/
             stage.setScene(scene);
             TranslateTransition translate = new TranslateTransition(Duration.seconds(.4), root);
             translate.setFromX(100);

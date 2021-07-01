@@ -17,7 +17,6 @@
 <?import javafx.scene.text.Text?>
 <?import jfxtras.scene.control.gauge.linear.SimpleMetroArcGauge?>
 
-
 <StackPane fx:id="stackpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" stylesheets="@../Css/Admin.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.OfficerPanelDashBoardController">
    <children>
       <BorderPane prefHeight="200.0" prefWidth="200.0">
@@ -29,7 +28,7 @@
                         <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                      </HBox.margin>
                      <children>
-                        <Text fill="WHITE" layoutX="55.0" layoutY="177.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Registered Cases">
+                        <Text fill="WHITE" layoutX="55.0" layoutY="177.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Assigned Case(s)">
                            <font>
                               <Font name="Arial Bold" size="16.0" />
                            </font>
@@ -86,22 +85,25 @@
             </HBox>
          </top>
          <center>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
                <children>
                   <Pane prefHeight="392.0" prefWidth="493.0" styleClass="vboxLeftSide">
                      <HBox.margin>
-                        <Insets bottom="4.0" right="5.0" top="4.0" />
+                        <Insets bottom="4.0" right="7.0" top="4.0" />
                      </HBox.margin>
                      <children>
-                        <PieChart fx:id="officerPieChart" layoutX="6.0" layoutY="3.0" prefHeight="384.0" prefWidth="484.0" />
+                        <PieChart fx:id="officerPieChart" animated="false" layoutX="-1.0" layoutY="-12.0" prefHeight="390.0" prefWidth="495.0" title="Pie Chart Showing Concluded Cases based on Department">
+                           <padding>
+                              <Insets top="20.0" />
+                           </padding></PieChart>
                      </children>
                   </Pane>
                   <Pane layoutX="10.0" layoutY="10.0" prefHeight="392.0" prefWidth="576.0" styleClass="vboxLeftSide">
                      <HBox.margin>
-                        <Insets bottom="4.0" left="5.0" top="4.0" />
+                        <Insets bottom="4.0" left="7.0" top="4.0" />
                      </HBox.margin>
                      <children>
-                        <BarChart fx:id="officerBarChart" layoutX="-3.0" layoutY="-1.0" prefHeight="390.0" prefWidth="579.0">
+                        <BarChart fx:id="officerBarChart" animated="false" layoutX="-3.0" layoutY="-1.0" prefHeight="390.0" prefWidth="584.0" title="Chart showing Count of current case status for an Officer">
                           <xAxis>
                             <CategoryAxis side="BOTTOM" />
                           </xAxis>

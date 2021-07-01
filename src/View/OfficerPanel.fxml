@@ -73,14 +73,6 @@
                         <Font name="Arial" size="14.0" />
                      </font>
                   </JFXButton>
-                  <JFXButton layoutX="14.0" layoutY="218.0" onAction="#switchToNotification" prefHeight="40.0" prefWidth="200.0" styleClass="btnMenus" text="Notification">
-                     <graphic>
-                        <FontAwesomeIconView glyphName="BELL" size="24" wrappingWidth="30.0" />
-                     </graphic>
-                     <font>
-                        <Font name="Arial" size="14.0" />
-                     </font>
-                  </JFXButton>
                   <JFXButton layoutX="10.0" layoutY="218.0" onAction="#switchToOfficerCases" prefHeight="40.0" prefWidth="200.0" styleClass="btnMenus" text="Officer Cases">
                      <graphic>
                         <FontAwesomeIconView glyphName="LIST" size="24" wrappingWidth="30.0" />
@@ -102,17 +94,6 @@
                         <Insets top="5.0" />
                      </VBox.margin>
                   </Separator>
-                  <JFXButton layoutX="10.0" layoutY="348.0" onAction="#existSystem" prefHeight="40.0" prefWidth="200.0" styleClass="btnMenus" text="Exit">
-                     <graphic>
-                        <FontAwesomeIconView glyphName="WINDOWS" size="20" wrappingWidth="30.0" />
-                     </graphic>
-                     <VBox.margin>
-                        <Insets top="10.0" />
-                     </VBox.margin>
-                     <font>
-                        <Font name="Arial" size="14.0" />
-                     </font>
-                  </JFXButton>
                </children>
                <BorderPane.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

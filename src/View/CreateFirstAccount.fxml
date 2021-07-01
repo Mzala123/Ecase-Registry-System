@@ -5,6 +5,7 @@
 <?import com.jfoenix.controls.JFXPasswordField?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.image.ImageView?>
@@ -14,7 +15,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane fx:id="stackpane" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #088584;" stylesheets="@../Css/Login.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.CreateFirstAccountController">
+<StackPane fx:id="stackpane" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #088584;" styleClass="topBanner" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.CreateFirstAccountController">
    <children>
       <ImageView fitHeight="603.0" fitWidth="803.0" pickOnBounds="true" preserveRatio="true" />
       <VBox prefHeight="200.0" prefWidth="100.0">
@@ -116,7 +117,7 @@
                               <Insets left="20.0" right="20.0" top="45.0" />
                            </VBox.margin>
                            <children>
-                              <JFXButton graphicTextGap="8.0" onAction="#createAdminUSer" prefHeight="35.0" prefWidth="120.0" styleClass="btnSubmit" text="Submit" textFill="WHITE">
+                              <JFXButton buttonType="RAISED" graphicTextGap="8.0" onAction="#createAdminUSer" prefHeight="35.0" prefWidth="120.0" styleClass="btnSubmit" text="Submit" textFill="WHITE">
                                  <HBox.margin>
                                     <Insets right="10.0" />
                                  </HBox.margin>
@@ -127,7 +128,7 @@
                                     <FontAwesomeIconView fill="WHITE" glyphName="SAVE" size="20" />
                                  </graphic>
                               </JFXButton>
-                              <JFXButton layoutX="105.0" layoutY="25.0" onAction="#cancelAdmin" prefHeight="35.0" prefWidth="120.0" styleClass="btnCancel" text="Cancel" textFill="WHITE">
+                              <JFXButton buttonType="RAISED" layoutX="105.0" layoutY="25.0" onAction="#cancelAdmin" prefHeight="35.0" prefWidth="120.0" styleClass="btnCancel" text="Cancel" textFill="WHITE">
                                  <HBox.margin>
                                     <Insets left="10.0" />
                                  </HBox.margin>
@@ -150,4 +151,8 @@
          </children>
       </VBox>
    </children>
+   <stylesheets>
+      <URL value="@../Css/Login.css" />
+      <URL value="@../Css/Admin.css" />
+   </stylesheets>
 </StackPane>

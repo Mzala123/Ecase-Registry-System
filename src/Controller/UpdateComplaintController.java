@@ -80,7 +80,8 @@ public class UpdateComplaintController implements Initializable {
             Year nextYear = currentYear.plusYears(count);
             year = year + count;
             System.out.println(year - 1 + "/" + nextYear);
-            String financialYear = ((year - 1) + "/" + nextYear);
+            //String financialYear = ((year - 1) + "/" + nextYear);
+            String financialYear = ((year - 10) + "/" + (year-9));
             ObservableList<String> list = FXCollections.observableArrayList(financialYear);
             this.financialYear.getItems().addAll(list);
         }

@@ -81,9 +81,6 @@ public class AdminPanelController implements Initializable {
         SwitchCenterPane(change.ManageUsers);
     }
 
-    @FXML
-    private void switchToUserLogs(ActionEvent event) {
-    }
 
     @FXML
     private void switchToSettings(ActionEvent event) {
@@ -92,9 +89,6 @@ public class AdminPanelController implements Initializable {
    
     }
 
-    @FXML
-    private void existSystem(ActionEvent event) {
-    }
 
     private void SwitchCenterPane(String pane) {
 
@@ -151,7 +145,7 @@ public class AdminPanelController implements Initializable {
     @FXML
     private void logOut(ActionEvent event) {
         SwitchWindow window = new SwitchWindow();
-        window.loadNewWindow("/View/signUpPage.fxml", "Login Section", false, false);
+        window.loadNewWindow("/View/signUpPage.fxml", "Login Section", true, true);
         mainStackPane.getScene().getWindow().hide();
     }
 

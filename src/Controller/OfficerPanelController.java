@@ -54,10 +54,11 @@ public class OfficerPanelController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        MenusSwitch change = new MenusSwitch();
-        SwitchCenterPane(change.officerDashBoard);
+        
         setAdminProfile();
         checkLabel = labelUsername;
+        MenusSwitch change = new MenusSwitch();
+        SwitchCenterPane(change.officerDashBoard);
     }
 
     @FXML
@@ -72,7 +73,7 @@ public class OfficerPanelController implements Initializable {
                         @Override
                         public void run() {
                             SwitchWindow window = new SwitchWindow();
-                            window.loadNewWindow("/View/signUpPage.fxml", "Login Section", false, false);
+                            window.loadNewWindow("/View/signUpPage.fxml", "Login Section", true, true);
                             mainStackPane.getScene().getWindow().hide();
                         }
                     });

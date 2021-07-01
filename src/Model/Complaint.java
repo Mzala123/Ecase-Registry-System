@@ -9,16 +9,32 @@ import Controller.CaseAllocatorDashboardController;
 import Controller.ComplaintListController;
 //import static Controller.ComplaintListController.arrayComlainptList;
 import Controller.ComplaintSummaryListController;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.jfoenix.controls.JFXButton;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -38,7 +54,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
@@ -76,6 +94,8 @@ public class Complaint {
     private int totalCases;
     private int allConsumerCases;
     private int allCompetitionCases;
+    
+     private Circle circle;
 
     public Complaint() {
     }
@@ -247,6 +267,21 @@ public class Complaint {
         this.allCompetitionCases = allCompetitionCases;
     }
 
+    public Circle getCircle() {
+        return circle;
+    }
+
+    public Circle setCircle() {
+        Circle circle = new Circle();
+        //circle.setFill(Paint.valueOf("#088584"));
+        circle.setStroke(Color.BLACK);
+        circle.setStyle("-fx-background-color:#088584;");
+        circle.setTranslateX(2);
+        circle.setTranslateY(2);
+        this.circle = circle;
+        return circle;
+    }
+    
     public void registerComplaint() {
         try {
 
@@ -290,17 +325,13 @@ public class Complaint {
         String caseOfficer = "";
         String firstname = "";
         String lastname = "";
-        /*String query = "SELECT * from complaint "
-                + "LEFT JOIN complaint_details ON complaint.complaintId = complaint_details.complaintId "
-                + "LEFT JOIN person ON  person.nationalId = complaint_details.complainantId "
-                + "LEFT JOIN organization ON organization.registrationNo = complaint_details.respondentId "
-                + "where complaint_details.detailId > 0 ORDER BY complaint_details.detailId";*/
+        
         String query = "SELECT complaint_details.detailId, complaint.natureComplaint, userofficer.Firstname as Fname,"
                 + "userofficer.Lastname as Lname from complaint LEFT JOIN complaint_details ON complaint.complaintId = complaint_details.complaintId \n"
                 + "LEFT JOIN person ON person.nationalId = complaint_details.complainantId \n"
                 + "LEFT JOIN organization ON organization.registrationNo = complaint_details.respondentId \n"
-                + "LEFT JOIN userofficer ON userofficer.Id = complaint_details.caseOfficerId "
-                + "where complaint_details.detailId > 0 ORDER BY complaint_details.detailId";
+                + "LEFT JOIN userofficer ON userofficer.uniqueId = complaint_details.caseOfficerId "
+                + "where complaint_details.detailId > 0 ORDER BY complaint_details.detailId DESC";
 
         try {
             preparedStatement = handler.connection.prepareStatement(query);
@@ -313,7 +344,8 @@ public class Complaint {
                 lastname = handler.result.getString("Lname");
                 caseOfficer = firstname + " " + lastname;
                 ImageView imageView = setImage();
-                HBox box = createHBox(imageView, caseOfficer, complaint_detailId, complaintName);
+                 Circle circle = setCircle();
+                HBox box = createHBox(circle, caseOfficer, complaint_detailId, complaintName);
                 ComplaintListController.tempVbox.getChildren().addAll(box);
                 // ComplaintListController.complaintList.getItems().add(box);
             }
@@ -324,50 +356,69 @@ public class Complaint {
 
     }
 
-    private HBox createHBox(ImageView Icon, String caseOfficer, int caseNo, String caseName) {
+    private HBox createHBox(Circle Icon, String caseOfficer, int caseNo, String caseName) {
         HBox hbox = new HBox();
-        hbox.setPrefSize(360, 60);
-        //  hbox.setStyle("-fx-background-color: white;");
-        hbox.getStyleClass().add("mainHbox");
-        VBox vbox = new VBox();
-        vbox.setPrefSize(60, 60);
-        vbox.setPadding(new Insets(0, 10, 0, 10));
-        vbox.setAlignment(Pos.CENTER);
-        vbox.getChildren().add(Icon);
+        try {
+            Task<Void> task = new Task<Void>() {
+                @Override
+                protected Void call() throws Exception {
+                    Thread.sleep(300);
 
-        VBox vboxMin = new VBox();
-        vboxMin.setPrefSize(320, 60);
-        vboxMin.setAlignment(Pos.CENTER_LEFT);
-        //vboxMin.setSpacing(10);
-        vboxMin.getStyleClass().add("miniHbox");
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            hbox.setPrefSize(360, 60);
+                            //  hbox.setStyle("-fx-background-color: white;");
+                            hbox.getStyleClass().add("mainHbox");
+                            VBox vbox = new VBox();
+                            vbox.setPrefSize(60, 60);
+                            vbox.setPadding(new Insets(0, 10, 0, 10));
+                            vbox.setAlignment(Pos.CENTER);
+                            vbox.getChildren().add(Icon);
 
-        Label labelCaseNo = new Label("Case " + caseNo);
-        Label labelCaseName = new Label(caseName);
-        labelCaseName.setStyle("-fx-padding-left:5px;");
-        labelCaseNo.setStyle("-fx-padding-left:5px;");
+                            VBox vboxMin = new VBox();
+                            vboxMin.setPrefSize(320, 60);
+                            vboxMin.setAlignment(Pos.CENTER_LEFT);
+                            //vboxMin.setSpacing(10);
+                            vboxMin.getStyleClass().add("miniHbox");
 
-        Label labelOfficer = new Label("Officer " + caseOfficer);
-        labelOfficer.setStyle("-fx-padding-left:5px;");
+                            Label labelCaseNo = new Label("Case " + caseNo);
+                            Label labelCaseName = new Label(caseName);
+                            labelCaseName.setStyle("-fx-padding-left:5px;");
+                            labelCaseNo.setStyle("-fx-padding-left:5px;");
 
-        Separator separator = new Separator();
-        separator.setOrientation(Orientation.HORIZONTAL);
-        separator.setStyle(""
-                + "-fx-border-insets: 10px;"
-                + "-fx-background-color: black;"
-                + "-fx-margin: 5px;"
-                + "");
+                            Label labelOfficer = new Label("Officer " + caseOfficer);
+                            labelOfficer.setStyle("-fx-padding-left:5px;");
 
-        separator.setScaleZ(.5);
-        separator.setScaleY(.5);
+                            Separator separator = new Separator();
+                            separator.setOrientation(Orientation.HORIZONTAL);
+                            separator.setStyle(""
+                                    + "-fx-border-insets: 10px;"
+                                    + "-fx-background-color: black;"
+                                    + "-fx-margin: 5px;"
+                                    + "");
 
-        vboxMin.getChildren().addAll(labelOfficer, labelCaseNo, labelCaseName);
-        hbox.getChildren().addAll(vbox, vboxMin);
-        hbox.setOnMouseClicked((event) -> {
-            ComplaintListController.tempCaseDetails.getChildren().clear();
+                            separator.setScaleZ(.5);
+                            separator.setScaleY(.5);
 
-            displayComplaintDetails(caseNo);
+                            vboxMin.getChildren().addAll(labelOfficer, labelCaseNo, labelCaseName);
+                            hbox.getChildren().addAll(vbox, vboxMin);
+                            hbox.setOnMouseClicked((event) -> {
+                                ComplaintListController.tempCaseDetails.getChildren().clear();
 
-        });
+                                displayComplaintDetails(caseNo);
+
+                            });
+
+                        }
+                    });
+                    return null;
+                }
+            };
+            new Thread(task).start();
+        } catch (Exception ex) {
+
+        }
 
         return hbox;
     }
@@ -395,11 +446,6 @@ public class Complaint {
     }
 
     public void displayComplaintDetails(int complaint_id) {
-        /*String query = "SELECT * from complaint "
-                + "LEFT JOIN complaint_details ON complaint.complaintId = complaint_details.complaintId "
-                + "LEFT JOIN person ON  person.nationalId = complaint_details.complainantId "
-                + "LEFT JOIN organization ON organization.registrationNo = complaint_details.respondentId "
-                + "where complaint_details.detailId = 2";*/
 
         String query = "SELECT person.id, person.nationalId, person.firstname, person.lastname, "
                 + "person.gender, person.dob, person.type, person.nationality, person.address,"
@@ -412,7 +458,7 @@ public class Complaint {
                 + "LEFT JOIN complaint_details ON complaint.complaintId = complaint_details.complaintId "
                 + "LEFT JOIN person ON person.nationalId = complaint_details.complainantId "
                 + "LEFT JOIN organization ON organization.registrationNo = complaint_details.respondentId "
-                + "where complaint_details.detailId = '" + complaint_id + "'";
+                + "where complaint_details.detailId = '" + complaint_id +"'";
         try {
             preparedStatement = handler.connection.prepareStatement(query);
             handler.result = preparedStatement.executeQuery(query);
@@ -430,7 +476,7 @@ public class Complaint {
                 String lastname = handler.result.getString("lastname");
                 Label fullnameValue = new Label(firstname + " " + lastname);
 
-                Label dob = new Label("Date of birth");
+                Label dob = new Label("Age of Client");
                 dob.getStyleClass().add("labelBold");
                 String dateBirth = handler.result.getString("dob");
                 Label dobValue = new Label(dateBirth);
@@ -1054,15 +1100,15 @@ public class Complaint {
                 postCount = handler.result.getInt("postCount");
                 otherCount = handler.result.getInt("otherCount");
             }
-            final String walkIn= "Walk-In";
-            final String facebook= "Facebook";
-            final String website= "Website";
-            final String phone= "Phone Call";
-            final String email= "Email";
-            final String whatsapp= "WhatsApp";
-            final String post= "Post Office";
-            final String other= "Others";
-            
+            final String walkIn = "Walk-In";
+            final String facebook = "Facebook";
+            final String website = "Website";
+            final String phone = "Phone Call";
+            final String email = "Email";
+            final String whatsapp = "WhatsApp";
+            final String post = "Post Office";
+            final String other = "Others";
+
             XYChart.Series series1 = new XYChart.Series();
             series1.setName("Mode of registration");
 
@@ -1076,7 +1122,7 @@ public class Complaint {
                     }
                 }
             });
-            
+
             final XYChart.Data<String, Number> data1 = new XYChart.Data(facebook, faceBookCount);
             data1.nodeProperty().addListener(new ChangeListener<Node>() {
                 @Override
@@ -1087,8 +1133,8 @@ public class Complaint {
                     }
                 }
             });
-            
-             final XYChart.Data<String, Number> data2 = new XYChart.Data(website, websiteCount);
+
+            final XYChart.Data<String, Number> data2 = new XYChart.Data(website, websiteCount);
             data2.nodeProperty().addListener(new ChangeListener<Node>() {
                 @Override
                 public void changed(ObservableValue<? extends Node> ov, Node oldNode, final Node node) {
@@ -1098,9 +1144,8 @@ public class Complaint {
                     }
                 }
             });
-            
-            
-               final XYChart.Data<String, Number> data3 = new XYChart.Data(phone, phoneCount);
+
+            final XYChart.Data<String, Number> data3 = new XYChart.Data(phone, phoneCount);
             data3.nodeProperty().addListener(new ChangeListener<Node>() {
                 @Override
                 public void changed(ObservableValue<? extends Node> ov, Node oldNode, final Node node) {
@@ -1110,9 +1155,8 @@ public class Complaint {
                     }
                 }
             });
-            
-            
-               final XYChart.Data<String, Number> data4 = new XYChart.Data(email, emailCount);
+
+            final XYChart.Data<String, Number> data4 = new XYChart.Data(email, emailCount);
             data4.nodeProperty().addListener(new ChangeListener<Node>() {
                 @Override
                 public void changed(ObservableValue<? extends Node> ov, Node oldNode, final Node node) {
@@ -1122,9 +1166,8 @@ public class Complaint {
                     }
                 }
             });
-            
-            
-               final XYChart.Data<String, Number> data5 = new XYChart.Data(whatsapp, whatsappCount);
+
+            final XYChart.Data<String, Number> data5 = new XYChart.Data(whatsapp, whatsappCount);
             data5.nodeProperty().addListener(new ChangeListener<Node>() {
                 @Override
                 public void changed(ObservableValue<? extends Node> ov, Node oldNode, final Node node) {
@@ -1134,9 +1177,8 @@ public class Complaint {
                     }
                 }
             });
-            
-            
-               final XYChart.Data<String, Number> data6 = new XYChart.Data(post, postCount);
+
+            final XYChart.Data<String, Number> data6 = new XYChart.Data(post, postCount);
             data6.nodeProperty().addListener(new ChangeListener<Node>() {
                 @Override
                 public void changed(ObservableValue<? extends Node> ov, Node oldNode, final Node node) {
@@ -1146,9 +1188,8 @@ public class Complaint {
                     }
                 }
             });
-            
-            
-               final XYChart.Data<String, Number> data7 = new XYChart.Data(other, otherCount);
+
+            final XYChart.Data<String, Number> data7 = new XYChart.Data(other, otherCount);
             data7.nodeProperty().addListener(new ChangeListener<Node>() {
                 @Override
                 public void changed(ObservableValue<? extends Node> ov, Node oldNode, final Node node) {
@@ -1158,11 +1199,10 @@ public class Complaint {
                     }
                 }
             });
-            
-            
+
             series1.getData().addAll(data, data1, data2, data3, data4, data5, data6, data7);
             CaseAllocatorDashboardController.tempregModeBarChar.getData().addAll(series1);
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(Complaint.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -1188,4 +1228,108 @@ public class Complaint {
         });
     }
 
+    public void exportToPdf(String filename) {
+        try {
+
+            Document document = new Document(PageSize.A4, 36, 36, 90, 90);
+            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(filename));
+
+            document.open();
+            LocalDate date = LocalDate.now();
+            String formatedDate = date.getDayOfMonth() + " "
+                    + date.getMonth().name() + ", " + date.getYear();
+            Font font = FontFactory.getFont("Times-Roman", 16, Font.BOLD);
+            document.add(new Paragraph("ALL REGISTERED COMPLAINTS REPORT | " + formatedDate, font));
+
+            PdfPTable table = new PdfPTable(4);
+            float[] widths = {80f, 90f, 90f, 170f};
+            table.setTotalWidth(widths);
+            table.setLockedWidth(true);
+
+            Font font1 = FontFactory.getFont("Times-Roman", 12, Font.UNDERLINE);
+            Font font2 = FontFactory.getFont("Times-Roman", 10, Font.NORMAL);
+            Font font3 = FontFactory.getFont("Times-Roman", 13, Font.BOLD);
+            BaseFont bf = font1.getCalculatedBaseFont(false);
+
+            table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
+            PdfPCell Id = new PdfPCell(new Paragraph("CASE NO", font1));
+            table.addCell(Id).setBorder(0);
+            PdfPCell nature = new PdfPCell(new Paragraph("NATURE", font1));
+            table.addCell(nature).setBorder(0);
+            PdfPCell departments = new PdfPCell(new Paragraph("DEPARTMENT", font1));
+            table.addCell(departments).setBorder(0);
+            PdfPCell summary = new PdfPCell(new Paragraph("SUMMARY", font1));
+            table.addCell(summary).setBorder(0);
+            /*PdfPCell age = new PdfPCell(new Paragraph("AGE", font1));
+            table.addCell(age).setBorder(0);
+            PdfPCell address = new PdfPCell(new Paragraph("ADDRESS", font1));
+            table.addCell(address).setBorder(0);
+            PdfPCell emails = new PdfPCell(new Paragraph("EMAIL", font1));
+            table.addCell(emails).setBorder(0);
+            PdfPCell phonenumber = new PdfPCell(new Paragraph("PHONE NUMBER", font1));
+            table.addCell(phonenumber).setBorder(0);
+            PdfPCell nation = new PdfPCell(new Paragraph("NATIONALITY", font1));
+            table.addCell(nation).setBorder(0);
+            PdfPCell place = new PdfPCell(new Paragraph("RESIDENCE", font1));
+            table.addCell(place).setBorder(0);*/
+
+            PdfPCell spaceCell1 = new PdfPCell(new Paragraph(" "));
+            spaceCell1.setColspan(6);
+            table.addCell(spaceCell1).setBorder(0);
+
+            table.setSpacingBefore(15f);
+
+            table.setSpacingAfter(50f);
+
+            table.setHeaderRows(1);
+
+
+            /* PdfPCell[] cells = table.getRow(0).getCells();
+            for (int j = 0; j < cells.length; j++) {
+                cells[j].setBackgroundColor(BaseColor.LIGHT_GRAY);
+            }*/
+            String query = "Select * from ecase.complaint";
+            preparedStatement = handler.connection.prepareStatement(query);
+            handler.result = preparedStatement.executeQuery(query);
+            ComplaintSummaryListController.complaintList.clear();
+            while (handler.result.next()) {
+                PdfPCell complaintId = new PdfPCell(new Paragraph(handler.result.getString("complaintId"), font2));
+                table.addCell(complaintId).setBorder(0);
+                PdfPCell complaintNature = new PdfPCell(new Paragraph(handler.result.getString("natureComplaint"), font2));
+                table.addCell(complaintNature).setBorder(0);
+                PdfPCell department = new PdfPCell(new Paragraph(handler.result.getString("department"), font2));
+                table.addCell(department).setBorder(0);
+                PdfPCell description = new PdfPCell(new Paragraph(handler.result.getString("complaintDescription"), font2));
+                table.addCell(description).setBorder(0);
+
+                /* complaintDesc = handler.result.getString("complaintDescription");
+                regMode = handler.result.getString("registrationMode");
+                financialYear = handler.result.getString("financialYear");
+               
+                regDate = handler.result.getString("regDate");*/
+            }
+
+            PdfPCell spaceCell2 = new PdfPCell(new Paragraph(" "));
+            spaceCell2.setColspan(3);
+            table.addCell(spaceCell2).setBorder(0);
+
+            document.add(table);
+            document.close();
+
+            Notifications notification = Notifications.create();
+            notification.title("Creating Complaint List Report");
+            notification.text("Report executed successfully");
+            notification.hideAfter(Duration.seconds(3));
+            notification.position(Pos.TOP_RIGHT);
+            notification.darkStyle();
+            notification.showInformation();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Complaint.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Complaint.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (DocumentException ex) {
+            Logger.getLogger(Complaint.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

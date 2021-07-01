@@ -84,13 +84,14 @@ public class RegisterComplaintController implements Initializable {
     private void initializeYear() {
         Year currentYear = Year.now();
         int year;
-        for (int count = 1; count <= 30; count++) {
+        for (int count = 1; count <= 10; count++) {
 
             year = currentYear.getValue();
             Year nextYear = currentYear.plusYears(count);
             year = year + count;
             System.out.println(year - 1 + "/" + nextYear);
-            String financialYear = ((year - 1) + "/" + nextYear);
+           //String financialYear = ((year - 1) + "/" + nextYear);
+            String financialYear = ((year - 10) + "/" + (year-9));
             ObservableList<String> list = FXCollections.observableArrayList(financialYear);
             this.financialYear.getItems().addAll(list);
         }

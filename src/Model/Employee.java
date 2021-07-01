@@ -476,16 +476,16 @@ public class Employee {
                     SignUpPageController.tempStackPane.getScene().getWindow().hide();
 
                 } else if (usertype.toLowerCase().equals("case officer")) {
-                    window.loadNewWindow("/View/OfficerPanel.fxml", "Admin Section", true, true);
+                    window.loadNewWindow("/View/OfficerPanel.fxml", "Case Officer Section", true, true);
                     SignUpPageController.tempStackPane.getScene().getWindow().hide();
                 } else if (usertype.toLowerCase().equals("case allocator")) {
-                    window.loadNewWindow("/View/CasePanel.fxml", "Case Section", true, true);
+                    window.loadNewWindow("/View/CasePanel.fxml", "Allocator Section", true, true);
                     SignUpPageController.tempStackPane.getScene().getWindow().hide();
                     /* Organization org = new Organization();
                     org.assignCaseAutomatically();*/
 
-                } else if (usertype.toLowerCase().equals("director")) {
-                    window.loadNewWindow("/View/AdminPanel.fxml", "Admin Section", true, true);
+                } else if (usertype.toLowerCase().equals("director"))  {
+                    window.loadNewWindow("/View/GeneralPanel.fxml", "General Section", true, true);
                     SignUpPageController.tempStackPane.getScene().getWindow().hide();
                 }
             } else {

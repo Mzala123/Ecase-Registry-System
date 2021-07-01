@@ -6,6 +6,7 @@
 package e.pkgcase.registry.system;
 
 import Model.DBHandler;
+import Model.Folder;
 import java.io.IOException;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -23,21 +24,24 @@ import javafx.stage.StageStyle;
  * @author bounce
  */
 public class ECaseRegistrySystem extends Application {
-    
-    
+
     public static Boolean isLoaded = false;
-    
+
     @Override
     public void start(Stage primaryStage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/View/signUpPage.fxml"));   
+        Folder folder = new Folder();
+        folder.createFolders("Ecase");
+        folder.createFolders("Ecase\\Reports");
+
+        Parent root = FXMLLoader.load(getClass().getResource("/View/signUpPage.fxml"));
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.setTitle("E-Case Registry System");
         primaryStage.initStyle(StageStyle.DECORATED);
-        primaryStage.setMaximized(false);
-        primaryStage.setFullScreen(false);
-        primaryStage.show();     
-        
+        primaryStage.setMaximized(true);
+        primaryStage.setFullScreen(true);
+        primaryStage.show();
+
     }
 
     /**
@@ -46,7 +50,7 @@ public class ECaseRegistrySystem extends Application {
     public static void main(String[] args) {
         DBHandler handler = new DBHandler();
         launch(args);
-        
+
     }
-    
+
 }

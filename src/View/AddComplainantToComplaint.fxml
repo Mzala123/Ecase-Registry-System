@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTabPane?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
@@ -35,14 +34,6 @@
                         <Font name="Arial Bold" size="14.0" />
                      </font>
                   </JFXTextField>
-                  <JFXButton layoutX="916.0" layoutY="49.0" minHeight="30.0" minWidth="40.0" prefHeight="30.0" prefWidth="104.0" styleClass="btnOnTables" text="Create client">
-                     <font>
-                        <Font name="Arial" size="12.0" />
-                     </font>
-                     <graphic>
-                        <FontAwesomeIconView fill="#434343" glyphName="PLUS_SQUARE_ALT" size="18" />
-                     </graphic>
-                  </JFXButton>
                </children></Pane>
          </top>
          <center>

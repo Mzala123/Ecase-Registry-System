@@ -51,10 +51,10 @@ public class OfficerCasesListController implements Initializable {
     private VBox rightVbox;
     @FXML
     private VBox attachmentVBox;
-    
-    public static VBox tempRightVbox= new VBox();
-    
-    public static VBox tempAttachmentVbox= new VBox();
+
+    public static VBox tempRightVbox = new VBox();
+
+    public static VBox tempAttachmentVbox = new VBox();
 
     /**
      * Initializes the controller class.
@@ -66,12 +66,11 @@ public class OfficerCasesListController implements Initializable {
         tempBorderPane = borderpane;
         tempRightVbox = rightVbox;
         tempAttachmentVbox = attachmentVBox;
-        
-        
+
         Task<Void> task = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                Platform.runLater(()->{
+                Platform.runLater(() -> {
                     loadDataInList();
                 });
                 return null;
@@ -93,9 +92,22 @@ public class OfficerCasesListController implements Initializable {
 
     @FXML
     private void CasePanelArea(ActionEvent event) {
-        SwitchWindow window = new SwitchWindow();
-        window.loadNewWindow("/View/OfficerPanel.fxml", "Officer Panel", true, true);
-        mainStackPane.getScene().getWindow().hide();
+
+        Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                Platform.runLater(() -> {
+                    SwitchWindow window = new SwitchWindow();
+                    window.loadNewWindow("/View/OfficerPanel.fxml", "Officer Panel", true, true);
+                    mainStackPane.getScene().getWindow().hide();
+                });
+                return null;
+            }
+        };
+
+        Thread thread = new Thread(task);
+        thread.setDaemon(true);
+        thread.start();
     }
 
     @FXML
